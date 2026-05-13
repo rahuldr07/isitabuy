@@ -1,6 +1,7 @@
 import SearchHeader from "../components/SearchHeader";
 import FilterSidebar from "../components/FilterSidebar";
 import ProductCard from "../components/ProductCard";
+import Footer from "../components/Footer";
 
 interface Product {
   id: number;
@@ -57,15 +58,16 @@ export default function SearchPage() {
         <div className="flex flex-col lg:flex-row gap-12">
           <FilterSidebar />
           <div className="w-full lg:flex-1">
+            {/* Header + Sort */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-              <h2 className="text-headline-lg text-on-surface mb-4 sm:mb-0 font-bold">
+              <h2 className="font-headline-lg text-headline-lg text-on-surface mb-4 sm:mb-0">
                 Search products
               </h2>
               <div className="flex items-center space-x-2">
-                <button className="px-4 py-2 bg-surface-container-lowest border border-surface-variant rounded-full text-label-sm text-on-surface font-semibold shadow-sm hover:bg-surface-variant/50 transition-colors">
+                <button className="px-4 py-2 bg-surface-container-lowest border border-surface-variant rounded-full font-label-sm text-label-sm text-on-surface font-semibold shadow-sm hover:bg-surface-variant/50 transition-colors">
                   Best Value
                 </button>
-                <button className="px-4 py-2 bg-surface-container-lowest border border-surface-variant rounded-full text-label-sm text-on-surface font-semibold shadow-sm hover:bg-surface-variant/50 transition-colors">
+                <button className="px-4 py-2 bg-surface-container-lowest border border-surface-variant rounded-full font-label-sm text-label-sm text-on-surface font-semibold shadow-sm hover:bg-surface-variant/50 transition-colors">
                   Most Trusted Reviews
                 </button>
               </div>
@@ -73,16 +75,16 @@ export default function SearchPage() {
 
             {/* Active Filters */}
             <div className="flex flex-wrap gap-2 mb-8">
-              <span className="inline-flex items-center px-3 py-1 bg-surface-variant/30 border border-surface-variant rounded-full text-label-sm text-on-surface-variant">
-                Electronics{" "}
+              <span className="inline-flex items-center px-3 py-1 bg-surface-variant/30 border border-surface-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">
+                Electronics
                 <button className="ml-2 hover:text-on-surface">
                   <span className="material-symbols-outlined text-sm">
                     close
                   </span>
                 </button>
               </span>
-              <span className="inline-flex items-center px-3 py-1 bg-surface-variant/30 border border-surface-variant rounded-full text-label-sm text-on-surface-variant">
-                Amazon{" "}
+              <span className="inline-flex items-center px-3 py-1 bg-surface-variant/30 border border-surface-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">
+                Amazon
                 <button className="ml-2 hover:text-on-surface">
                   <span className="material-symbols-outlined text-sm">
                     close
@@ -100,6 +102,7 @@ export default function SearchPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

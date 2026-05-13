@@ -52,19 +52,32 @@ export default function FilterSidebar() {
     }));
   };
 
+  const handleClearAll = () => {
+    setFilters({
+      verdict: { buy: false, wait: false, avoid: false },
+      category: { electronics: false, homeKitchen: false },
+      retailer: { amazon: false, bestBuy: false, walmart: false, target: false, ebay: false },
+    });
+  };
+
   return (
     <aside className="w-full lg:w-64 flex-shrink-0">
       <div className="bg-surface-container-lowest rounded-3xl p-6 shadow-soft border border-surface-variant/50 sticky top-32">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-headline-md text-on-surface font-bold">Filters</h2>
-          <button className="text-label-sm text-secondary hover:text-primary-container">
+          <h2 className="font-headline-md text-headline-md text-on-surface">
+            Filters
+          </h2>
+          <button
+            onClick={handleClearAll}
+            className="font-label-sm text-label-sm text-secondary hover:text-primary-container"
+          >
             Clear all
           </button>
         </div>
 
         {/* AI Verdict */}
         <div className="mb-6 pb-6 border-b border-surface-variant/50">
-          <h3 className="text-label-sm text-on-surface mb-3 font-semibold">
+          <h3 className="font-label-sm text-label-sm text-on-surface mb-3">
             AI Verdict
           </h3>
           <div className="flex flex-col space-y-2">
@@ -75,7 +88,9 @@ export default function FilterSidebar() {
                 onChange={() => handleVerdictChange("buy")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">Buy</span>
+              <span className="font-body-md text-body-md text-on-surface-variant">
+                Buy
+              </span>
             </label>
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
@@ -84,7 +99,7 @@ export default function FilterSidebar() {
                 onChange={() => handleVerdictChange("wait")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Wait
               </span>
             </label>
@@ -95,7 +110,7 @@ export default function FilterSidebar() {
                 onChange={() => handleVerdictChange("avoid")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Avoid
               </span>
             </label>
@@ -104,7 +119,7 @@ export default function FilterSidebar() {
 
         {/* Category */}
         <div className="mb-6 pb-6 border-b border-surface-variant/50">
-          <h3 className="text-label-sm text-on-surface mb-3 font-semibold">
+          <h3 className="font-label-sm text-label-sm text-on-surface mb-3">
             Category
           </h3>
           <div className="flex flex-col space-y-2">
@@ -115,7 +130,7 @@ export default function FilterSidebar() {
                 onChange={() => handleCategoryChange("electronics")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Electronics
               </span>
             </label>
@@ -126,7 +141,7 @@ export default function FilterSidebar() {
                 onChange={() => handleCategoryChange("homeKitchen")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Home &amp; Kitchen
               </span>
             </label>
@@ -135,7 +150,7 @@ export default function FilterSidebar() {
 
         {/* Retailer */}
         <div>
-          <h3 className="text-label-sm text-on-surface mb-3 font-semibold">
+          <h3 className="font-label-sm text-label-sm text-on-surface mb-3">
             Retailer
           </h3>
           <div className="flex flex-col space-y-2">
@@ -146,7 +161,7 @@ export default function FilterSidebar() {
                 onChange={() => handleRetailerChange("amazon")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Amazon
               </span>
             </label>
@@ -157,7 +172,7 @@ export default function FilterSidebar() {
                 onChange={() => handleRetailerChange("bestBuy")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Best Buy
               </span>
             </label>
@@ -168,7 +183,7 @@ export default function FilterSidebar() {
                 onChange={() => handleRetailerChange("walmart")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Walmart
               </span>
             </label>
@@ -179,7 +194,7 @@ export default function FilterSidebar() {
                 onChange={() => handleRetailerChange("target")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 Target
               </span>
             </label>
@@ -190,7 +205,7 @@ export default function FilterSidebar() {
                 onChange={() => handleRetailerChange("ebay")}
                 className="rounded border-surface-variant text-primary-container focus:ring-primary-container"
               />
-              <span className="text-body-md text-on-surface-variant">
+              <span className="font-body-md text-body-md text-on-surface-variant">
                 eBay
               </span>
             </label>
