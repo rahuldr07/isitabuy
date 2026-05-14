@@ -4,7 +4,7 @@ export default function ExtensionCTA() {
   return (
     <section
       id="extension"
-      className="mb-32 max-w-5xl mx-auto bg-slate-900 rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 shadow-premium scroll-mt-28"
+      className="mb-32 max-w-[1280px] mx-auto bg-slate-900 rounded-3xl p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 shadow-premium scroll-mt-28"
     >
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary-container opacity-20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
 

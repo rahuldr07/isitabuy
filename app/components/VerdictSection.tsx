@@ -219,7 +219,7 @@ export default function VerdictSection() {
               </div>
             </div>
 
-            <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div className="mt-10 rounded-xl border border-slate-200 bg-gradient-to-br from-amber-50  via-white to-purple-50 p-4">
               <p className="text-[12.5px] leading-[1.75] text-slate-600">
                 The current price is competitive, review trust is strong, and
                 quality signals are excellent. Value is good, with a few cheaper
@@ -249,7 +249,8 @@ export default function VerdictSection() {
               <h4 className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-on-surface">
                 Score breakdown
               </h4>
-              <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-secondary ring-1 ring-surface-variant/70">
+              <span className="rounded-md bg-emerald-600 px-2.5 py-1 text-[10px] font-bold text-white ring-1 ring-surface-variant/70">
+               {/* <CircleCheck className="size-2" aria-hidden="true" /> */}
                 Verified
               </span>
             </div>
