@@ -25,7 +25,7 @@ Use this note as the high-context handoff for future work on this repo.
 - Language: TypeScript strict mode.
 - Styling: Tailwind CSS v4 using `@import "tailwindcss";` and `@theme` in `app/globals.css`.
 - Icons: Google Material Symbols are still loaded by a `<link>` in `app/layout.tsx` for legacy routes. Home-page UI now uses `lucide-react` in `SimpleNav`, `HeroSection`, `VerdictSection`, and `ExtensionCTA`.
-- Font: Plus Jakarta Sans from `next/font/google`.
+- Fonts: Sora and Manrope from `next/font/google`.
 - Runtime model: frontend-only prototype. No backend, no auth provider, no API routes, no database, no env vars.
 - Data model: static demo data embedded directly in pages/components.
 - Tests: none configured.
@@ -183,6 +183,10 @@ On very narrow widths, `Get Started` moves into the dropdown so the logo and men
 ## Current Color Direction
 
 Amber remains the primary brand/accent color through `primary-container` (`#F59E0B`). Do not make black/navy the global primary treatment. Dark neutrals can still be used sparingly for contrast where the existing design already used them, such as media panels or neutral CTAs.
+
+## Current Typography Direction
+
+Use Sora as the primary/display font for headings, nav labels, buttons, scores, and brand-forward UI. Use Manrope as the secondary/body font for paragraphs, dense card copy, labels inside data-heavy sections, and form text. `app/layout.tsx` wires both through `next/font/google`; `app/globals.css` maps `font-sans` to Manrope and heading/display/label tokens to Sora.
 
 ## Current Landing Verdict Card
 

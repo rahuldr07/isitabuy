@@ -311,7 +311,7 @@ export default function VerdictSection() {
               </p>
               <div className="flex items-center gap-3">
                 <div
-                  className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-100"
+                  className="h-2.5 flex-1 overflow-hidden rounded-full bg-[#622395]/10"
                   role="progressbar"
                   aria-valuenow={compositeScore}
                   aria-valuemin={0}
@@ -319,11 +319,11 @@ export default function VerdictSection() {
                   aria-label={`Overall AI score ${compositeScore} out of 100`}
                 >
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-700"
+                    className="h-full rounded-full bg-[#622395] transition-all duration-700"
                     style={{ width: compositeWidth }}
                   />
                 </div>
-                <span className="text-base font-extrabold text-emerald-700">
+                <span className="text-base font-extrabold text-[#622395]">
                   {compositeScore}
                 </span>
               </div>
