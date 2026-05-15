@@ -1,8 +1,9 @@
+import Link from "next/link";
 import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Price Alerts | IsItABuy",
+  title: "Price Alerts | IsItABuy AI",
 };
 
 export default function PriceAlertsPage() {
@@ -13,7 +14,7 @@ export default function PriceAlertsPage() {
         {/* Breadcrumb & Title */}
         <header className="mb-stack-md">
           <nav className="flex items-center gap-2 text-on-surface-variant text-sm mb-4">
-            <a className="hover:text-primary" href="/">Home</a>
+            <Link className="hover:text-primary" href="/">Home</Link>
             <span className="material-symbols-outlined text-[14px]">chevron_right</span>
             <span className="text-on-surface font-semibold">Price Alerts</span>
           </nav>
@@ -191,7 +192,7 @@ export default function PriceAlertsPage() {
             {/* Disclosure */}
             <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant">
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                <strong>Disclosure:</strong> We may earn a commission when you buy through some links. Our AI scores, alerts, price tracking, and recommendations are not based on commission. IsItABuy provides independent market analysis. Prices and availability are subject to change by retailers.
+                <strong>Disclosure:</strong> We may earn a commission when you buy through some links. Our AI scores, alerts, price tracking, and recommendations are not based on commission. IsItABuy AI provides independent market analysis. Prices and availability are subject to change by retailers.
               </p>
             </div>
           </div>

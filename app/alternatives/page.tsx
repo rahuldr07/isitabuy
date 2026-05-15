@@ -2,60 +2,13 @@
 
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export default function AlternativesPage() {
   return (
     <div className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
       {/* TopNavBar */}
-      <header className="bg-surface dark:bg-on-background shadow-sm docked full-width top-0 sticky z-50">
-        <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
-          <Link
-            href="/"
-            className="text-headline-md font-headline-lg text-primary dark:text-primary-container"
-          >
-            IsItABuy
-          </Link>
-          <nav className="hidden md:flex gap-8">
-            <Link
-              className="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 font-label-sm text-label-sm"
-              href="/product"
-            >
-              Verdict
-            </Link>
-            <a
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 active:scale-95 duration-150 p-2 rounded-md"
-              href="#"
-            >
-              Offers
-            </a>
-            <Link
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 active:scale-95 duration-150 p-2 rounded-md"
-              href="/price-tracker"
-            >
-              Price History
-            </Link>
-            <a
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 active:scale-95 duration-150 p-2 rounded-md"
-              href="#"
-            >
-              Specs
-            </a>
-          </nav>
-          <div className="flex items-center gap-4 text-primary dark:text-primary-fixed-dim font-headline-md text-headline-md">
-            <span
-              className="material-symbols-outlined cursor-pointer hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 active:scale-95 duration-150 p-2 rounded-full"
-              data-icon="shopping_bag"
-            >
-              shopping_bag
-            </span>
-            <span
-              className="material-symbols-outlined cursor-pointer hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 active:scale-95 duration-150 p-2 rounded-full"
-              data-icon="account_circle"
-            >
-              account_circle
-            </span>
-          </div>
-        </div>
-      </header>
+      <SimpleNav variant="sticky" />
 
       {/* Main Content */}
       <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-md">
@@ -685,7 +638,7 @@ export default function AlternativesPage() {
       <footer className="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant full-width mt-stack-lg">
         <div className="w-full py-stack-md px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center opacity-80 hover:opacity-100">
           <div className="text-headline-md font-headline-md text-on-surface-variant mb-4 md:mb-0">
-            IsItABuy
+            IsItABuy AI
           </div>
           <nav className="flex flex-wrap justify-center gap-4 md:gap-6">
             <a

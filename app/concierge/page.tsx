@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+
+import SimpleNav from "../components/SimpleNav";
 
 export default function ConciergePage() {
   const [inputValue, setInputValue] = useState("");
@@ -9,26 +10,7 @@ export default function ConciergePage() {
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background text-on-surface">
       {/* Header */}
-      <header className="bg-white border-b border-outline-variant sticky top-0 z-50 shrink-0">
-        <nav className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
-          <div className="flex items-center gap-10">
-            <Link href="/" className="font-bold text-2xl tracking-tight text-primary">IsItABuy</Link>
-            <div className="hidden md:flex items-center gap-8">
-              <a className="text-secondary font-label-sm hover:text-primary transition-colors" href="#">Dashboard</a>
-              <a className="text-secondary font-label-sm hover:text-primary transition-colors" href="#">History</a>
-              <a className="text-secondary font-label-sm hover:text-primary transition-colors" href="#">Trends</a>
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
-            <button className="text-secondary font-label-sm hover:text-primary transition-colors">Support</button>
-            <div className="flex items-center gap-4">
-              <span className="material-symbols-outlined text-secondary cursor-pointer">notifications</span>
-              <span className="material-symbols-outlined text-secondary cursor-pointer">settings</span>
-              <div className="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-bold text-[12px]">JD</div>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <SimpleNav variant="sticky" />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
@@ -188,7 +170,7 @@ export default function ConciergePage() {
                   <span className="material-symbols-outlined">arrow_upward</span>
                 </button>
               </div>
-              <p className="text-center text-[11px] text-on-surface-variant font-medium">IsItABuy uses AI to aggregate data. Verify critical info before buying.</p>
+              <p className="text-center text-[11px] text-on-surface-variant font-medium">IsItABuy AI aggregates shopping data. Verify critical info before buying.</p>
             </div>
           </div>
         </main>

@@ -35,7 +35,7 @@ export default function HeroSection() {
         </h1>
         <p className="text-lg md:text-xl text-secondary mb-10 leading-relaxed max-w-2xl mx-auto">
           Paste a product link, search by name, scan a barcode, or use our
-          browser extension. IsItABuy analyzes price history, review quality,
+          browser extension. IsItABuy AI analyzes price history, review quality,
           specs, and alternatives to give you a clear verdict.
         </p>
         <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white border border-surface-variant/40 text-on-surface shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-md transition-shadow cursor-default shimmer-effect">

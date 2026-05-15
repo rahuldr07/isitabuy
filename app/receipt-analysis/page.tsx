@@ -1,8 +1,9 @@
+import Link from "next/link";
 import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Receipt analysis | IsItABuy",
+  title: "Receipt analysis | IsItABuy AI",
 };
 
 export default function ReceiptAnalysisPage() {
@@ -14,7 +15,7 @@ export default function ReceiptAnalysisPage() {
         <section className="mb-stack-md">
           <nav className="mb-6">
             <p className="font-label-sm text-label-sm text-secondary/60 flex items-center gap-2">
-              <a href="/" className="hover:text-primary">Home</a>
+              <Link href="/" className="hover:text-primary">Home</Link>
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
               <a href="/upload-receipt" className="hover:text-primary">Receipts</a>
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
@@ -279,7 +280,7 @@ export default function ReceiptAnalysisPage() {
         {/* Affiliate Disclosure */}
         <section className="mt-stack-lg py-8 border-y border-surface-variant">
           <p className="text-secondary text-sm text-center max-w-2xl mx-auto italic">
-            Affiliate Disclosure: IsItABuy is a participant in several affiliate programs. When you click on links and make a purchase, we may receive a small commission at no additional cost to you. This helps us keep the lights on and provide free tools.
+            Affiliate Disclosure: IsItABuy AI is a participant in several affiliate programs. When you click on links and make a purchase, we may receive a small commission at no additional cost to you. This helps us keep the lights on and provide free tools.
           </p>
         </section>
       </main>

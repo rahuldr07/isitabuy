@@ -2,7 +2,7 @@ import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Upload Receipt - IsItABuy",
+  title: "Upload Receipt - IsItABuy AI",
 };
 
 export default function UploadReceiptPage() {

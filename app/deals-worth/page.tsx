@@ -1,37 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export const metadata: Metadata = {
-  title: "Deals that are actually worth it - IsItABuy",
+  title: "Deals that are actually worth it - IsItABuy AI",
 };
 
 export default function DealsWorthPage() {
   return (
-    <div className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col pt-16">
+    <div className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col pt-20">
       {/* TopNavBar */}
-      <nav className="bg-surface-container-lowest font-body-md text-body-md fixed top-0 w-full z-50 shadow-sm transition-all duration-200 ease-in-out">
-        <div className="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
-          <Link href="/" className="font-headline-md text-headline-md font-bold text-on-surface">
-            IsItABuy
-          </Link>
-          <div className="hidden md:flex items-center space-x-8">
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">How It Works</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Browser Extension</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Price Tracker</a>
-            <a className="text-on-surface-variant hover:text-primary transition-colors" href="#">Compare</a>
-            <Link className="text-primary border-b-2 border-primary pb-1 hover:text-primary transition-colors" href="/deals">Deals</Link>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative hidden md:block">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant">search</span>
-              <input className="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full focus:ring-2 focus:ring-primary-container w-48 text-body-md h-10" placeholder="Search" type="text" />
-            </div>
-            <Link href="/signin" className="bg-primary-container text-white px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-opacity-90 transition-colors">
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <SimpleNav variant="fixed" />
 
       <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-stack-sm pb-stack-lg">
         {/* Breadcrumbs */}
@@ -389,7 +369,7 @@ export default function DealsWorthPage() {
       <footer className="w-full mt-stack-lg bg-surface-container border-t border-surface-variant/30">
         <div className="w-full py-stack-md px-gutter flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto gap-6">
           <div className="font-headline-md text-headline-md font-bold text-on-surface">
-            IsItABuy
+            IsItABuy AI
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             <a className="text-on-surface-variant hover:underline hover:text-primary" href="#">Product</a>
@@ -399,7 +379,7 @@ export default function DealsWorthPage() {
             <a className="text-on-surface-variant hover:underline hover:text-primary" href="#">Contact Support</a>
           </div>
           <div className="text-on-surface-variant text-center md:text-right max-w-lg text-[12px] leading-relaxed">
-            © 2024 IsItABuy. All rights reserved.<br />
+            © 2024 IsItABuy AI. All rights reserved.<br />
             <span className="font-semibold">Affiliate Disclosure:</span> We may earn a commission from some links. Our deal rankings, AI scores, and recommendations are not based on commission.
           </div>
         </div>

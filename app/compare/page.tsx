@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import CompareProductCard, { CompareProduct } from "../components/CompareProductCard";
 import CompareFilterSidebar from "../components/CompareFilterSidebar";
 import CompareTray from "../components/CompareTray";
+import SimpleNav from "../components/SimpleNav";
 
 const products: CompareProduct[] = [
   {
@@ -89,49 +89,7 @@ export default function ComparePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-on-background">
       {/* Navbar */}
-      <nav className="bg-surface dark:bg-surface-dim sticky top-0 w-full z-50 shadow-sm dark:bg-surface-container-high transition-all duration-300 ease-in-out">
-        <div className="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
-          <div className="flex items-center gap-stack-md">
-            <Link
-              href="/"
-              className="font-headline-md text-headline-md font-bold tracking-tight text-on-surface dark:text-on-surface"
-            >
-              IsItABuy
-            </Link>
-            <div className="hidden md:flex gap-stack-sm items-center">
-              <a
-                className="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors hover:opacity-90 hover:bg-surface-variant/50 px-3 py-2 rounded-lg font-label-sm text-label-sm"
-                href="#"
-              >
-                How It Works
-              </a>
-              <a
-                className="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors hover:opacity-90 hover:bg-surface-variant/50 px-3 py-2 rounded-lg font-label-sm text-label-sm"
-                href="#"
-              >
-                Browser Extension
-              </a>
-              <a
-                className="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors hover:opacity-90 hover:bg-surface-variant/50 px-3 py-2 rounded-lg font-label-sm text-label-sm"
-                href="#"
-              >
-                Price Tracker
-              </a>
-              <Link
-                className="text-secondary dark:text-secondary-fixed-dim hover:text-primary-container transition-colors hover:opacity-90 hover:bg-surface-variant/50 px-3 py-2 rounded-lg font-label-sm text-label-sm"
-                href="/compare"
-              >
-                Compare
-              </Link>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="bg-primary-container text-on-primary font-label-sm text-label-sm px-6 py-3 rounded-full hover:opacity-90 hover:saturate-150 transition-all font-semibold">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
+      <SimpleNav variant="sticky" />
 
       {/* Main Content */}
       <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-md">
@@ -217,7 +175,7 @@ export default function ComparePage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-stack-md max-w-container-max mx-auto">
           <div className="col-span-1 md:col-span-4 mb-4">
             <div className="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright">
-              IsItABuy
+              IsItABuy AI
             </div>
           </div>
           <div className="col-span-1 md:col-span-4 flex flex-wrap gap-4 mb-8">
@@ -272,7 +230,7 @@ export default function ComparePage() {
           </div>
           <div className="col-span-1 md:col-span-4">
             <p className="font-body-md text-body-md text-secondary text-sm">
-              &copy; 2024 IsItABuy. All rights reserved. Affiliate disclosure: We
+              &copy; 2024 IsItABuy AI. All rights reserved. Affiliate disclosure: We
               may earn a commission when you use one of our links to make a
               purchase.
             </p>

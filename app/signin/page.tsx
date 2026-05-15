@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export const metadata: Metadata = {
   title: "Sign In | IsItABuy AI Shopping Advisor",
 };
@@ -9,30 +11,7 @@ export default function SignInPage() {
   return (
     <div className="bg-background text-on-surface antialiased min-h-screen flex flex-col">
       {/* TopNavBar */}
-      <header className="bg-surface shadow-sm fixed top-0 w-full z-50 backdrop-blur-md bg-white/80">
-        <nav className="flex justify-between items-center px-gutter py-4 w-full max-w-container-max mx-auto">
-          <div className="flex items-center gap-stack-md">
-            <Link href="/" className="font-headline-md text-headline-md font-bold text-primary">
-              IsItABuy
-            </Link>
-            <div className="hidden md:flex gap-6 items-center">
-              <a className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">How It Works</a>
-              <Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/best-laptops">Browser Extension</Link>
-              <Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/price-tracker">Price Tracker</Link>
-              <Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/compare">Compare</Link>
-              <Link className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="/deals">Deals</Link>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/search" className="hidden lg:block font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">
-              Continue as guest
-            </Link>
-            <button className="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-label-sm text-label-sm scale-95 active:scale-90 transition-transform">
-              Sign In
-            </button>
-          </div>
-        </nav>
-      </header>
+      <SimpleNav variant="fixed" />
 
       <main className="min-h-screen pt-24 pb-stack-lg px-gutter max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-stack-lg items-center">
         {/* Left Column: Value Proposition */}
@@ -240,7 +219,7 @@ export default function SignInPage() {
       <footer className="bg-surface-container-low border-t border-surface-variant">
         <div className="flex flex-col md:flex-row justify-between items-start px-gutter py-stack-lg w-full max-w-container-max mx-auto gap-8">
           <div className="max-w-sm">
-            <span className="font-headline-md text-headline-md font-bold text-on-surface">IsItABuy</span>
+            <span className="font-headline-md text-headline-md font-bold text-on-surface">IsItABuy AI</span>
             <p className="mt-4 text-on-surface-variant text-body-md font-body-md">
               The world&apos;s first AI shopping concierge designed to protect your wallet and ensure every purchase is a smart one.
             </p>
@@ -267,7 +246,7 @@ export default function SignInPage() {
         </div>
         <div className="w-full max-w-container-max mx-auto px-gutter pb-8">
           <p className="text-sm text-on-surface-variant/70 border-t border-surface-variant pt-8">
-            © 2024 IsItABuy. Affiliate Disclosure: We may earn a commission when you click through links on our site.
+            © 2024 IsItABuy AI. Affiliate Disclosure: We may earn a commission when you click through links on our site.
           </p>
         </div>
       </footer>

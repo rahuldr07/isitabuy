@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -10,9 +12,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "IsItABuy - AI-Powered Shopping Advisor",
+  title: "IsItABuy AI - Shopping Advisor",
   description:
-    "Paste a product link, search by name, scan a barcode, or use our browser extension. IsItABuy analyzes price history, review quality, specs, and alternatives to give you a clear verdict.",
+    "Paste a product link, search by name, scan a barcode, or use our browser extension. IsItABuy AI analyzes price history, review quality, specs, and alternatives to give you a clear verdict.",
 };
 
 export default function RootLayout({
@@ -28,7 +30,10 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         />
       </head>
-      <body className="font-sans text-on-surface antialiased">{children}</body>
+      <body className="font-sans text-on-surface antialiased">
+        <TooltipProvider>{children}</TooltipProvider>
+        <Toaster />
+      </body>
     </html>
   );
 }

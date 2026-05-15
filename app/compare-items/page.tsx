@@ -2,41 +2,13 @@
 
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export default function CompareItemsPage() {
   return (
     <div className="text-on-surface antialiased min-h-screen flex flex-col">
       {/* TopNavBar */}
-      <nav className="bg-surface dark:bg-surface-container-lowest font-body-md text-body-md docked full-width top-0 sticky shadow-sm transition-all duration-300 ease-in-out z-50">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-gutter py-4 max-w-container-max mx-auto">
-          <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary"
-            >
-              IsItABuy
-            </Link>
-            <div className="hidden md:flex gap-6 items-center">
-              <a className="text-on-surface-variant dark:text-surface-variant hover:text-primary-fixed-dim transition-colors duration-200" href="#">
-                Partnerships
-              </a>
-              <a className="text-on-surface-variant dark:text-surface-variant hover:text-primary-fixed-dim transition-colors duration-200" href="#">
-                Pricing
-              </a>
-              <a className="text-on-surface-variant dark:text-surface-variant hover:text-primary-fixed-dim transition-colors duration-200" href="#">
-                Categories
-              </a>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="hidden md:block font-label-sm text-label-sm text-primary hover:text-primary-fixed-dim transition-colors duration-200">
-              Sign In
-            </button>
-            <button className="bg-primary-container text-on-primary hover:bg-primary-fixed-dim font-label-sm text-label-sm px-4 py-2 rounded-lg transition-colors duration-200">
-              Create Account
-            </button>
-          </div>
-        </div>
-      </nav>
+      <SimpleNav variant="sticky" />
 
       <main className="w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-stack-md pb-stack-lg">
         {/* Header Section */}
@@ -411,10 +383,10 @@ export default function CompareItemsPage() {
       <footer className="bg-surface-container-low dark:bg-surface-dim font-label-sm text-label-sm w-full px-margin-mobile md:px-gutter py-stack-md flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto transition-opacity duration-200 mt-stack-lg border-t border-surface-variant">
         <div className="flex items-center gap-4 mb-4 md:mb-0">
           <span className="font-headline-md text-headline-md font-bold text-primary">
-            IsItABuy
+            IsItABuy AI
           </span>
           <span className="text-secondary dark:text-secondary-fixed">
-            &copy; 2024 IsItABuy. AI-powered shopping research.
+            &copy; 2024 IsItABuy AI. AI-powered shopping research.
           </span>
         </div>
         <div className="flex flex-wrap gap-6 items-center">

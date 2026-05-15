@@ -2,61 +2,13 @@
 
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export default function BestLaptopsPage() {
   return (
     <div className="bg-background text-[#111827] min-h-screen pt-20">
       {/* TopNavBar */}
-      <header className="fixed top-0 w-full z-50 bg-surface/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-[0px_4px_20px_rgba(0,0,0,0.03)] dark:shadow-none border-b border-surface-variant/50">
-        <div className="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
-          <Link
-            href="/"
-            className="font-headline-md text-headline-md font-bold tracking-tight text-[#0f172a]"
-          >
-            IsItABuy
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 font-body-md text-body-md">
-            <a
-              className="text-[#475569] hover:text-[#0f172a] transition-colors hover:bg-surface-container-high/50 rounded-lg px-3 py-2"
-              href="#"
-            >
-              How It Works
-            </a>
-            <a
-              className="text-[#475569] hover:text-[#0f172a] transition-colors hover:bg-surface-container-high/50 rounded-lg px-3 py-2"
-              href="#"
-            >
-              Browser Extension
-            </a>
-            <Link
-              className="text-[#475569] hover:text-[#0f172a] transition-colors hover:bg-surface-container-high/50 rounded-lg px-3 py-2"
-              href="/price-tracker"
-            >
-              Price Tracker
-            </Link>
-            <Link
-              className="text-[#0f172a] font-semibold border-b-2 border-primary-container pb-1 px-3 py-2"
-              href="/compare"
-            >
-              Compare
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <div className="relative hidden md:block">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#94a3b8]">
-                search
-              </span>
-              <input
-                className="pl-10 pr-4 py-2 bg-surface-container-low border border-surface-variant/50 rounded-full text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container w-64 transition-all"
-                placeholder="Search products..."
-                type="text"
-              />
-            </div>
-            <button className="bg-primary-container hover:bg-amber-600 text-on-primary active:scale-95 duration-200 font-label-sm text-label-sm py-2 px-6 rounded-full transition-colors font-bold shadow-sm">
-              Sign In
-            </button>
-          </div>
-        </div>
-      </header>
+      <SimpleNav variant="fixed" />
 
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter flex flex-col lg:flex-row gap-8 relative pt-8 pb-16">
         {/* SideNavBar */}
@@ -833,7 +785,7 @@ export default function BestLaptopsPage() {
       <footer className="w-full mt-stack-lg bg-surface-container-high border-t border-surface-variant/50 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center px-gutter max-w-container-max mx-auto gap-8">
           <div className="font-headline-md text-xl font-bold text-[#0f172a]">
-            IsItABuy
+            IsItABuy AI
           </div>
           <nav className="flex flex-wrap justify-center gap-6 font-label-sm text-sm font-medium">
             <a
@@ -862,7 +814,7 @@ export default function BestLaptopsPage() {
             </a>
           </nav>
           <p className="font-body-md text-sm text-[#64748b] text-center md:text-right max-w-md leading-relaxed">
-            &copy; 2024 IsItABuy. All rights reserved.
+            &copy; 2024 IsItABuy AI. All rights reserved.
             <br />
             <strong className="text-[#475569]">Affiliate Disclosure:</strong> We
             may earn a commission from some links. Our rankings, AI scores, and

@@ -51,7 +51,7 @@ const scoreCards = [
 
 export default function VerdictSection() {
   return (
-    <section className="mb-32 max-w-5xl mx-auto">
+    <section id="how-it-works" className="mb-32 max-w-5xl mx-auto scroll-mt-28">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-on-surface tracking-tight mb-3">
           Real-Time AI Verdicts

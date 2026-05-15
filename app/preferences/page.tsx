@@ -1,8 +1,9 @@
+import Link from "next/link";
 import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Preferences | IsItABuy",
+  title: "Preferences | IsItABuy AI",
 };
 
 export default function PreferencesPage() {
@@ -84,7 +85,7 @@ export default function PreferencesPage() {
           {/* Header Section */}
           <div className="mb-stack-md">
             <nav className="flex items-center text-xs text-on-surface-variant gap-2 mb-4">
-              <a href="/" className="hover:text-primary">Account</a>
+              <Link href="/" className="hover:text-primary">Account</Link>
               <span className="material-symbols-outlined text-[14px]">chevron_right</span>
               <span className="text-on-surface font-bold">Preferences</span>
             </nav>

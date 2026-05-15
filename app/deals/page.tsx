@@ -1,8 +1,9 @@
+import Link from "next/link";
 import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Deals that are actually worth it - IsItABuy",
+  title: "Deals that are actually worth it - IsItABuy AI",
 };
 
 export default function DealsPage() {
@@ -12,7 +13,7 @@ export default function DealsPage() {
       <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-stack-sm pb-stack-lg">
         {/* Breadcrumbs */}
         <nav className="flex items-center space-x-2 text-label-sm text-on-surface-variant mb-stack-md">
-          <a className="hover:text-primary" href="/">Home</a>
+          <Link className="hover:text-primary" href="/">Home</Link>
           <span className="material-symbols-outlined text-[16px]">chevron_right</span>
           <span className="text-on-surface font-semibold">Deals</span>
         </nav>

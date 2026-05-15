@@ -2,64 +2,13 @@
 
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export default function ProductPage() {
   return (
     <div className="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container pb-24 lg:pb-0">
       {/* TopNavBar */}
-      <nav className="docked full-width top-0 sticky z-50 shadow-sm bg-surface dark:bg-on-background">
-        <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
-          <Link
-            href="/"
-            className="text-headline-md font-headline-lg text-primary dark:text-primary-container"
-          >
-            IsItABuy
-          </Link>
-          <div className="hidden md:flex gap-8 items-center h-full">
-            <a
-              className="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 h-full flex items-center font-label-sm text-label-sm active:scale-95 duration-150"
-              href="#verdict"
-            >
-              Verdict
-            </a>
-            <a
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 h-full flex items-center px-2 font-label-sm text-label-sm active:scale-95 duration-150"
-              href="#offers"
-            >
-              Offers
-            </a>
-            <a
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 h-full flex items-center px-2 font-label-sm text-label-sm active:scale-95 duration-150"
-              href="#price-history"
-            >
-              Price History
-            </a>
-            <a
-              className="text-on-surface-variant dark:text-surface-variant hover:text-primary hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 h-full flex items-center px-2 font-label-sm text-label-sm active:scale-95 duration-150"
-              href="#specs"
-            >
-              Specs
-            </a>
-          </div>
-          <div className="flex items-center gap-4 text-primary dark:text-primary-fixed-dim">
-            <button className="hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 p-2 rounded-full active:scale-95 duration-150">
-              <span
-                className="material-symbols-outlined"
-                style={{ fontVariationSettings: "'FILL' 0" }}
-              >
-                shopping_bag
-              </span>
-            </button>
-            <button className="hover:bg-surface-container-low dark:hover:bg-surface-container transition-colors duration-200 p-2 rounded-full active:scale-95 duration-150">
-              <span
-                className="material-symbols-outlined"
-                style={{ fontVariationSettings: "'FILL' 0" }}
-              >
-                account_circle
-              </span>
-            </button>
-          </div>
-        </div>
-      </nav>
+      <SimpleNav variant="sticky" />
 
       {/* Main Content Wrapper */}
       <main className="max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-md flex flex-col lg:flex-row gap-gutter relative">
@@ -488,7 +437,7 @@ export default function ProductPage() {
       {/* Footer */}
       <footer className="w-full py-stack-md px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant mt-stack-lg pb-32 lg:pb-stack-md">
         <div className="text-headline-md font-headline-md text-on-surface-variant mb-4 md:mb-0">
-          IsItABuy
+          IsItABuy AI
         </div>
         <div className="flex flex-wrap gap-4 justify-center font-body-md text-body-md text-secondary dark:text-secondary-fixed">
           <a

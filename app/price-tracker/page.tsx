@@ -2,74 +2,13 @@
 
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export default function PriceTrackerPage() {
   return (
     <div className="bg-background text-on-background antialiased min-h-screen flex flex-col">
       {/* TopNavBar */}
-      <header className="sticky top-0 w-full z-50 bg-surface shadow-sm">
-        <div className="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <span
-                className="material-symbols-outlined text-primary-container"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                shopping_bag
-              </span>
-              <span className="font-headline-md text-headline-md font-bold tracking-tight text-on-surface">
-                IsItABuy
-              </span>
-            </Link>
-            <nav className="hidden md:flex gap-6 items-center">
-              <a
-                className="text-secondary hover:text-primary-container transition-colors font-label-sm text-label-sm"
-                href="#"
-              >
-                How It Works
-              </a>
-              <a
-                className="text-secondary hover:text-primary-container transition-colors font-label-sm text-label-sm"
-                href="#"
-              >
-                Browser Extension
-              </a>
-              <span className="text-on-surface font-bold border-b-2 border-primary-container font-label-sm text-label-sm pb-1">
-                Price Tracker
-              </span>
-              <Link
-                className="text-secondary hover:text-primary-container transition-colors font-label-sm text-label-sm"
-                href="/compare"
-              >
-                Compare
-              </Link>
-            </nav>
-          </div>
-          <div className="hidden md:flex items-center gap-4">
-            <div className="relative">
-              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">
-                search
-              </span>
-              <input
-                className="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full font-body-md text-body-md focus:outline-none focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all"
-                placeholder="Search products..."
-                type="text"
-              />
-            </div>
-            <a
-              className="font-label-sm text-label-sm text-secondary hover:text-primary-container transition-colors"
-              href="#"
-            >
-              For Retailers
-            </a>
-            <button className="bg-primary-container text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-full hover:bg-primary-fixed-dim transition-colors shadow-sm">
-              Sign In
-            </button>
-          </div>
-          <button className="md:hidden text-on-surface">
-            <span className="material-symbols-outlined">menu</span>
-          </button>
-        </div>
-      </header>
+      <SimpleNav variant="sticky" />
 
       <main className="flex-grow max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-md w-full flex flex-col gap-stack-lg">
         {/* Header & Breadcrumbs */}
@@ -339,10 +278,10 @@ export default function PriceTrackerPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-stack-md max-w-container-max mx-auto">
           <div className="flex flex-col gap-4 col-span-1 md:col-span-1">
             <span className="font-headline-md text-headline-md font-bold text-on-surface">
-              IsItABuy
+              IsItABuy AI
             </span>
             <p className="font-body-md text-body-md text-secondary">
-              &copy; 2024 IsItABuy. All rights reserved.{" "}
+              &copy; 2024 IsItABuy AI. All rights reserved.{" "}
               <br className="hidden md:block" />
               We may earn a commission from some links. Our price verdicts, AI
               scores, and recommendations are not based on commission.

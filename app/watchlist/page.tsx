@@ -1,8 +1,9 @@
+import Link from "next/link";
 import SearchHeader from "../components/SearchHeader";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Watchlist - IsItABuy",
+  title: "Watchlist - IsItABuy AI",
 };
 
 export default function WatchlistPage() {
@@ -13,7 +14,7 @@ export default function WatchlistPage() {
         {/* Header Section */}
         <section className="flex flex-col gap-stack-sm">
           <nav className="flex items-center text-label-sm text-on-surface-variant font-label-sm gap-2">
-            <a className="hover:text-primary transition-colors" href="/">Home</a>
+            <Link className="hover:text-primary transition-colors" href="/">Home</Link>
             <span className="material-symbols-outlined text-sm">chevron_right</span>
             <span className="text-on-surface font-semibold">Watchlist</span>
           </nav>

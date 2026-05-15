@@ -12,7 +12,7 @@ export default function AIChatPage() {
       <aside className="w-80 flex-shrink-0 bg-surface-container-lowest border-r border-outline-variant flex flex-col hidden md:flex">
         <div className="p-6 border-b border-outline-variant">
           <div className="flex flex-col mb-6">
-            <Link href="/" className="text-on-surface text-xl font-bold leading-tight">IsItABuy</Link>
+            <Link href="/" className="text-on-surface text-xl font-bold leading-tight">IsItABuy AI</Link>
             <p className="text-primary text-sm font-medium">Decision Intelligence</p>
           </div>
           <button className="w-full flex items-center justify-center gap-2 bg-primary-container text-on-primary h-12 rounded-xl font-bold tracking-tight hover:bg-amber-500 transition-colors">

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import SimpleNav from "../components/SimpleNav";
+
 export const metadata: Metadata = {
   title: "Better Alternatives for Sony WH-1000XM5",
 };
@@ -9,23 +11,7 @@ export default function BetterAlternativesPage() {
   return (
     <div className="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
       {/* TopNavBar */}
-      <header className="bg-surface shadow-sm sticky top-0 z-50">
-        <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
-          <Link href="/" className="text-headline-md font-headline-lg text-primary">
-            IsItABuy
-          </Link>
-          <nav className="hidden md:flex gap-8">
-            <a className="text-primary border-b-2 border-primary pb-1 font-label-sm text-label-sm" href="#">Verdict</a>
-            <a className="text-on-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-md" href="#">Offers</a>
-            <a className="text-on-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-md" href="#">Price History</a>
-            <a className="text-on-surface-variant hover:text-primary font-label-sm text-label-sm hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-md" href="#">Specs</a>
-          </nav>
-          <div className="flex items-center gap-4 text-primary font-headline-md text-headline-md">
-            <span className="material-symbols-outlined cursor-pointer hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full">shopping_bag</span>
-            <span className="material-symbols-outlined cursor-pointer hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full">account_circle</span>
-          </div>
-        </div>
-      </header>
+      <SimpleNav variant="sticky" />
 
       {/* Main Content */}
       <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter py-stack-md">
@@ -239,7 +225,7 @@ export default function BetterAlternativesPage() {
       <footer className="bg-surface-container-low border-t border-outline-variant mt-stack-lg">
         <div className="w-full py-stack-md px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center opacity-80 hover:opacity-100">
           <div className="text-headline-md font-headline-md text-on-surface-variant mb-4 md:mb-0">
-            IsItABuy
+            IsItABuy AI
           </div>
           <nav className="flex flex-wrap justify-center gap-4 md:gap-6">
             <a className="text-on-surface-variant font-body-md text-body-md hover:text-primary underline transition-all" href="#">Privacy Policy</a>
