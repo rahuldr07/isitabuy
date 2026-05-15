@@ -1,376 +1,1116 @@
 import Link from "next/link";
-import SearchHeader from "../components/SearchHeader";
-import Footer from "../components/Footer";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
   title: "Deals that are actually worth it - IsItABuy AI",
 };
 
-export default function DealsPage() {
-  return (
-    <div className="flex flex-col min-h-screen bg-background text-on-background">
-      <SearchHeader />
-      <main className="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-gutter pt-stack-sm pb-stack-lg">
-        {/* Breadcrumbs */}
-        <nav className="flex items-center space-x-2 text-label-sm text-on-surface-variant mb-stack-md">
-          <Link className="hover:text-primary" href="/">Home</Link>
-          <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-          <span className="text-on-surface font-semibold">Deals</span>
-        </nav>
+interface DealProduct {
+  name: string;
+  retailer: string;
+  rating: string;
+  reviews: string;
+  price: string;
+  oldPrice: string;
+  discount: string;
+  image: string;
+  badge: "Buy" | "Wait" | "Avoid";
+  scores: [string, string, string];
+}
 
-        {/* Hero Section */}
-        <section className="flex flex-col md:flex-row gap-stack-md items-start justify-between mb-stack-lg">
-          <div className="max-w-2xl w-full">
-            <h1 className="font-display-xl text-display-xl text-on-surface mb-4">Deals that are actually worth it</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mb-6">
-              AI-ranked deals based on price history, current retailer offers, AI Buy Score, review trust, and real value — not inflated discounts.
-            </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-8">
-              <div className="flex items-center text-label-sm bg-surface-container-lowest px-4 py-2 rounded-full shadow-ambient-low border border-surface-variant">
-                <span className="material-symbols-outlined text-[18px] text-verdict-buy mr-2 fill">verified_user</span>
-                Deal scores are not based on commission.
-              </div>
-              <div className="flex items-center text-label-sm text-on-surface-variant">
-                <span className="material-symbols-outlined text-[16px] mr-2">update</span>
-                Prices refreshed 4 minutes ago
-              </div>
+interface FeaturedDeal extends DealProduct {
+  subtitle: string;
+  average: string;
+  why: string[];
+}
+
+const navItems = [
+  { label: "Search", href: "/search" },
+  { label: "Deals", href: "/deals", active: true },
+  { label: "Compare", href: "/compare" },
+  { label: "Price Tracker", href: "/price-tracker" },
+  { label: "Categories", href: "/best-laptops" },
+  { label: "Watchlist", href: "/watchlist" },
+];
+
+const categories = [
+  { label: "All Deals", slug: "all" },
+  { label: "Electronics", slug: "electronics" },
+  { label: "Home", slug: "home" },
+  { label: "Kitchen", slug: "kitchen" },
+  { label: "Beauty", slug: "beauty" },
+  { label: "Fashion", slug: "fashion" },
+  { label: "Gaming", slug: "gaming" },
+  { label: "Sports", slug: "sports" },
+  { label: "Automotive", slug: "automotive" },
+  { label: "Office", slug: "office" },
+];
+
+const filters = [
+  { label: "Buy", description: "Strong recommendation", count: 68, color: "bg-verdict-buy" },
+  { label: "Wait", description: "Proceed with caution", count: 34, color: "bg-verdict-wait" },
+  { label: "Avoid", description: "Not recommended", count: 22, color: "bg-verdict-avoid" },
+];
+
+const retailers = [
+  {
+    label: "Amazon",
+    count: 86,
+    logo: "a",
+    logoClass: "bg-white text-[#111827] font-serif text-2xl",
+  },
+  {
+    label: "Flipkart",
+    count: 42,
+    logo: "F",
+    logoClass: "bg-[#ffe500] text-[#2874f0]",
+  },
+  {
+    label: "Croma",
+    count: 28,
+    logo: "C",
+    logoClass: "bg-[#16b9a8] text-white",
+  },
+  {
+    label: "Reliance Digital",
+    count: 21,
+    logo: "digital",
+    logoClass: "bg-[#e9202a] text-white text-[7px]",
+  },
+];
+
+const featuredDeals: Record<string, FeaturedDeal> = {
+  all: {
+    name: "Sony WH-1000XM5",
+    subtitle: "Wireless Noise Cancelling Headphones",
+    retailer: "Amazon",
+    rating: "4.6",
+    reviews: "12,842",
+    price: "INR 22,990",
+    oldPrice: "INR 29,990",
+    discount: "23% off",
+    average: "90-day avg: INR 28,450",
+    image:
+      "https://images.pexels.com/photos/3394665/pexels-photo-3394665.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["86", "92", "85%"],
+    why: [
+      "Lowest price in 90 days",
+      "Well below daily average",
+      "High review trust (85%)",
+      "Popular and reliable choice",
+    ],
+  },
+  electronics: {
+    name: "Sony WH-1000XM5",
+    subtitle: "Wireless Noise Cancelling Headphones",
+    retailer: "Amazon",
+    rating: "4.6",
+    reviews: "12,842",
+    price: "INR 22,990",
+    oldPrice: "INR 29,990",
+    discount: "23% off",
+    average: "90-day avg: INR 28,450",
+    image:
+      "https://images.pexels.com/photos/3394665/pexels-photo-3394665.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["86", "92", "85%"],
+    why: ["Lowest price in 90 days", "High review trust", "Strong premium value"],
+  },
+  home: {
+    name: "Dyson V15 Detect",
+    subtitle: "Cordless vacuum cleaner",
+    retailer: "Amazon",
+    rating: "4.5",
+    reviews: "8,312",
+    price: "INR 43,990",
+    oldPrice: "INR 54,900",
+    discount: "20% off",
+    average: "Target price: INR 39,990",
+    image:
+      "https://images.pexels.com/photos/4108715/pexels-photo-4108715.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Wait",
+    scores: ["72", "68", "88%"],
+    why: ["Useful discount", "Often drops lower", "Reviews remain strong"],
+  },
+  kitchen: {
+    name: "Ninja AF101 Air Fryer",
+    subtitle: "4-quart compact air fryer",
+    retailer: "Walmart",
+    rating: "4.7",
+    reviews: "21,408",
+    price: "INR 6,499",
+    oldPrice: "INR 8,999",
+    discount: "28% off",
+    average: "90-day avg: INR 7,850",
+    image:
+      "https://images.pexels.com/photos/6996085/pexels-photo-6996085.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["88", "91", "89%"],
+    why: ["Real price drop", "Reliable model", "Strong long-term ratings"],
+  },
+  beauty: {
+    name: "Dyson Supersonic Dryer",
+    subtitle: "Premium hair dryer",
+    retailer: "Croma",
+    rating: "4.4",
+    reviews: "4,210",
+    price: "INR 31,990",
+    oldPrice: "INR 39,900",
+    discount: "20% off",
+    average: "90-day avg: INR 36,200",
+    image:
+      "https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["81", "84", "86%"],
+    why: ["Verified discount", "High review quality", "Rare premium markdown"],
+  },
+  fashion: {
+    name: "Nike Air Max 270",
+    subtitle: "Lifestyle running shoes",
+    retailer: "Nike",
+    rating: "4.5",
+    reviews: "9,744",
+    price: "INR 8,495",
+    oldPrice: "INR 12,795",
+    discount: "34% off",
+    average: "90-day avg: INR 10,850",
+    image:
+      "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["83", "87", "82%"],
+    why: ["Real markdown", "Popular size availability", "Strong comfort reviews"],
+  },
+  gaming: {
+    name: "Sony PlayStation 5 Slim",
+    subtitle: "Console bundle",
+    retailer: "Amazon",
+    rating: "4.8",
+    reviews: "14,090",
+    price: "INR 44,990",
+    oldPrice: "INR 54,990",
+    discount: "18% off",
+    average: "90-day avg: INR 49,900",
+    image:
+      "https://images.pexels.com/photos/1298601/pexels-photo-1298601.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["85", "88", "91%"],
+    why: ["Bundle value is strong", "Discount is real", "High owner satisfaction"],
+  },
+  sports: {
+    name: "Fitbit Charge 6",
+    subtitle: "Fitness tracker",
+    retailer: "Flipkart",
+    rating: "4.3",
+    reviews: "5,884",
+    price: "INR 10,999",
+    oldPrice: "INR 14,999",
+    discount: "27% off",
+    average: "90-day avg: INR 12,600",
+    image:
+      "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["80", "84", "83%"],
+    why: ["Good tracker discount", "Stable review quality", "Useful health features"],
+  },
+  automotive: {
+    name: "Michelin Digital Tyre Inflator",
+    subtitle: "Portable car compressor",
+    retailer: "Amazon",
+    rating: "4.4",
+    reviews: "3,705",
+    price: "INR 2,499",
+    oldPrice: "INR 3,799",
+    discount: "34% off",
+    average: "90-day avg: INR 3,150",
+    image:
+      "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["79", "86", "80%"],
+    why: ["Below average price", "Useful emergency tool", "Trusted brand signal"],
+  },
+  office: {
+    name: "Logitech MX Master 3S",
+    subtitle: "Wireless productivity mouse",
+    retailer: "Croma",
+    rating: "4.7",
+    reviews: "6,209",
+    price: "INR 7,999",
+    oldPrice: "INR 10,995",
+    discount: "27% off",
+    average: "90-day avg: INR 9,450",
+    image:
+      "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=500",
+    badge: "Buy",
+    scores: ["87", "90", "92%"],
+    why: ["Strong productivity value", "Excellent trust score", "Rare deep discount"],
+  },
+};
+
+const productsByCategory: Record<string, DealProduct[]> = {
+  all: [
+    {
+      name: "Apple AirPods Pro (2nd Gen)",
+      retailer: "Amazon",
+      rating: "4.6",
+      reviews: "18,231",
+      price: "INR 20,999",
+      oldPrice: "INR 24,900",
+      discount: "16% off",
+      image:
+        "https://images.pexels.com/photos/8534088/pexels-photo-8534088.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["82", "88", "89%"],
+    },
+    {
+      name: 'Samsung 55" Crystal 4K TV',
+      retailer: "Flipkart",
+      rating: "4.4",
+      reviews: "7,112",
+      price: "INR 38,990",
+      oldPrice: "INR 54,900",
+      discount: "29% off",
+      image:
+        "https://images.pexels.com/photos/6976094/pexels-photo-6976094.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["84", "91", "82%"],
+    },
+    {
+      name: "Instant Pot Duo 7-in-1",
+      retailer: "Amazon",
+      rating: "4.3",
+      reviews: "6,543",
+      price: "INR 7,499",
+      oldPrice: "INR 8,999",
+      discount: "17% off",
+      image:
+        "https://images.pexels.com/photos/6996085/pexels-photo-6996085.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["64", "60", "78%"],
+    },
+  ],
+  electronics: [
+    {
+      name: "Apple AirPods Pro (2nd Gen)",
+      retailer: "Amazon",
+      rating: "4.6",
+      reviews: "18,231",
+      price: "INR 20,999",
+      oldPrice: "INR 24,900",
+      discount: "16% off",
+      image:
+        "https://images.pexels.com/photos/8534088/pexels-photo-8534088.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["82", "88", "89%"],
+    },
+    {
+      name: "JBL Flip 6 Speaker",
+      retailer: "Croma",
+      rating: "4.5",
+      reviews: "9,418",
+      price: "INR 8,499",
+      oldPrice: "INR 11,999",
+      discount: "29% off",
+      image:
+        "https://images.pexels.com/photos/191877/pexels-photo-191877.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["81", "86", "84%"],
+    },
+    {
+      name: "Samsung Galaxy Buds FE",
+      retailer: "Flipkart",
+      rating: "4.2",
+      reviews: "6,420",
+      price: "INR 5,999",
+      oldPrice: "INR 9,999",
+      discount: "40% off",
+      image:
+        "https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["67", "61", "78%"],
+    },
+  ],
+  home: [
+    {
+      name: "Dyson V15 Detect",
+      retailer: "Amazon",
+      rating: "4.5",
+      reviews: "8,312",
+      price: "INR 43,990",
+      oldPrice: "INR 54,900",
+      discount: "20% off",
+      image:
+        "https://images.pexels.com/photos/4108715/pexels-photo-4108715.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["72", "68", "88%"],
+    },
+    {
+      name: "Philips Air Purifier 3000i",
+      retailer: "Reliance Digital",
+      rating: "4.4",
+      reviews: "3,540",
+      price: "INR 24,999",
+      oldPrice: "INR 31,995",
+      discount: "22% off",
+      image:
+        "https://images.pexels.com/photos/6195125/pexels-photo-6195125.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["80", "84", "86%"],
+    },
+    {
+      name: "Wakefit Orthopedic Mattress",
+      retailer: "Amazon",
+      rating: "4.2",
+      reviews: "15,087",
+      price: "INR 9,999",
+      oldPrice: "INR 16,999",
+      discount: "41% off",
+      image:
+        "https://images.pexels.com/photos/6585613/pexels-photo-6585613.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Avoid",
+      scores: ["52", "48", "64%"],
+    },
+  ],
+  kitchen: [
+    {
+      name: "Ninja AF101 Air Fryer",
+      retailer: "Walmart",
+      rating: "4.7",
+      reviews: "21,408",
+      price: "INR 6,499",
+      oldPrice: "INR 8,999",
+      discount: "28% off",
+      image:
+        "https://images.pexels.com/photos/6996085/pexels-photo-6996085.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["88", "91", "89%"],
+    },
+    {
+      name: "Prestige Mixer Grinder",
+      retailer: "Flipkart",
+      rating: "4.1",
+      reviews: "11,922",
+      price: "INR 3,199",
+      oldPrice: "INR 5,299",
+      discount: "40% off",
+      image:
+        "https://images.pexels.com/photos/6996089/pexels-photo-6996089.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["76", "83", "72%"],
+    },
+    {
+      name: "Instant Pot Duo 7-in-1",
+      retailer: "Amazon",
+      rating: "4.3",
+      reviews: "6,543",
+      price: "INR 7,499",
+      oldPrice: "INR 8,999",
+      discount: "17% off",
+      image:
+        "https://images.pexels.com/photos/6996085/pexels-photo-6996085.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["64", "60", "78%"],
+    },
+  ],
+  beauty: [
+    {
+      name: "Dyson Supersonic Dryer",
+      retailer: "Croma",
+      rating: "4.4",
+      reviews: "4,210",
+      price: "INR 31,990",
+      oldPrice: "INR 39,900",
+      discount: "20% off",
+      image:
+        "https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["81", "84", "86%"],
+    },
+    {
+      name: "Philips Hair Straightener",
+      retailer: "Amazon",
+      rating: "4.2",
+      reviews: "8,943",
+      price: "INR 2,299",
+      oldPrice: "INR 3,495",
+      discount: "34% off",
+      image:
+        "https://images.pexels.com/photos/3993462/pexels-photo-3993462.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["78", "85", "75%"],
+    },
+    {
+      name: "Minimalist Vitamin C Serum",
+      retailer: "Nykaa",
+      rating: "4.1",
+      reviews: "12,104",
+      price: "INR 599",
+      oldPrice: "INR 699",
+      discount: "14% off",
+      image:
+        "https://images.pexels.com/photos/7797778/pexels-photo-7797778.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["68", "58", "81%"],
+    },
+  ],
+  fashion: [
+    {
+      name: "Nike Air Max 270",
+      retailer: "Nike",
+      rating: "4.5",
+      reviews: "9,744",
+      price: "INR 8,495",
+      oldPrice: "INR 12,795",
+      discount: "34% off",
+      image:
+        "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["83", "87", "82%"],
+    },
+    {
+      name: "Levi's 511 Slim Jeans",
+      retailer: "Myntra",
+      rating: "4.3",
+      reviews: "6,802",
+      price: "INR 2,199",
+      oldPrice: "INR 4,499",
+      discount: "51% off",
+      image:
+        "https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["79", "86", "77%"],
+    },
+    {
+      name: "Fossil Gen 6 Watch",
+      retailer: "Amazon",
+      rating: "4.0",
+      reviews: "3,081",
+      price: "INR 11,995",
+      oldPrice: "INR 23,995",
+      discount: "50% off",
+      image:
+        "https://images.pexels.com/photos/277394/pexels-photo-277394.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Avoid",
+      scores: ["49", "55", "52%"],
+    },
+  ],
+  gaming: [
+    {
+      name: "Sony PlayStation 5 Slim",
+      retailer: "Amazon",
+      rating: "4.8",
+      reviews: "14,090",
+      price: "INR 44,990",
+      oldPrice: "INR 54,990",
+      discount: "18% off",
+      image:
+        "https://images.pexels.com/photos/1298601/pexels-photo-1298601.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["85", "88", "91%"],
+    },
+    {
+      name: "Xbox Wireless Controller",
+      retailer: "Flipkart",
+      rating: "4.6",
+      reviews: "10,210",
+      price: "INR 4,299",
+      oldPrice: "INR 5,990",
+      discount: "28% off",
+      image:
+        "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["82", "87", "86%"],
+    },
+    {
+      name: "Razer BlackWidow V4",
+      retailer: "Amazon",
+      rating: "4.4",
+      reviews: "2,902",
+      price: "INR 9,999",
+      oldPrice: "INR 13,999",
+      discount: "29% off",
+      image:
+        "https://images.pexels.com/photos/2115257/pexels-photo-2115257.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["71", "63", "84%"],
+    },
+  ],
+  sports: [
+    {
+      name: "Fitbit Charge 6",
+      retailer: "Flipkart",
+      rating: "4.3",
+      reviews: "5,884",
+      price: "INR 10,999",
+      oldPrice: "INR 14,999",
+      discount: "27% off",
+      image:
+        "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["80", "84", "83%"],
+    },
+    {
+      name: "Decathlon Yoga Mat",
+      retailer: "Decathlon",
+      rating: "4.5",
+      reviews: "4,411",
+      price: "INR 999",
+      oldPrice: "INR 1,499",
+      discount: "33% off",
+      image:
+        "https://images.pexels.com/photos/4056723/pexels-photo-4056723.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["77", "82", "80%"],
+    },
+    {
+      name: "Adidas Training Duffel",
+      retailer: "Myntra",
+      rating: "4.2",
+      reviews: "1,984",
+      price: "INR 1,699",
+      oldPrice: "INR 3,299",
+      discount: "48% off",
+      image:
+        "https://images.pexels.com/photos/3601097/pexels-photo-3601097.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["69", "61", "75%"],
+    },
+  ],
+  automotive: [
+    {
+      name: "Michelin Digital Tyre Inflator",
+      retailer: "Amazon",
+      rating: "4.4",
+      reviews: "3,705",
+      price: "INR 2,499",
+      oldPrice: "INR 3,799",
+      discount: "34% off",
+      image:
+        "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["79", "86", "80%"],
+    },
+    {
+      name: "Bosch Car Vacuum Cleaner",
+      retailer: "Croma",
+      rating: "4.1",
+      reviews: "2,311",
+      price: "INR 3,499",
+      oldPrice: "INR 4,999",
+      discount: "30% off",
+      image:
+        "https://images.pexels.com/photos/3849555/pexels-photo-3849555.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["74", "81", "76%"],
+    },
+    {
+      name: "Generic Dash Cam 4K",
+      retailer: "Amazon",
+      rating: "3.8",
+      reviews: "1,109",
+      price: "INR 2,999",
+      oldPrice: "INR 9,999",
+      discount: "70% off",
+      image:
+        "https://images.pexels.com/photos/97075/pexels-photo-97075.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Avoid",
+      scores: ["36", "28", "42%"],
+    },
+  ],
+  office: [
+    {
+      name: "Logitech MX Master 3S",
+      retailer: "Croma",
+      rating: "4.7",
+      reviews: "6,209",
+      price: "INR 7,999",
+      oldPrice: "INR 10,995",
+      discount: "27% off",
+      image:
+        "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["87", "90", "92%"],
+    },
+    {
+      name: "Herman Miller Sayl Chair",
+      retailer: "Amazon",
+      rating: "4.5",
+      reviews: "882",
+      price: "INR 62,990",
+      oldPrice: "INR 79,990",
+      discount: "21% off",
+      image:
+        "https://images.pexels.com/photos/509922/pexels-photo-509922.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Wait",
+      scores: ["73", "62", "90%"],
+    },
+    {
+      name: "Anker USB-C Docking Station",
+      retailer: "Amazon",
+      rating: "4.4",
+      reviews: "3,614",
+      price: "INR 8,999",
+      oldPrice: "INR 12,999",
+      discount: "31% off",
+      image:
+        "https://images.pexels.com/photos/4219863/pexels-photo-4219863.jpeg?auto=compress&cs=tinysrgb&w=500",
+      badge: "Buy",
+      scores: ["84", "89", "85%"],
+    },
+  ],
+};
+
+function badgeTone(badge: DealProduct["badge"]) {
+  if (badge === "Buy") return "bg-verdict-buy text-white";
+  if (badge === "Wait") return "bg-verdict-wait text-white";
+  return "bg-verdict-avoid text-white";
+}
+
+function scoreTone(product: DealProduct, index: number) {
+  if (product.badge === "Avoid") return "text-verdict-avoid";
+  if (product.badge === "Wait" && index < 2) return "text-verdict-wait";
+  return "text-verdict-buy";
+}
+
+function isCategorySlug(value: string) {
+  return categories.some((category) => category.slug === value);
+}
+
+function categoryHref(slug: string) {
+  return slug === "all" ? "/deals" : `/deals?category=${slug}`;
+}
+
+function HorizontalDealCard({
+  deal,
+  label,
+  featured = false,
+}: {
+  deal: DealProduct | FeaturedDeal;
+  label: string;
+  featured?: boolean;
+}) {
+  const subtitle = "subtitle" in deal ? deal.subtitle : `${deal.retailer} verified deal`;
+  const average = "average" in deal ? deal.average : "Recent price checked by AI";
+  const why =
+    "why" in deal
+      ? deal.why
+      : [
+          `${deal.discount} versus typical price`,
+          `AI score ${deal.scores[0]} with ${deal.scores[2]} review trust`,
+          `${deal.retailer} price currently looks competitive`,
+        ];
+  const actionButtonClass =
+    "box-border inline-flex h-[40px] min-h-[40px] max-h-[40px] w-full min-w-0 appearance-none items-center justify-center gap-1 overflow-visible rounded-lg border border-transparent px-2 py-0 text-sm font-extrabold leading-none shadow-none transition-colors";
+
+  return (
+    <Card
+      className={`relative rounded-xl p-2.5 shadow-sm ${
+        featured
+          ? "border-verdict-buy bg-gradient-to-r from-white to-verdict-buy/5"
+          : "border-surface-variant bg-white"
+      }`}
+    >
+      <Badge
+        className={`absolute left-4 top-0 h-6 rounded-b-md rounded-t-none px-4 py-1 text-xs font-extrabold text-white ${
+          featured ? "bg-verdict-buy" : badgeTone(deal.badge)
+        }`}
+      >
+        {label}
+      </Badge>
+
+      <div className="grid gap-4 pt-4 md:grid-cols-[180px_minmax(0,1fr)] lg:grid-cols-[180px_minmax(0,1fr)_230px]">
+        <div className="relative grid min-h-[150px] place-items-center overflow-hidden rounded-lg border border-surface-variant bg-white p-3">
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute right-2 top-2 z-10 size-8 rounded-full border-surface-variant bg-white/95 shadow-sm backdrop-blur"
+          >
+            <span className="material-symbols-outlined text-[17px]">favorite</span>
+          </Button>
+          <img
+            alt={deal.name}
+            className="h-[124px] w-full object-contain"
+            src={deal.image}
+          />
+        </div>
+
+        <div className="min-w-0">
+          <div className="mb-2">
+            <h2 className="text-lg font-extrabold text-[#111827]">{deal.name}</h2>
+            <p className="mt-0.5 text-sm font-medium text-on-surface-variant">{subtitle}</p>
+          </div>
+
+          <div className="mb-3 flex flex-wrap items-center gap-4 text-xs font-semibold">
+            <span className="flex items-center gap-1">
+              <span className="font-serif text-lg font-bold text-[#111827]">a</span>
+              {deal.retailer}
+            </span>
+            <span className="flex items-center gap-1 text-primary-container">
+              <span className="material-symbols-outlined text-[15px]">star</span>
+              {deal.rating}
+              <span className="text-on-surface-variant">({deal.reviews})</span>
+            </span>
+          </div>
+
+          <div className="grid max-w-[460px] grid-cols-2 divide-x divide-surface-variant">
+            <div>
+              <p className="text-xs font-semibold text-on-surface-variant">Current Price</p>
+              <p className="mt-1 text-2xl font-extrabold text-[#111827]">{deal.price}</p>
+              <Badge className="mt-1.5 rounded bg-verdict-buy/10 px-2 py-0.5 text-xs font-bold text-verdict-buy">
+                {deal.discount}
+              </Badge>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <div className="relative flex-grow">
-                <span className="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-on-surface-variant">shopping_bag</span>
-                <input
-                  className="w-full pl-12 pr-4 h-14 bg-surface-container-lowest border border-surface-variant rounded-xl shadow-inner focus:ring-2 focus:ring-primary-container focus:border-transparent text-body-md"
-                  placeholder="Search deals by product, category, or store..."
-                  type="text"
-                />
-              </div>
-              <button className="bg-primary-container text-white h-14 px-8 rounded-xl font-label-sm text-label-sm hover:bg-opacity-90 transition-colors shadow-ambient-low whitespace-nowrap">
-                Search deals
-              </button>
+            <div className="pl-5">
+              <p className="text-xs font-semibold text-on-surface-variant">Typical Price</p>
+              <p className="mt-1 text-xl font-extrabold text-on-surface-variant line-through">
+                {deal.oldPrice}
+              </p>
+              <p className="mt-1.5 text-xs font-semibold text-on-surface-variant">{average}</p>
             </div>
+          </div>
+
+        </div>
+
+        <div className="flex flex-col justify-start gap-4 md:col-span-2 lg:col-span-1">
+          <div className="grid grid-cols-3 divide-x divide-surface-variant rounded-lg">
+            {["AI Score", "Price", "Trust"].map((scoreLabel, index) => (
+              <div key={scoreLabel} className="px-2 text-center">
+                <p className="text-[10px] font-bold">{scoreLabel}</p>
+                <p className={`mt-1 text-2xl font-extrabold ${scoreTone(deal, index)}`}>
+                  {deal.scores[index]}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-lg border-l border-surface-variant pl-3">
+            <h3 className="mb-1.5 text-xs font-extrabold">Why this is worth it</h3>
+            {why.slice(0, 3).map((item) => (
+              <p key={item} className="mb-0.5 flex items-center gap-2 text-xs font-medium text-[#374151]">
+                <span className="material-symbols-outlined text-[15px] text-verdict-buy">
+                  check
+                </span>
+                {item}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid w-full grid-cols-1 gap-3 md:col-span-2 min-[520px]:grid-cols-3 lg:col-span-2 lg:col-start-2 lg:max-w-[690px] lg:grid-cols-[168px_168px_190px] lg:justify-between">
+          <button
+            type="button"
+            className={`${actionButtonClass} bg-primary-container text-white hover:bg-amber-600`}
+          >
+            View Deal
+          </button>
+          <Link
+            href="/product"
+            className={`${actionButtonClass} bg-[#6b21a8] text-white hover:bg-[#581c87]`}
+          >
+            AI Analysis
+          </Link>
+          <button
+            type="button"
+            className={`${actionButtonClass} border-[#8ee0c6] bg-gradient-to-br from-[#effdf7] to-[#dff9ef] text-[#008060] hover:from-[#e4fbf2] hover:to-[#d3f5e8]`}
+          >
+            <span className="material-symbols-outlined text-[18px] leading-none">
+              notifications
+            </span>
+            <span className="whitespace-nowrap">Set Price Alert</span>
+          </button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export default async function DealsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ category?: string }>;
+}) {
+  const params = searchParams ? await searchParams : {};
+  const requestedCategory = params.category ?? "all";
+  const activeCategory = isCategorySlug(requestedCategory)
+    ? requestedCategory
+    : "all";
+  const featuredDeal = featuredDeals[activeCategory] ?? featuredDeals.all;
+  const products = productsByCategory[activeCategory] ?? productsByCategory.all;
+  const worthProducts = products.filter(
+    (product) => product.name !== featuredDeal.name,
+  );
+  const nextWorthProduct = worthProducts[0] ?? products[0];
+  const thirdWorthProduct = worthProducts[1] ?? products[1] ?? products[0];
+  const activeLabel =
+    categories.find((category) => category.slug === activeCategory)?.label ??
+    "All Deals";
+
+  return (
+    <div className="min-h-screen bg-[#f8fafc] text-on-surface">
+      <header className="sticky top-0 z-50 border-b border-surface-variant/70 bg-white/95 backdrop-blur-md">
+        <div className="mx-auto flex h-[72px] max-w-[1230px] items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="flex min-w-0 items-center gap-2">
+            <span className="grid size-8 shrink-0 place-items-center rounded-xl text-primary-container">
+              <span className="material-symbols-outlined text-[31px]">shield</span>
+            </span>
+            <span className="min-w-0 leading-none">
+              <span className="block truncate text-lg font-extrabold tracking-tight text-[#111827] sm:text-xl">
+                IsItABuy AI
+              </span>
+              <span className="hidden text-[10px] font-semibold text-on-surface-variant sm:block">
+                AI Shopping Advisor
+              </span>
+            </span>
+          </Link>
+
+          <nav className="hidden items-center gap-8 lg:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`relative flex h-[72px] items-center text-sm font-bold ${
+                  item.active ? "text-primary-container" : "text-[#1f2937]"
+                }`}
+              >
+                {item.label}
+                {item.active && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-primary-container" />
+                )}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button className="hidden size-10 place-items-center rounded-full text-[#111827] hover:bg-surface-container-low sm:grid">
+              <span className="material-symbols-outlined text-[22px]">notifications</span>
+            </button>
+            <Link
+              href="/signin"
+              className="hidden h-10 items-center rounded-lg border border-outline-variant bg-white px-5 text-sm font-bold text-[#111827] shadow-sm hover:bg-surface sm:inline-flex"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signin"
+              className="inline-flex h-10 items-center rounded-lg bg-primary-container px-4 text-sm font-bold text-white shadow-sm hover:bg-amber-600 sm:px-5"
+            >
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-[1230px] px-4 pb-14 sm:px-6">
+        <section className="mx-auto max-w-[760px] pb-4 pt-3 text-center">
+          <nav className="mb-2 flex items-center justify-center gap-2 text-xs font-semibold text-on-surface-variant">
+            <Link href="/" className="hover:text-primary-container">
+              Home
+            </Link>
+            <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+            <span>Deals</span>
+          </nav>
+
+          <h1 className="mb-2 text-[clamp(2rem,7vw,3.5rem)] font-extrabold leading-none tracking-tight text-[#111827] lg:whitespace-nowrap">
+            Deals that are actually worth it
+          </h1>
+          <p className="mx-auto mb-3 max-w-[560px] text-base font-medium leading-snug text-[#5b6473]">
+            AI-ranked deals based on price history, current retailer offers, AI Buy
+            Score, review trust, and real value - not inflated discounts.
+          </p>
+
+          <div className="mb-4 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+            <Badge
+              variant="outline"
+              className="h-10 gap-2 rounded-full border-surface-variant bg-white px-4 text-xs font-bold shadow-sm"
+            >
+              <span
+                className="material-symbols-outlined text-[18px] text-verdict-buy"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                verified_user
+              </span>
+              Deal scores are not based on commission
+            </Badge>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#4b5563]">
+              <span className="material-symbols-outlined text-[18px]">update</span>
+              Prices refreshed 4 minutes ago
+            </div>
+          </div>
+
+          <div className="mx-auto flex max-w-[760px] flex-col gap-3 sm:flex-row">
+            <div className="relative flex-1">
+              <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-[23px] text-on-surface-variant">
+                shopping_bag
+              </span>
+              <Input
+                className="h-14 rounded-xl border-surface-variant bg-white pl-14 pr-5 text-base shadow-sm placeholder:text-[#9ca3af]"
+                placeholder="Search deals by product, category, or store..."
+                type="text"
+              />
+            </div>
+            <Button className="h-14 rounded-xl bg-primary-container px-10 text-base font-extrabold text-white shadow-sm hover:bg-amber-600">
+              Search deals
+            </Button>
           </div>
         </section>
 
-        {/* Main Content Area */}
-        <div className="flex flex-col md:flex-row gap-gutter relative items-start">
-          {/* Left Sidebar (Filters) */}
-          <aside className="w-full md:w-72 shrink-0 sticky top-24 bg-surface-container-lowest rounded-2xl p-6 shadow-ambient-low border border-surface-variant/40">
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-surface-variant/20">
-              <h2 className="font-headline-md text-[20px] text-on-surface tracking-tight">Filters</h2>
-              <button className="text-label-sm text-primary hover:text-primary/80 transition-colors font-semibold">Clear all</button>
+        <Card className="rounded-xl border-surface-variant py-0 shadow-sm">
+          <div className="flex flex-col border-b border-surface-variant lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex min-w-0 gap-1 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {categories.map((category) => {
+                const isActive = activeCategory === category.slug;
+                return (
+                  <Link
+                    key={category.slug}
+                    href={categoryHref(category.slug)}
+                    className={`relative flex h-12 shrink-0 items-center whitespace-nowrap px-3 text-sm font-bold sm:px-4 ${
+                      isActive ? "text-primary-container" : "text-[#4b5563]"
+                    }`}
+                  >
+                    {category.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary-container" />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
-            <div className="space-y-9">
-              {/* Verdict Section */}
-              <div>
-                <h3 className="font-label-sm text-[12px] uppercase tracking-widest text-on-surface-variant/70 font-bold mb-5 flex items-center">
-                  <span className="material-symbols-outlined text-[18px] mr-2 opacity-70">verified</span> Verdict
-                </h3>
-                <div className="space-y-4">
-                  <label className="group flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-3">
-                      <div className="relative flex items-center justify-center">
-                        <input defaultChecked className="peer appearance-none h-5 w-5 border-2 border-surface-variant rounded-md checked:bg-primary-container checked:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all cursor-pointer" type="checkbox" />
-                        <span className="material-symbols-outlined absolute text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
-                      </div>
-                      <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Buy</span>
-                    </div>
-                    <span className="text-[12px] font-semibold text-verdict-buy px-2 py-0.5 bg-verdict-buy/5 rounded border border-verdict-buy/10">84</span>
-                  </label>
-                  <label className="group flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-3">
-                      <div className="relative flex items-center justify-center">
-                        <input className="peer appearance-none h-5 w-5 border-2 border-surface-variant rounded-md checked:bg-primary-container checked:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all cursor-pointer" type="checkbox" />
-                        <span className="material-symbols-outlined absolute text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
-                      </div>
-                      <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Wait</span>
-                    </div>
-                    <span className="text-[12px] font-semibold text-verdict-wait px-2 py-0.5 bg-verdict-wait/5 rounded border border-verdict-wait/10">12</span>
-                  </label>
-                  <label className="group flex items-center justify-between cursor-pointer">
-                    <div className="flex items-center space-x-3">
-                      <div className="relative flex items-center justify-center">
-                        <input className="peer appearance-none h-5 w-5 border-2 border-surface-variant rounded-md checked:bg-primary-container checked:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all cursor-pointer" type="checkbox" />
-                        <span className="material-symbols-outlined absolute text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
-                      </div>
-                      <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">Avoid</span>
-                    </div>
-                    <span className="text-[12px] font-semibold text-verdict-avoid px-2 py-0.5 bg-verdict-avoid/5 rounded border border-verdict-avoid/10">3</span>
-                  </label>
-                </div>
+            <div className="flex items-center justify-between gap-2 border-t border-surface-variant px-4 py-2 lg:border-t-0 lg:px-5">
+              <span className="text-xs font-semibold text-on-surface-variant lg:hidden">
+                Showing: {activeLabel}
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="hidden text-xs font-semibold text-on-surface-variant sm:inline">
+                  Sort by:
+                </span>
+                <Select defaultValue="best-ai-deal">
+                  <SelectTrigger className="h-9 min-w-[150px] rounded-md border-surface-variant bg-white text-xs font-bold">
+                    <SelectValue placeholder="Best AI Deal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="best-ai-deal">Best AI Deal</SelectItem>
+                    <SelectItem value="biggest-real-drop">Biggest real drop</SelectItem>
+                    <SelectItem value="highest-review-trust">Highest review trust</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
+            </div>
+          </div>
+        </Card>
 
-              {/* AI Buy Score Section */}
+        <div className="mt-4 grid items-start gap-5 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="self-start border border-surface-variant bg-white px-6 py-7 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+            <div className="mb-7 flex items-center justify-between">
+              <h2 className="text-xl font-extrabold tracking-tight text-[#111827]">
+                Filters
+              </h2>
+              <Button variant="ghost" size="xs" className="h-auto px-0 text-xs font-extrabold text-primary-container hover:bg-transparent hover:text-amber-600">
+                Clear all
+              </Button>
+            </div>
+            <Separator className="mb-7 bg-surface-variant/80" />
+
+            <div className="space-y-8">
               <div>
-                <h3 className="font-label-sm text-[12px] uppercase tracking-widest text-on-surface-variant/70 font-bold mb-5 flex items-center">
-                  <span className="material-symbols-outlined text-[18px] mr-2 opacity-70">auto_awesome</span> AI Buy Score
-                </h3>
-                <div className="flex p-1 bg-surface-container-low rounded-xl border border-surface-variant/20">
-                  <button className="flex-1 py-2 px-1 rounded-lg text-label-sm text-on-surface-variant hover:text-on-surface transition-all">90+</button>
-                  <button className="flex-1 py-2 px-1 rounded-lg bg-primary-container text-white shadow-sm font-bold text-label-sm transition-all transform scale-105">80+</button>
-                  <button className="flex-1 py-2 px-1 rounded-lg text-on-surface-variant hover:text-on-surface transition-all">70+</button>
+                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
+                  Verdict
+                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
+                    i
+                  </span>
                 </div>
-              </div>
-
-              {/* Retailer Section */}
-              <div>
-                <h3 className="font-label-sm text-[12px] uppercase tracking-widest text-on-surface-variant/70 font-bold mb-5 flex items-center">
-                  <span className="material-symbols-outlined text-[18px] mr-2 opacity-70">storefront</span> Retailer
-                </h3>
-                <div className="space-y-4">
-                  {["Amazon", "Walmart", "Best Buy", "Target"].map((store) => (
-                    <label key={store} className="group flex items-center space-x-3 cursor-pointer">
-                      <div className="relative flex items-center justify-center">
-                        <input className="peer appearance-none h-5 w-5 border-2 border-surface-variant rounded-md checked:bg-primary-container checked:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all cursor-pointer" type="checkbox" />
-                        <span className="material-symbols-outlined absolute text-white text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
-                      </div>
-                      <span className="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface transition-colors">{store}</span>
+                <div className="space-y-2.5">
+                  {filters.map((filter) => (
+                    <label
+                      key={filter.label}
+                      className="flex items-center justify-between text-sm text-[#111827]"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <span className={`size-4 rounded-[4px] ${filter.color}`} />
+                        <span className="font-medium">{filter.label}</span>
+                      </span>
+                      <span className="font-semibold">{filter.count}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              {/* Price Section */}
               <div>
-                <h3 className="font-label-sm text-[12px] uppercase tracking-widest text-on-surface-variant/70 font-bold mb-5 flex items-center">
-                  <span className="material-symbols-outlined text-[18px] mr-2 opacity-70">payments</span> Price
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[14px] font-bold">$</span>
-                      <input className="w-full pl-6 pr-3 py-2 bg-surface-container-low border border-surface-variant/30 rounded-lg focus:ring-2 focus:ring-primary-container text-body-md" placeholder="Min" type="number" />
-                    </div>
-                    <span className="text-on-surface-variant/30">—</span>
-                    <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-[14px] font-bold">$</span>
-                      <input className="w-full pl-6 pr-3 py-2 bg-surface-container-low border border-surface-variant/30 rounded-lg focus:ring-2 focus:ring-primary-container text-body-md" placeholder="Max" type="number" />
-                    </div>
+                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
+                  Minimum AI Buy Score
+                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
+                    i
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-semibold text-[#111827]">0</span>
+                  <div className="relative h-1.5 flex-1 rounded-full bg-surface-container-high">
+                    <div className="h-1.5 w-1/2 rounded-full bg-primary-container" />
+                    <span className="absolute left-1/2 top-1/2 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-primary-container bg-[#111827] text-xs font-extrabold text-white">
+                      50
+                    </span>
                   </div>
-                  <button className="w-full py-2 bg-surface border border-surface-variant/40 rounded-lg text-label-sm font-semibold text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all">Apply Range</button>
+                  <span className="text-sm font-semibold text-[#111827]">100</span>
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
+                  Retailer
+                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
+                    i
+                  </span>
+                </div>
+                <div className="relative mb-4">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[17px] text-on-surface-variant">
+                    search
+                  </span>
+                  <Input
+                    className="h-10 rounded-lg border-surface-variant bg-white pl-9 pr-3 text-sm"
+                    placeholder="Search retailer..."
+                    type="text"
+                  />
+                </div>
+                <div className="space-y-2.5">
+                  {retailers.map((retailer) => (
+                    <label
+                      key={retailer.label}
+                      className="flex items-center justify-between gap-3 text-sm text-[#111827]"
+                    >
+                      <span className="flex min-w-0 items-center gap-2.5">
+                        <span className="size-4 rounded-[3px] border border-outline bg-white" />
+                        <span className="min-w-0 truncate font-medium">{retailer.label}</span>
+                      </span>
+                      <span className="font-semibold">{retailer.count}</span>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
           </aside>
 
-          {/* Right Column (Deals) */}
-          <div className="flex-grow flex flex-col space-y-stack-md w-full overflow-hidden">
-            {/* Featured Deal */}
-            <section>
-              <h2 className="font-headline-md text-headline-md text-on-surface mb-6">Featured Best Deal</h2>
-              <div className="bg-surface-container-lowest rounded-2xl shadow-ambient-high border-l-4 border-verdict-buy p-6 md:p-8 flex flex-col md:flex-row gap-8 relative overflow-hidden">
-                <div className="absolute top-4 right-4 bg-verdict-buy/10 text-verdict-buy px-3 py-1 rounded-full flex items-center font-label-sm text-label-sm border border-verdict-buy/20">
-                  <span className="material-symbols-outlined text-[16px] mr-1 fill">check_circle</span>
-                  Great deal
-                </div>
-                <div className="w-full md:w-1/3 aspect-square rounded-xl bg-surface-container-low flex items-center justify-center relative overflow-hidden">
-                  <div className="w-full h-full bg-surface-variant rounded-xl flex items-center justify-center text-on-surface-variant">
-                    <span className="material-symbols-outlined text-4xl">headphones</span>
-                  </div>
-                </div>
-                <div className="flex-grow flex flex-col justify-center">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <span className="px-2 py-0.5 bg-surface-container-low text-on-surface-variant text-[12px] font-semibold rounded uppercase tracking-wider">Electronics</span>
-                  </div>
-                  <h3 className="font-headline-lg text-headline-lg text-on-surface mb-2">Sony WH-1000XM5</h3>
-                  <div className="flex items-baseline space-x-3 mb-6">
-                    <span className="font-display-xl text-[36px] text-on-surface font-bold">$299</span>
-                    <span className="text-body-md text-on-surface-variant line-through">$398</span>
-                    <span className="text-label-sm text-verdict-buy bg-verdict-buy/10 px-2 py-0.5 rounded-full border border-verdict-buy/20">25% off</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4 mb-6">
-                    <div className="bg-surface p-4 rounded-xl border border-surface-variant/30 flex flex-col items-center justify-center text-center">
-                      <div className="text-[12px] font-semibold text-on-surface-variant mb-1 flex items-center"><span className="material-symbols-outlined text-[14px] mr-1">auto_awesome</span> AI Buy Score</div>
-                      <div className="font-headline-md text-headline-md text-verdict-buy">86/100</div>
-                    </div>
-                    <div className="bg-surface p-4 rounded-xl border border-surface-variant/30 flex flex-col items-center justify-center text-center">
-                      <div className="text-[12px] font-semibold text-on-surface-variant mb-1 flex items-center"><span className="material-symbols-outlined text-[14px] mr-1">trending_down</span> Price Score</div>
-                      <div className="font-headline-md text-headline-md text-verdict-buy">92/100</div>
-                    </div>
-                    <div className="bg-surface p-4 rounded-xl border border-surface-variant/30 flex flex-col items-center justify-center text-center">
-                      <div className="text-[12px] font-semibold text-on-surface-variant mb-1 flex items-center"><span className="material-symbols-outlined text-[14px] mr-1">verified_user</span> Review Trust</div>
-                      <div className="font-headline-md text-headline-md text-on-surface">88/100</div>
-                    </div>
-                  </div>
-                  <div className="mb-6">
-                    <h4 className="font-label-sm text-label-sm text-on-surface mb-2">Why this is a good deal:</h4>
-                    <p className="text-body-md text-on-surface-variant">This is the lowest price seen in the last 6 months. It&apos;s a genuine discount, not an inflated MSRP trick. Reviews are highly verified and positive for noise cancellation and comfort.</p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-primary-container text-white h-12 px-8 rounded-xl font-label-sm text-label-sm hover:bg-opacity-90 transition-colors shadow-ambient-low">
-                      View Deal at Amazon
-                    </button>
-                    <a href="/product" className="bg-surface text-on-surface h-12 px-8 rounded-xl font-label-sm text-label-sm border border-surface-variant hover:bg-surface-container-low transition-colors flex items-center justify-center">
-                      View AI Analysis
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* Deal Tabs */}
-            <div className="flex space-x-2 overflow-x-auto pb-2 -mx-margin-mobile px-margin-mobile md:mx-0 md:px-0 no-scrollbar">
-              <button className="px-5 py-2 rounded-full bg-on-surface text-surface font-label-sm text-label-sm whitespace-nowrap">All deals</button>
-              <button className="px-5 py-2 rounded-full bg-surface-container-lowest border border-surface-variant text-on-surface-variant hover:bg-surface-container-low font-label-sm text-label-sm whitespace-nowrap transition-colors">Electronics</button>
-              <button className="px-5 py-2 rounded-full bg-surface-container-lowest border border-surface-variant text-on-surface-variant hover:bg-surface-container-low font-label-sm text-label-sm whitespace-nowrap transition-colors">Home</button>
-              <button className="px-5 py-2 rounded-full bg-surface-container-lowest border border-surface-variant text-on-surface-variant hover:bg-surface-container-low font-label-sm text-label-sm whitespace-nowrap transition-colors">Beauty</button>
-            </div>
-
-            {/* Deal List */}
-            <div className="space-y-6">
-              {/* Good Deal - MacBook Air M3 */}
-              <div className="bg-surface-container-lowest rounded-2xl shadow-ambient-low border border-surface-variant/50 p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden transition-all hover:shadow-ambient-high">
-                <div className="absolute top-4 right-4 bg-verdict-buy/10 text-verdict-buy px-2 py-1 rounded flex items-center font-bold text-[12px] border border-verdict-buy/20">
-                  Buy
-                </div>
-                <div className="w-full md:w-40 aspect-square shrink-0 bg-surface-container-low rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined text-4xl text-on-surface-variant">laptop_mac</span>
-                </div>
-                <div className="flex-grow flex flex-col justify-between">
-                  <div>
-                    <h4 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">MacBook Air M3</h4>
-                    <div className="flex items-center space-x-4 mb-3">
-                      <div className="flex items-baseline space-x-2">
-                        <span className="font-headline-md text-[24px] text-on-surface font-bold">$949</span>
-                        <span className="text-body-md text-on-surface-variant line-through text-[14px]">$1049</span>
-                      </div>
-                      <span className="text-label-sm text-verdict-buy bg-verdict-buy/10 px-2 py-0.5 rounded-full border border-verdict-buy/20">10% drop</span>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-on-surface-variant">
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">30-Day Avg</span>
-                        <span className="text-on-surface font-medium">$1029</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Lowest Rec.</span>
-                        <span className="text-on-surface font-medium">$899</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5 text-verdict-buy">AI Score</span>
-                        <span className="text-verdict-buy font-bold">82/100</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Store</span>
-                        <span className="text-on-surface font-medium">Best Buy</span>
-                      </div>
-                    </div>
-                    <p className="text-[14px] text-on-surface-variant mb-4">Solid discount on the latest M3 model. Price usually holds steady. Good value for current generation hardware.</p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button className="bg-primary-container text-white px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-opacity-90 transition-colors text-center">
-                      View Deal
-                    </button>
-                    <a href="/product" className="bg-surface border border-surface-variant px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors text-center text-on-surface-variant flex items-center justify-center">
-                      View AI Analysis
-                    </a>
-                    <button className="bg-surface border border-surface-variant px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
-                      <span className="material-symbols-outlined text-[18px] mr-1">notifications</span> Alert
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Wait Deal - Dyson V15 Detect */}
-              <div className="bg-surface-container-lowest rounded-2xl shadow-ambient-low border border-surface-variant/50 p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden transition-all hover:shadow-ambient-high">
-                <div className="absolute top-4 right-4 bg-verdict-wait/10 text-verdict-wait px-2 py-1 rounded flex items-center font-bold text-[12px] border border-verdict-wait/20">
-                  Wait
-                </div>
-                <div className="w-full md:w-40 aspect-square shrink-0 bg-surface-container-low rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined text-4xl text-on-surface-variant">vacuum</span>
-                </div>
-                <div className="flex-grow flex flex-col justify-between">
-                  <div>
-                    <h4 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">Dyson V15 Detect</h4>
-                    <div className="flex items-center space-x-4 mb-3">
-                      <div className="flex items-baseline space-x-2">
-                        <span className="font-headline-md text-[24px] text-on-surface font-bold">$549</span>
-                        <span className="text-body-md text-on-surface-variant line-through text-[14px]">$649</span>
-                      </div>
-                      <span className="text-label-sm text-verdict-buy bg-verdict-buy/10 px-2 py-0.5 rounded-full border border-verdict-buy/20">15% drop</span>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-on-surface-variant">
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">30-Day Avg</span>
-                        <span className="text-on-surface font-medium">$599</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Lowest Rec.</span>
-                        <span className="text-on-surface font-medium">$499</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5 text-verdict-wait">AI Score</span>
-                        <span className="text-verdict-wait font-bold">65/100</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Store</span>
-                        <span className="text-on-surface font-medium">Amazon</span>
-                      </div>
-                    </div>
-                    <p className="text-[14px] text-on-surface-variant mb-4">While discounted, this product frequently drops to $499 during major sales events. It&apos;s an okay price, but better deals exist.</p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a href="/alternatives" className="bg-surface border border-surface-variant px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors text-center text-on-surface-variant flex items-center justify-center">
-                      Compare Alternatives
-                    </a>
-                    <button className="bg-surface border border-surface-variant px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors flex items-center justify-center text-on-surface-variant">
-                      <span className="material-symbols-outlined text-[18px] mr-1">notifications</span> Set Price Alert
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Avoid Deal - Generic Projector */}
-              <div className="bg-surface-container-lowest rounded-2xl shadow-ambient-low border border-verdict-avoid/30 p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden transition-all hover:shadow-ambient-high">
-                <div className="absolute top-4 right-4 bg-verdict-avoid/10 text-verdict-avoid px-2 py-1 rounded flex items-center font-bold text-[12px] border border-verdict-avoid/20">
-                  <span className="material-symbols-outlined text-[14px] mr-1">warning</span> Avoid
-                </div>
-                <div className="w-full md:w-40 aspect-square shrink-0 bg-surface-container-low rounded-xl flex items-center justify-center">
-                  <span className="material-symbols-outlined text-4xl text-on-surface-variant">videocam</span>
-                </div>
-                <div className="flex-grow flex flex-col justify-between">
-                  <div>
-                    <h4 className="font-headline-md text-[20px] text-on-surface font-semibold mb-2">Generic 1080p Mini Projector</h4>
-                    <div className="flex items-center space-x-4 mb-3">
-                      <div className="flex items-baseline space-x-2">
-                        <span className="font-headline-md text-[24px] text-on-surface font-bold">$129</span>
-                        <span className="text-body-md text-on-surface-variant line-through text-[14px]">$399</span>
-                      </div>
-                      <span className="text-label-sm text-verdict-avoid bg-verdict-avoid/10 px-2 py-0.5 rounded-full border border-verdict-avoid/20">Inflated discount</span>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm text-on-surface-variant">
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">30-Day Avg</span>
-                        <span className="text-on-surface font-medium">$125</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Lowest Rec.</span>
-                        <span className="text-on-surface font-medium">$99</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5 text-verdict-avoid">AI Score</span>
-                        <span className="text-verdict-avoid font-bold">25/100</span>
-                      </div>
-                      <div>
-                        <span className="block text-[11px] uppercase tracking-wider font-semibold mb-0.5">Store</span>
-                        <span className="text-on-surface font-medium">Amazon</span>
-                      </div>
-                    </div>
-                    <p className="text-[14px] text-on-surface-variant mb-4">Base price artificially raised before discount to simulate a deal. Actual normal price is $119. Low review trust score (32/100).</p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a href="/product" className="bg-surface border border-surface-variant px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors text-center text-on-surface-variant flex items-center justify-center">
-                      View AI Analysis
-                    </a>
-                    <a href="/price-tracker" className="bg-surface border border-surface-variant px-6 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors text-center text-on-surface-variant flex items-center justify-center">
-                      See Price History
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="space-y-4">
+            <HorizontalDealCard
+              deal={featuredDeal}
+              featured
+              label="Best deals"
+            />
+            <HorizontalDealCard
+              deal={nextWorthProduct}
+              label="Best deals"
+            />
+            <HorizontalDealCard
+              deal={thirdWorthProduct}
+              label="Best deals"
+            />
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
