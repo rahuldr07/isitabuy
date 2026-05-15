@@ -53,9 +53,9 @@ const categories = [
 ];
 
 const filters = [
-  { label: "Buy", description: "Strong recommendation", count: 68, color: "bg-verdict-buy" },
-  { label: "Wait", description: "Proceed with caution", count: 34, color: "bg-verdict-wait" },
-  { label: "Avoid", description: "Not recommended", count: 22, color: "bg-verdict-avoid" },
+  { label: "Buy", description: "Strong recommendation", count: 68 },
+  { label: "Wait", description: "Proceed with caution", count: 34 },
+  { label: "Avoid", description: "Not recommended", count: 22 },
 ];
 
 const retailers = [
@@ -1031,31 +1031,17 @@ export default async function DealsPage({
                       className="flex items-center justify-between text-sm text-[#111827]"
                     >
                       <span className="flex items-center gap-2.5">
-                        <span className={`size-4 rounded-[4px] ${filter.color}`} />
+                        <input
+                          type="checkbox"
+                          className="peer sr-only"
+                          aria-label={`Filter ${filter.label} deals`}
+                        />
+                        <span className="relative grid size-4 shrink-0 place-items-center rounded-[3px] border border-outline bg-white transition-colors after:absolute after:left-1/2 after:top-1/2 after:h-2 after:w-1.5 after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-[#111827] after:opacity-0 after:content-[''] peer-focus-visible:ring-2 peer-focus-visible:ring-primary-container/40 peer-checked:border-[#111827] peer-checked:after:opacity-100" />
                         <span className="font-medium">{filter.label}</span>
                       </span>
                       <span className="font-semibold">{filter.count}</span>
                     </label>
                   ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
-                  Minimum AI Buy Score
-                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
-                    i
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-[#111827]">0</span>
-                  <div className="relative h-1.5 flex-1 rounded-full bg-surface-container-high">
-                    <div className="h-1.5 w-1/2 rounded-full bg-primary-container" />
-                    <span className="absolute left-1/2 top-1/2 grid size-9 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-primary-container bg-[#111827] text-xs font-extrabold text-white">
-                      50
-                    </span>
-                  </div>
-                  <span className="text-sm font-semibold text-[#111827]">100</span>
                 </div>
               </div>
 
@@ -1083,7 +1069,20 @@ export default async function DealsPage({
                       className="flex items-center justify-between gap-3 text-sm text-[#111827]"
                     >
                       <span className="flex min-w-0 items-center gap-2.5">
-                        <span className="size-4 rounded-[3px] border border-outline bg-white" />
+                        <input
+                          type="checkbox"
+                          className="peer sr-only"
+                          aria-label={`Filter ${retailer.label} deals`}
+                        />
+                        <span className="relative grid size-4 overflow-hidden place-items-center rounded-[3px] border border-outline bg-white transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-primary-container/40 peer-checked:border-[#111827]">
+                          <span className="absolute left-1/2 top-1/2 h-2 w-1.5 -translate-x-1/2 -translate-y-[60%] rotate-45 border-b-2 border-r-2 border-[#111827] opacity-0 peer-checked:opacity-100" />
+                        </span>
+                        <span
+                          className={`grid size-6 shrink-0 place-items-center rounded-md text-center text-sm font-extrabold ${retailer.logoClass}`}
+                          aria-hidden="true"
+                        >
+                          {retailer.logo}
+                        </span>
                         <span className="min-w-0 truncate font-medium">{retailer.label}</span>
                       </span>
                       <span className="font-semibold">{retailer.count}</span>
