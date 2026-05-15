@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <main className="pt-32 pb-24 max-w-[1280px] mx-auto px-6 md:px-8">
+      <main className="w-full max-w-[1280px] mx-auto overflow-x-hidden px-4 pt-32 pb-24 sm:px-6 md:px-8">
         <HeroSection />
         <VerdictSection />
         <ExtensionCTA />

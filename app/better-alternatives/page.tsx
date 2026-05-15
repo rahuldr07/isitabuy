@@ -234,7 +234,7 @@ export default function BetterAlternativesPage() {
             <a className="text-on-surface-variant font-body-md text-body-md hover:text-primary underline transition-all" href="#">About AI Verdicts</a>
           </nav>
           <div className="mt-4 md:mt-0 font-body-md text-body-md text-secondary text-center md:text-right">
-            © 2024 IsItABuy AI Advisor. All rights reserved.
+            © 2026 IsItABuy AI Advisor. All rights reserved.
           </div>
         </div>
       </footer>

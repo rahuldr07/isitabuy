@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "08f2f5db66e8ecc0",
+        "id": "e4cc513dc7c852f2",
         "type": "tabs",
         "children": [
           {
-            "id": "e6e91e7636c84f13",
+            "id": "4c8b9b13a155878a",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -176,19 +176,29 @@
       "bases:Create new base": false
     }
   },
-  "active": "e6e91e7636c84f13",
+  "active": "4c8b9b13a155878a",
   "lastOpenFiles": [
-    "node_modules/shadcn/dist/utils/index.js",
-    "node_modules/shadcn/dist/utils/index.d.ts",
-    "node_modules/shadcn/dist/utils",
-    "node_modules/shadcn/dist/registry/index.js",
-    "node_modules/shadcn/dist/registry/index.d.ts",
-    "node_modules/shadcn/dist/registry",
-    "node_modules/shadcn/dist/preset/index.js",
-    "node_modules/shadcn/dist/preset/index.d.ts",
-    "node_modules/shadcn/dist/preset",
-    "node_modules/shadcn/dist/mcp/index.d.ts",
-    "node_modules/shadcn/dist/mcp/index.js",
+    "app/components/VerdictSection.tsx",
+    "node_modules/tailwind-merge/dist/bundle-mjs.mjs.map",
+    "node_modules/lucide-react/package.json",
+    "app/components/ExtensionCTA.tsx",
+    "node_modules/eslint-plugin-jsx-a11y/README.md",
+    "node_modules/eslint-plugin-react/README.md",
+    "MOCs/06 Vibe Coding Workflow MOC.md",
+    "MOCs/05 Data and AI Roadmap MOC.md",
+    "MOCs/04 UI System MOC.md",
+    "MOCs/02 App Routes MOC.md",
+    "MOCs/03 Frontend Architecture MOC.md",
+    "MOCs/01 Product Strategy MOC.md",
+    "MOCs/00 IsItABuy MOC.md",
+    "MOCs",
+    "node_modules/gsap/package.json",
+    "node_modules/framer-motion/package.json",
+    "node_modules/@types/validate-npm-package-name/index.d.ts",
+    "node_modules/@types/statuses/index.d.ts",
+    "node_modules/@types/validate-npm-package-name/package.json",
+    "node_modules/@types/statuses/package.json",
+    "node_modules/@types/set-cookie-parser/README.md",
     "node_modules/cors/README.md",
     "Untitled.canvas",
     "IsItABuy Project Memory.md",
@@ -205,16 +215,6 @@
     "node_modules/class-variance-authority/README.md",
     "node_modules/@noble/curves/README.md",
     "node_modules/react-remove-scroll/README.md",
-    "node_modules/shadcn/node_modules/fast-glob/README.md",
-    "node_modules/@ts-morph/common/node_modules/fast-glob/README.md",
-    "node_modules/eciesjs/README.md",
-    "node_modules/@hono/node-server/README.md",
-    "node_modules/ts-morph/readme.md",
-    "node_modules/qs/README.md",
-    "node_modules/qs/LICENSE.md",
-    "node_modules/qs/CHANGELOG.md",
-    "node_modules/@sec-ant/readable-stream/README.md",
-    "node_modules/radix-ui/README.md",
     "public/file.svg"
   ]
 }

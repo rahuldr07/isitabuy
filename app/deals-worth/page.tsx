@@ -379,7 +379,7 @@ export default function DealsWorthPage() {
             <a className="text-on-surface-variant hover:underline hover:text-primary" href="#">Contact Support</a>
           </div>
           <div className="text-on-surface-variant text-center md:text-right max-w-lg text-[12px] leading-relaxed">
-            © 2024 IsItABuy AI. All rights reserved.<br />
+            © 2026 IsItABuy AI. All rights reserved.<br />
             <span className="font-semibold">Affiliate Disclosure:</span> We may earn a commission from some links. Our deal rankings, AI scores, and recommendations are not based on commission.
           </div>
         </div>

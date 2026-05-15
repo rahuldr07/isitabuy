@@ -667,7 +667,7 @@ export default function AlternativesPage() {
             </a>
           </nav>
           <div className="mt-4 md:mt-0 font-body-md text-body-md text-secondary dark:text-secondary-fixed text-center md:text-right">
-            &copy; 2024 IsItABuy AI Advisor. All rights reserved.
+            &copy; 2026 IsItABuy AI Advisor. All rights reserved.
           </div>
         </div>
       </footer>

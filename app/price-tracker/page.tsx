@@ -281,7 +281,7 @@ export default function PriceTrackerPage() {
               IsItABuy AI
             </span>
             <p className="font-body-md text-body-md text-secondary">
-              &copy; 2024 IsItABuy AI. All rights reserved.{" "}
+              &copy; 2026 IsItABuy AI. All rights reserved.{" "}
               <br className="hidden md:block" />
               We may earn a commission from some links. Our price verdicts, AI
               scores, and recommendations are not based on commission.

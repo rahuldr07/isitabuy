@@ -49,7 +49,7 @@ export default function Footer() {
             IsItABuy AI
           </div>
           <p className="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim text-sm mb-4">
-            &copy; 2024 IsItABuy AI. All rights reserved.
+            &copy; 2026 IsItABuy AI. All rights reserved.
           </p>
           <p className="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim text-xs opacity-80 max-w-xs">
             Affiliate disclosure: We may earn a commission when you use one of

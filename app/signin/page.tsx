@@ -246,7 +246,7 @@ export default function SignInPage() {
         </div>
         <div className="w-full max-w-container-max mx-auto px-gutter pb-8">
           <p className="text-sm text-on-surface-variant/70 border-t border-surface-variant pt-8">
-            © 2024 IsItABuy AI. Affiliate Disclosure: We may earn a commission when you click through links on our site.
+            © 2026 IsItABuy AI. Affiliate Disclosure: We may earn a commission when you click through links on our site.
           </p>
         </div>
       </footer>

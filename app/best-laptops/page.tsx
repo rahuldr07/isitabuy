@@ -814,7 +814,7 @@ export default function BestLaptopsPage() {
             </a>
           </nav>
           <p className="font-body-md text-sm text-[#64748b] text-center md:text-right max-w-md leading-relaxed">
-            &copy; 2024 IsItABuy AI. All rights reserved.
+            &copy; 2026 IsItABuy AI. All rights reserved.
             <br />
             <strong className="text-[#475569]">Affiliate Disclosure:</strong> We
             may earn a commission from some links. Our rankings, AI scores, and

@@ -466,7 +466,7 @@ export default function ProductPage() {
           </a>
         </div>
         <div className="text-xs text-on-surface-variant mt-4 md:mt-0 text-center md:text-right max-w-xs">
-          &copy; 2024 IsItABuy AI Advisor. All rights reserved.
+          &copy; 2026 IsItABuy AI Advisor. All rights reserved.
           <br />
           We may earn a commission when you buy through some links. Our AI
           scores, verdicts, and recommendations are not based on commission.

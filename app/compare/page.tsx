@@ -230,7 +230,7 @@ export default function ComparePage() {
           </div>
           <div className="col-span-1 md:col-span-4">
             <p className="font-body-md text-body-md text-secondary text-sm">
-              &copy; 2024 IsItABuy AI. All rights reserved. Affiliate disclosure: We
+              &copy; 2026 IsItABuy AI. All rights reserved. Affiliate disclosure: We
               may earn a commission when you use one of our links to make a
               purchase.
             </p>

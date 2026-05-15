@@ -24,7 +24,7 @@ Use this note as the high-context handoff for future work on this repo.
 - React: 19.2.4.
 - Language: TypeScript strict mode.
 - Styling: Tailwind CSS v4 using `@import "tailwindcss";` and `@theme` in `app/globals.css`.
-- Icons: Google Material Symbols loaded by a `<link>` in `app/layout.tsx`.
+- Icons: Google Material Symbols are still loaded by a `<link>` in `app/layout.tsx` for legacy routes. Home-page UI now uses `lucide-react` in `SimpleNav`, `HeroSection`, `VerdictSection`, and `ExtensionCTA`.
 - Font: Plus Jakarta Sans from `next/font/google`.
 - Runtime model: frontend-only prototype. No backend, no auth provider, no API routes, no database, no env vars.
 - Data model: static demo data embedded directly in pages/components.
@@ -61,7 +61,7 @@ PowerShell blocks `npm.ps1` on this machine, so use `npm.cmd ...` unless executi
 
 ## Verification State
 
-Last checked: 2026-05-15 after UI foundation install.
+Last checked: 2026-05-15 after compact landing verdict card refinement.
 
 - `npm.cmd run build`: passes. Next generated 22 static pages.
 - `npm.cmd run lint`: passes with 20 warnings and 0 errors.
@@ -178,6 +178,16 @@ User requested a simple shared navigation menu:
 
 Implemented through `app/components/SimpleNav.tsx` for the landing page, SearchHeader-based pages, and the major standalone top-nav pages. `How it Works` links to `/#how-it-works`; `Extension` links to `/#extension`. The shared nav includes a compact mobile/tablet dropdown for the main links.
 
+On very narrow widths, `Get Started` moves into the dropdown so the logo and menu do not clip. Desktop and tablet keep `Login` and `Get Started` on the right.
+
+## Current Color Direction
+
+Amber remains the primary brand/accent color through `primary-container` (`#F59E0B`). Do not make black/navy the global primary treatment. Dark neutrals can still be used sparingly for contrast where the existing design already used them, such as media panels or neutral CTAs.
+
+## Current Landing Verdict Card
+
+`app/components/VerdictSection.tsx` is the landing-page card below the hero. Current direction is the compact three-part showcase: product image, price/AI score/actions, and the original-style score breakdown list. Desktop uses three columns; mobile/tablet stacks cleanly. Keep amber as the brand/action accent and green only for buy/verdict signals.
+
 ## Known Drift And Cleanup Targets
 
 1. `AGENTS.md` and `README.md` are outdated. README is still mostly `create-next-app`; AGENTS lists only the older route/component set.
@@ -234,7 +244,7 @@ Potential routes/APIs later:
 - Read this note, then inspect the target files before editing.
 - Follow Next.js App Router conventions. Do not introduce Pages Router patterns.
 - Use Tailwind v4 theme tokens in `app/globals.css`; do not create `tailwind.config.js` unless there is a specific migration reason.
-- Use Material Symbols in the existing style unless a broader icon migration is explicitly requested. `lucide-react` is installed and currently used by `SimpleNav`.
+- Use `lucide-react` for home-page UI enhancements. Material Symbols remain only for legacy routes until those screens are migrated.
 - Keep edits scoped. This prototype has many large static files, so avoid unrelated rewrites.
 - If adding backend or data fetching, confirm the product/data model first because existing UI copy implies more capabilities than the code has.
 - Use `npm.cmd` on this Windows machine for verification.

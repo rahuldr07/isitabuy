@@ -386,7 +386,7 @@ export default function CompareItemsPage() {
             IsItABuy AI
           </span>
           <span className="text-secondary dark:text-secondary-fixed">
-            &copy; 2024 IsItABuy AI. AI-powered shopping research.
+            &copy; 2026 IsItABuy AI. AI-powered shopping research.
           </span>
         </div>
         <div className="flex flex-wrap gap-6 items-center">
