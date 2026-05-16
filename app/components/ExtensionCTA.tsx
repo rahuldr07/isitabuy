@@ -1,3 +1,5 @@
+"use client";
+
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -7,6 +9,10 @@ import {
   Star,
   TrendingDown,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { gooeyToast } from "@/components/ui/goey-toaster";
+import { Separator } from "@/components/ui/separator";
 
 interface StatCard {
   icon: LucideIcon;
@@ -39,6 +45,23 @@ const statCards: StatCard[] = [
 ];
 
 export default function ExtensionCTA() {
+  const showInstallToast = () => {
+    gooeyToast.info("Chrome extension coming soon", {
+      description: "The Chrome Web Store link will be added here.",
+      duration: 2600,
+      preset: "subtle",
+      showProgress: false,
+      showTimestamp: false,
+    });
+  };
+
+  const showHowItWorksToast = () => {
+    gooeyToast.info("Extension checks product pages automatically", {
+      description: "It reads price history, review quality, trust signals, and alternatives before you buy.",
+      preset: "subtle",
+    });
+  };
+
   return (
     <section id="extension" className="mb-14 w-full scroll-mt-28 md:mb-16">
       <div
@@ -58,13 +81,16 @@ export default function ExtensionCTA() {
         />
 
         <div className="relative z-10">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-white/55 backdrop-blur-md">
+          <Badge
+            variant="outline"
+            className="mb-5 h-auto gap-2 rounded-full border-white/12 bg-white/[0.06] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-white/55 backdrop-blur-md hover:bg-white/[0.08]"
+          >
             <span className="relative flex size-1.5">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-orange-500 opacity-60" />
               <span className="relative inline-flex size-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
             </span>
             Browser extension
-          </div>
+          </Badge>
 
           <div className="mb-8 grid items-center gap-6 md:grid-cols-[1.05fr_0.95fr]">
             <h2 className="text-[44px] font-extrabold leading-[0.96] tracking-normal text-[#f8f4ee] sm:text-[54px] lg:text-[58px]">
@@ -85,21 +111,34 @@ export default function ExtensionCTA() {
               </p>
 
               <div className="flex flex-wrap items-center gap-2.5">
-                <button
+                <Button
                   type="button"
-                  className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-orange-500 px-5 py-2.5 text-[15px] font-bold text-white transition hover:-translate-y-px hover:bg-orange-600 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)] active:scale-[0.98]"
+                  size="lg"
+                  className="h-11 rounded-[10px] bg-orange-500 px-5 text-[15px] font-bold text-white hover:-translate-y-px hover:bg-orange-600 hover:shadow-[0_10px_24px_rgba(249,115,22,0.3)]"
+                  onClick={showInstallToast}
                 >
                   Add to Chrome
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </button>
+                  <ArrowRight
+                    data-icon="inline-end"
+                    className="size-4"
+                    aria-hidden="true"
+                  />
+                </Button>
 
-                <button
+                <Button
                   type="button"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-[10px] border border-white/14 bg-transparent px-[18px] py-2.5 text-[15px] font-semibold text-[#f8f4ee]/55 transition hover:bg-white/[0.04] hover:text-[#f8f4ee]/80"
+                  variant="outline"
+                  size="lg"
+                  className="h-11 rounded-[10px] border-white/14 bg-transparent px-[18px] text-[15px] font-semibold text-[#f8f4ee]/55 hover:bg-white/[0.04] hover:text-[#f8f4ee]/80"
+                  onClick={showHowItWorksToast}
                 >
                   How it works
-                  <ExternalLink className="size-3.5" aria-hidden="true" />
-                </button>
+                  <ExternalLink
+                    data-icon="inline-end"
+                    className="size-3.5"
+                    aria-hidden="true"
+                  />
+                </Button>
               </div>
             </div>
           </div>
@@ -136,7 +175,7 @@ export default function ExtensionCTA() {
             })}
           </div>
 
-          <div className="my-7 h-px bg-white/7" />
+          <Separator className="my-7 bg-white/7" />
 
           <div className="flex flex-wrap items-center justify-between gap-4 text-[13px] font-medium text-[#f8f4ee]/30">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

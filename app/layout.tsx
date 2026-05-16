@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
-import { Toaster } from "@/components/ui/sonner";
+import { GooeyToaster } from "@/components/ui/goey-toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
@@ -39,7 +39,14 @@ export default function RootLayout({
       </head>
       <body className="overflow-x-hidden font-sans text-on-surface antialiased">
         <TooltipProvider>{children}</TooltipProvider>
-        <Toaster />
+        <GooeyToaster
+          position="top-right"
+          duration={3000}
+          gap={10}
+          offset={18}
+          richColors
+          showProgress={false}
+        />
       </body>
     </html>
   );

@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { Menu, ShoppingBag } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { gooeyToast } from "@/components/ui/goey-toaster";
 import { cn } from "@/lib/utils";
 
 const mainNavItems = [
@@ -21,6 +25,16 @@ const positionClasses = {
 };
 
 export default function SimpleNav({ variant = "sticky" }: SimpleNavProps) {
+  const showChromeToast = () => {
+    gooeyToast.info("Chrome extension coming soon", {
+      description: "The Chrome Web Store link will be added here.",
+      duration: 2600,
+      preset: "subtle",
+      showProgress: false,
+      showTimestamp: false,
+    });
+  };
+
   return (
     <header
       className={cn(
@@ -55,6 +69,14 @@ export default function SimpleNav({ variant = "sticky" }: SimpleNavProps) {
               {item.label}
             </Link>
           ))}
+          <Button
+            type="button"
+            size="sm"
+            className="ml-0.5 h-8 rounded-full bg-[#1459D9] px-3.5 text-[11px] font-semibold text-white shadow-sm hover:bg-[#0F4BB8]"
+            onClick={showChromeToast}
+          >
+            Add to Chrome
+          </Button>
         </nav>
 
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
@@ -87,20 +109,31 @@ export default function SimpleNav({ variant = "sticky" }: SimpleNavProps) {
               >
                 Get Started
               </Link>
+              <Button
+                type="button"
+                size="lg"
+                className="mt-1 w-full rounded-full bg-[#1459D9] text-sm font-semibold text-white hover:bg-[#0F4BB8]"
+                onClick={showChromeToast}
+              >
+                Add to Chrome
+              </Button>
             </div>
           </details>
-          <Link
-            href="/signin"
-            className="hidden sm:inline-flex h-10 items-center rounded-lg px-4 text-sm font-semibold text-secondary hover:text-on-surface hover:bg-surface-container-high transition-colors"
+          <Button
+            asChild
+            variant="ghost"
+            size="lg"
+            className="hidden h-10 px-4 text-sm font-semibold text-secondary hover:bg-surface-container-high hover:text-on-surface sm:inline-flex"
           >
-            Login
-          </Link>
-          <Link
-            href="/search"
-            className="hidden h-10 items-center rounded-lg bg-slate-900 px-3 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors min-[420px]:inline-flex sm:px-5 sm:text-sm"
+            <Link href="/signin">Login</Link>
+          </Button>
+          <Button
+            asChild
+            size="lg"
+            className="hidden h-10 rounded-lg bg-slate-900 px-3 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 min-[420px]:inline-flex sm:px-5 sm:text-sm"
           >
-            Get Started
-          </Link>
+            <Link href="/search">Get Started</Link>
+          </Button>
         </div>
       </div>
     </header>

@@ -4,22 +4,47 @@ import {
   ImagePlus,
   ScanBarcode,
   Search,
+  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ShieldCheckIcon } from "@/components/ui/shield-check";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { gooeyToast } from "@/components/ui/goey-toaster";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 export default function HeroSection() {
   const router = useRouter();
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    if (query.trim()) {
-      router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    const productQuery = query.trim();
+
+    gooeyToast.success("Starting product check", {
+      description: productQuery
+        ? `Analyzing "${productQuery}" for price, reviews, and value.`
+        : "Opening the search experience with demo product signals.",
+      preset: "smooth",
+    });
+
+    if (productQuery) {
+      router.push(`/search?q=${encodeURIComponent(productQuery)}`);
     } else {
       router.push("/search");
     }
+  };
+
+  const showComingSoon = (label: string) => {
+    gooeyToast.info(`${label} is coming soon`, {
+      description: "For now, search by product name or paste a product URL.",
+      preset: "subtle",
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -31,10 +56,17 @@ export default function HeroSection() {
     <>
       {/* Hero text */}
       <section className="mx-auto mb-20 w-full max-w-3xl text-center">
-        <div className="inline-flex max-w-full items-center gap-2 rounded-full bg-white border border-surface-variant px-3 py-1.5 text-xs font-medium text-secondary shadow-sm mb-8 sm:px-4 sm:text-sm">
-          <Sparkles className="size-[18px] text-primary-container" aria-hidden="true" />
+        <Badge
+          variant="outline"
+          className="mb-8 h-auto max-w-full rounded-full border-surface-variant bg-white px-3 py-1.5 text-xs font-medium text-secondary shadow-sm sm:px-4 sm:text-sm"
+        >
+          <Sparkles
+            data-icon="inline-start"
+            className="size-[18px] text-primary-container"
+            aria-hidden="true"
+          />
           AI-Powered Shopping Advisor
-        </div>
+        </Badge>
         <h1 className="mx-auto mb-6 max-w-[12ch] break-words text-4xl font-bold leading-tight tracking-tight text-on-surface sm:max-w-none sm:text-5xl md:text-6xl">
           <span className="text-primary-container">Know</span> before you buy.
         </h1>
@@ -43,55 +75,69 @@ export default function HeroSection() {
           analyzes price history, review quality, specs, and alternatives to
           give you a clear verdict.
         </p>
-        <div className="inline-flex w-full max-w-[340px] items-center justify-center gap-2 px-3 py-2.5 rounded-full bg-white border border-surface-variant/40 text-on-surface shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-md transition-shadow cursor-default shimmer-effect sm:w-auto sm:max-w-full sm:gap-2.5 sm:px-5">
-          <ShieldCheckIcon
-            className="grid size-5 shrink-0 place-items-center text-primary-container"
-            size={20}
+        <Badge
+          variant="outline"
+          className="shimmer-effect h-auto w-full max-w-[340px] cursor-default justify-center rounded-full border-surface-variant/40 bg-white px-3 py-2.5 text-on-surface shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-md sm:w-auto sm:max-w-full sm:gap-2.5 sm:px-5"
+        >
+          <ShieldCheck
+            data-icon="inline-start"
+            className="size-5 shrink-0 text-primary-container"
             aria-hidden="true"
           />
           <span className="min-w-0 text-center text-xs font-semibold leading-5 tracking-tight text-slate-700 sm:text-left sm:text-sm">
             100% Independent &amp; Commission-Free Scores
           </span>
-        </div>
+        </Badge>
       </section>
 
       {/* Search card */}
       <section className="relative z-10 mx-auto mb-32 w-full max-w-4xl">
-        <div className="relative flex w-full flex-col md:flex-row items-center gap-4 group bg-white rounded-3xl md:rounded-full p-2 border border-surface-variant/50 hover:shadow-md hover:shadow-premium-hover transition-all">
-          <div className="relative flex-1 w-full">
-            <Search
-              className="absolute left-5 top-1/2 size-6 -translate-y-1/2 text-secondary/60 transition-colors group-focus-within:text-primary-container"
-              aria-hidden="true"
-            />
-            <input
-              className="w-full h-16 pl-14 pr-4 md:pr-28 border-none bg-transparent text-sm sm:text-base text-on-surface focus:ring-0 focus:outline-none placeholder:text-secondary/50 transition-all rounded-full"
+        <div className="group relative flex w-full flex-col items-center gap-3 rounded-3xl border border-surface-variant/50 bg-white p-2 transition-all hover:shadow-md hover:shadow-premium-hover md:flex-row md:rounded-full">
+          <InputGroup className="h-14 w-full flex-1 rounded-2xl border-0 bg-transparent shadow-none md:h-16 md:rounded-full">
+            <InputGroupAddon className="pl-4">
+              <Search
+                className="size-5 text-secondary/60 transition-colors group-focus-within:text-primary-container md:size-6"
+                aria-hidden="true"
+              />
+            </InputGroupAddon>
+            <InputGroupInput
+              className="h-full px-0 text-sm text-on-surface placeholder:text-secondary/50 sm:text-base"
               placeholder="Search product or paste URL"
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <div className="absolute top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 right-2 mr-2">
-              <button
-                className="p-2 text-secondary hover:text-primary-container hover:bg-surface-container rounded-lg transition-all"
-                title="Scan Barcode/Camera"
+            <InputGroupAddon
+              align="inline-end"
+              className="hidden gap-1 pr-3 md:flex"
+            >
+              <InputGroupButton
+                size="icon-sm"
+                className="text-secondary hover:bg-surface-container hover:text-primary-container"
+                title="Scan barcode"
+                onClick={() => showComingSoon("Barcode scan")}
               >
                 <ScanBarcode className="size-6" aria-hidden="true" />
-              </button>
-              <button
-                className="p-2 text-secondary hover:text-primary-container hover:bg-surface-container rounded-lg transition-all"
-                title="Upload Image/Attachment"
+              </InputGroupButton>
+              <InputGroupButton
+                size="icon-sm"
+                className="text-secondary hover:bg-surface-container hover:text-primary-container"
+                title="Upload image"
+                onClick={() => showComingSoon("Image upload")}
               >
                 <ImagePlus className="size-6" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-          <button
+              </InputGroupButton>
+            </InputGroupAddon>
+          </InputGroup>
+          <Button
+            type="button"
             onClick={handleSearch}
-            className="w-full md:w-auto h-16 px-10 bg-primary-container text-white font-bold text-sm hover:bg-amber-600 transition-all flex items-center justify-center gap-2 shadow-sm whitespace-nowrap z-10 rounded-2xl md:rounded-full"
+            size="lg"
+            className="z-10 h-14 w-full rounded-2xl bg-primary-container px-10 text-sm font-bold text-white shadow-sm hover:bg-amber-600 md:h-16 md:w-auto md:rounded-full"
           >
             Check Product
-          </button>
+          </Button>
         </div>
       </section>
     </>

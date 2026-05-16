@@ -1,17 +1,22 @@
+"use client";
+
 import type { LucideIcon } from "lucide-react";
 import {
   BadgeCheck,
   BadgeDollarSign,
   Bell,
   CircleCheck,
+  MessageSquareText,
   Scale,
+  ShieldCheck,
   Star,
 } from "lucide-react";
-import { ShieldCheckIcon } from "@/components/ui/shield-check";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { gooeyToast } from "@/components/ui/goey-toaster";
 
 interface ScoreCard {
   icon: LucideIcon;
-  animatedShield?: boolean;
   iconBg: string;
   iconColor: string;
   label: string;
@@ -33,8 +38,7 @@ const scoreCards: ScoreCard[] = [
     note: "Near recent low",
   },
   {
-    icon: BadgeCheck,
-    animatedShield: true,
+    icon: MessageSquareText,
     iconBg: "bg-sky-50",
     iconColor: "text-sky-600",
     label: "Review Trust",
@@ -128,6 +132,24 @@ export default function VerdictSection() {
   );
   const compositeWidth = `${compositeScore}%`;
 
+  const showAnalysisToast = () => {
+    gooeyToast.success("AI analysis ready", {
+      description: "Price, review trust, quality, and value all support a buy verdict.",
+      fillColor: "#622395",
+      borderColor: "#4c1d73",
+      preset: "smooth",
+    });
+  };
+
+  const showPriceAlertToast = () => {
+    gooeyToast.info("Price alert preview", {
+      description: "We will notify you when this product drops below $279.",
+      fillColor: "#f59e0b",
+      borderColor: "#d97706",
+      preset: "subtle",
+    });
+  };
+
   return (
     <section
       id="how-it-works"
@@ -161,19 +183,24 @@ export default function VerdictSection() {
           >
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
-            <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-bold text-slate-900 shadow-sm backdrop-blur-sm">
+            <Badge className="absolute left-4 top-4 h-auto gap-2 rounded-full bg-white/95 px-3 py-1.5 text-[11px] font-bold text-slate-900 shadow-sm backdrop-blur-sm hover:bg-white/95">
               <BadgeCheck
+                data-icon="inline-start"
                 className="size-4 text-emerald-500"
                 aria-hidden="true"
               />
               Commission-free
-            </div>
+            </Badge>
 
             <div className="absolute bottom-0 left-0 right-0 p-6">
-              <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white">
-                <CircleCheck className="size-3" aria-hidden="true" />
+              <Badge className="mb-3 h-auto gap-1.5 rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white hover:bg-emerald-600">
+                <CircleCheck
+                  data-icon="inline-start"
+                  className="size-3"
+                  aria-hidden="true"
+                />
                 Strong Buy
-              </div>
+              </Badge>
               <h3 className="text-xl font-extrabold tracking-tight text-white">
                 Sony WH-1000XM5
               </h3>
@@ -193,13 +220,24 @@ export default function VerdictSection() {
                   $299.00
                 </p>
               </div>
-              <button
+              <Button
                 type="button"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-white shadow-sm transition hover:bg-emerald-700 active:scale-95 min-[460px]:w-auto"
+                size="lg"
+                className="h-11 w-full rounded-xl bg-emerald-600 px-5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-white shadow-sm hover:bg-emerald-700 min-[460px]:w-auto"
+                onClick={() =>
+                  gooeyToast.success("Buy verdict selected", {
+                    description: "This demo product is currently a strong buy.",
+                    preset: "smooth",
+                  })
+                }
               >
-                <CircleCheck className="size-4" aria-hidden="true" />
+                <CircleCheck
+                  data-icon="inline-start"
+                  className="size-4"
+                  aria-hidden="true"
+                />
                 Buy Now
-              </button>
+              </Button>
             </div>
 
             <div className="mt-6 flex min-w-0 flex-col gap-5 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-amber-50 p-4 min-[420px]:p-5 min-[520px]:flex-row min-[520px]:items-center">
@@ -230,19 +268,28 @@ export default function VerdictSection() {
             </div>
 
             <div className="mt-auto grid gap-3 pt-8 sm:grid-cols-[1fr_auto]">
-              <button
+              <Button
                 type="button"
-                className="rounded-xl bg-[#622395] px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#3D1660] active:scale-95"
+                size="lg"
+                className="h-12 rounded-xl bg-[#622395] px-6 text-sm font-bold text-white shadow-sm hover:bg-[#3D1660]"
+                onClick={showAnalysisToast}
               >
                 AI Analysis
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="flex items-center justify-center gap-2 rounded-xl border-[1.5px] border-emerald-500/40 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 active:scale-95"
+                variant="outline"
+                size="lg"
+                className="h-12 rounded-xl border-[1.5px] border-emerald-500/40 bg-emerald-50 px-5 text-sm font-semibold text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800"
+                onClick={showPriceAlertToast}
               >
-                <Bell className="size-5" aria-hidden="true" />
+                <Bell
+                  data-icon="inline-start"
+                  className="size-5"
+                  aria-hidden="true"
+                />
                 Set Price Alert
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -251,10 +298,14 @@ export default function VerdictSection() {
               <h4 className="text-xl font-extrabold tracking-tight text-on-surface">
                 Score breakdown
               </h4>
-              <span className="rounded-md bg-emerald-600 px-2.5 py-1 text-[10px] font-bold text-white ring-1 ring-surface-variant/70">
-               {/* <CircleCheck className="size-2" aria-hidden="true" /> */}
+              <Badge className="h-auto gap-1.5 rounded-full bg-emerald-600 px-3.5 py-1.5 text-[11px] font-extrabold text-white shadow-sm ring-1 ring-emerald-500/30 hover:bg-emerald-700">
+                <ShieldCheck
+                  data-icon="inline-start"
+                  className="size-4 shrink-0 text-white"
+                  aria-hidden="true"
+                />
                 Verified
-              </span>
+              </Badge>
             </div>
 
             <div className="mt-5 divide-y divide-slate-200">
@@ -268,11 +319,7 @@ export default function VerdictSection() {
                         <span
                           className={`grid size-8 shrink-0 place-items-center rounded-[9px] ${card.iconBg} ${card.iconColor}`}
                         >
-                          {card.animatedShield ? (
-                            <ShieldCheckIcon size={18} aria-hidden="true" />
-                          ) : (
-                            <Icon className="size-4" aria-hidden="true" />
-                          )}
+                          <Icon className="size-4" aria-hidden="true" />
                         </span>
                         <div className="min-w-0">
                           <p className="text-[12.5px] font-bold text-on-surface">
