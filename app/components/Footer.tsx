@@ -7,7 +7,7 @@ const footerSections = [
       { label: "Search Products", href: "/search" },
       { label: "Compare", href: "/compare" },
       { label: "Deals", href: "/deals" },
-      { label: "Chrome Extension", href: "/#extension" },
+      // { label: "Chrome Extension", href: "/#extension" },
       { label: "Mobile App", href: "#" },
     ],
   },
@@ -42,7 +42,7 @@ const footerSections = [
 
 export default function Footer() {
   return (
-    <footer className="bg-surface-container-lowest dark:bg-inverse-surface w-full mt-stack-lg border-t border-outline-variant dark:border-none transition-all duration-300">
+    <footer className="w-full border-t border-outline-variant bg-surface-container-lowest pt-6 transition-all duration-300 dark:bg-inverse-surface dark:border-none md:pt-8">
       <div className="grid grid-cols-1 gap-gutter px-gutter py-stack-md max-w-container-max mx-auto lg:grid-cols-[1.35fr_repeat(4,1fr)]">
         <div className="flex flex-col items-start">
           <div className="font-headline-md text-headline-md font-bold text-on-surface dark:text-surface-bright mb-4">

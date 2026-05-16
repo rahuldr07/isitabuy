@@ -21,7 +21,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "IsItABuy AI - Shopping Advisor",
   description:
-    "Paste a product link, search by name, scan a barcode, or use our browser extension. IsItABuy AI analyzes price history, review quality, specs, and alternatives to give you a clear verdict.",
+    "Paste a product link, search by name, or scan a barcode. IsItABuy AI analyzes price history, review quality, specs, and alternatives to give you a clear verdict.",
 };
 
 export default function RootLayout({

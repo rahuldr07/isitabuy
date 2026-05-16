@@ -8,7 +8,7 @@ const mainNavItems = [
   { label: "Deals", href: "/deals" },
   { label: "Best Products", href: "/best-laptops" },
   { label: "Compare", href: "/compare" },
-  { label: "Extension", href: "/#extension" },
+  // { label: "Extension", href: "/#extension" },
 ];
 
 interface SimpleNavProps {

@@ -4,11 +4,11 @@ import {
   ImagePlus,
   ScanBarcode,
   Search,
-  ShieldCheck,
   Sparkles,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ShieldCheckIcon } from "@/components/ui/shield-check";
 
 export default function HeroSection() {
   const router = useRouter();
@@ -39,12 +39,16 @@ export default function HeroSection() {
           <span className="text-primary-container">Know</span> before you buy.
         </h1>
         <p className="mx-auto mb-10 max-w-[32ch] break-words text-base leading-relaxed text-secondary sm:max-w-2xl sm:text-lg md:text-xl">
-          Paste a product link, search by name, scan a barcode, or use our
-          browser extension. IsItABuy AI analyzes price history, review quality,
-          specs, and alternatives to give you a clear verdict.
+          Paste a product link, search by name, or scan a barcode. IsItABuy AI
+          analyzes price history, review quality, specs, and alternatives to
+          give you a clear verdict.
         </p>
         <div className="inline-flex w-full max-w-[340px] items-center justify-center gap-2 px-3 py-2.5 rounded-full bg-white border border-surface-variant/40 text-on-surface shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-md transition-shadow cursor-default shimmer-effect sm:w-auto sm:max-w-full sm:gap-2.5 sm:px-5">
-          <ShieldCheck className="size-5 text-primary-container" aria-hidden="true" />
+          <ShieldCheckIcon
+            className="grid size-5 shrink-0 place-items-center text-primary-container"
+            size={20}
+            aria-hidden="true"
+          />
           <span className="min-w-0 text-center text-xs font-semibold leading-5 tracking-tight text-slate-700 sm:text-left sm:text-sm">
             100% Independent &amp; Commission-Free Scores
           </span>

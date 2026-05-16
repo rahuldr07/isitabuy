@@ -4,13 +4,14 @@ import {
   BadgeDollarSign,
   Bell,
   CircleCheck,
-  MessageSquareText,
   Scale,
   Star,
 } from "lucide-react";
+import { ShieldCheckIcon } from "@/components/ui/shield-check";
 
 interface ScoreCard {
   icon: LucideIcon;
+  animatedShield?: boolean;
   iconBg: string;
   iconColor: string;
   label: string;
@@ -32,7 +33,8 @@ const scoreCards: ScoreCard[] = [
     note: "Near recent low",
   },
   {
-    icon: MessageSquareText,
+    icon: BadgeCheck,
+    animatedShield: true,
     iconBg: "bg-sky-50",
     iconColor: "text-sky-600",
     label: "Review Trust",
@@ -246,7 +248,7 @@ export default function VerdictSection() {
 
           <aside className="flex min-w-0 flex-col bg-slate-50 p-5 min-[420px]:p-6 lg:p-7">
             <div className="flex items-center justify-between gap-3">
-              <h4 className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-on-surface">
+              <h4 className="text-xl font-extrabold tracking-tight text-on-surface">
                 Score breakdown
               </h4>
               <span className="rounded-md bg-emerald-600 px-2.5 py-1 text-[10px] font-bold text-white ring-1 ring-surface-variant/70">
@@ -266,7 +268,11 @@ export default function VerdictSection() {
                         <span
                           className={`grid size-8 shrink-0 place-items-center rounded-[9px] ${card.iconBg} ${card.iconColor}`}
                         >
-                          <Icon className="size-4" aria-hidden="true" />
+                          {card.animatedShield ? (
+                            <ShieldCheckIcon size={18} aria-hidden="true" />
+                          ) : (
+                            <Icon className="size-4" aria-hidden="true" />
+                          )}
                         </span>
                         <div className="min-w-0">
                           <p className="text-[12.5px] font-bold text-on-surface">
