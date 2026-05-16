@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+import PriceRangeFilter from "../components/PriceRangeFilter";
 
 export const metadata = {
   title: "Deals that are actually worth it - IsItABuy AI",
@@ -41,8 +41,8 @@ const navItems = [
 
 const categories = [
   { label: "All Deals", slug: "all" },
-  { label: "Electronics", slug: "electronics" },
   { label: "Home", slug: "home" },
+  { label: "Electronics", slug: "electronics" },
   { label: "Kitchen", slug: "kitchen" },
   { label: "Beauty", slug: "beauty" },
   { label: "Fashion", slug: "fashion" },
@@ -53,35 +53,41 @@ const categories = [
 ];
 
 const filters = [
-  { label: "Buy", description: "Strong recommendation", count: 68 },
-  { label: "Wait", description: "Proceed with caution", count: 34 },
-  { label: "Avoid", description: "Not recommended", count: 22 },
+  { label: "Buy", count: 12, checked: true },
+  { label: "Wait", count: 8, checked: true },
+  { label: "Avoid", count: 4, checked: false },
 ];
 
 const retailers = [
   {
     label: "Amazon",
-    count: 86,
     logo: "a",
     logoClass: "bg-white text-[#111827] font-serif text-2xl",
   },
   {
+    label: "Best Buy",
+    logo: "B",
+    logoClass: "bg-[#0046be] text-white",
+  },
+  {
+    label: "Walmart",
+    logo: "*",
+    logoClass: "bg-[#0071ce] text-[#ffc220] text-xl",
+  },
+  {
     label: "Flipkart",
-    count: 42,
     logo: "F",
     logoClass: "bg-[#ffe500] text-[#2874f0]",
   },
   {
-    label: "Croma",
-    count: 28,
-    logo: "C",
-    logoClass: "bg-[#16b9a8] text-white",
+    label: "Myntra",
+    logo: "M",
+    logoClass: "bg-gradient-to-br from-[#f13ab1] via-[#ff6b00] to-[#f4c430] text-white",
   },
   {
-    label: "Reliance Digital",
-    count: 21,
-    logo: "digital",
-    logoClass: "bg-[#e9202a] text-white text-[7px]",
+    label: "Meesho",
+    logo: "m",
+    logoClass: "bg-[#7b2cbf] text-[#ff4fa3]",
   },
 ];
 
@@ -686,6 +692,39 @@ function categoryHref(slug: string) {
   return slug === "all" ? "/deals" : `/deals?category=${slug}`;
 }
 
+function retailerMark(retailer: string) {
+  const marks: Record<string, { logo: string; className: string }> = {
+    Amazon: {
+      logo: "a",
+      className: "bg-white text-[#111827] font-serif text-lg",
+    },
+    Flipkart: {
+      logo: "F",
+      className: "bg-[#ffe500] text-[#2874f0] text-sm",
+    },
+    Walmart: {
+      logo: "*",
+      className: "bg-[#0071ce] text-[#ffc220] text-lg",
+    },
+    Croma: {
+      logo: "C",
+      className: "bg-[#16b9a8] text-white text-sm",
+    },
+    Myntra: {
+      logo: "M",
+      className:
+        "bg-gradient-to-br from-[#f13ab1] via-[#ff6b00] to-[#f4c430] text-white text-sm",
+    },
+  };
+
+  return (
+    marks[retailer] ?? {
+      logo: retailer.charAt(0),
+      className: "bg-surface-container-low text-[#111827] text-sm",
+    }
+  );
+}
+
 function HorizontalDealCard({
   deal,
   label,
@@ -707,6 +746,7 @@ function HorizontalDealCard({
         ];
   const actionButtonClass =
     "box-border inline-flex h-[40px] min-h-[40px] max-h-[40px] w-full min-w-0 appearance-none items-center justify-center gap-1 overflow-visible rounded-lg border border-transparent px-2 py-0 text-sm font-extrabold leading-none shadow-none transition-colors";
+  const mark = retailerMark(deal.retailer);
 
   return (
     <Card
@@ -748,7 +788,12 @@ function HorizontalDealCard({
 
           <div className="mb-3 flex flex-wrap items-center gap-4 text-xs font-semibold">
             <span className="flex items-center gap-1">
-              <span className="font-serif text-lg font-bold text-[#111827]">a</span>
+              <span
+                className={`grid size-5 shrink-0 place-items-center rounded-md text-center font-extrabold leading-none ${mark.className}`}
+                aria-hidden="true"
+              >
+                {mark.logo}
+              </span>
               {deal.retailer}
             </span>
             <span className="flex items-center gap-1 text-primary-container">
@@ -807,7 +852,7 @@ function HorizontalDealCard({
             type="button"
             className={`${actionButtonClass} bg-primary-container text-white hover:bg-amber-600`}
           >
-            View Deal
+            Buy Now
           </button>
           <Link
             href="/product"
@@ -1005,87 +1050,63 @@ export default async function DealsPage({
         </Card>
 
         <div className="mt-4 grid items-start gap-5 lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="self-start border border-surface-variant bg-white px-6 py-7 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
-            <div className="mb-7 flex items-center justify-between">
-              <h2 className="text-xl font-extrabold tracking-tight text-[#111827]">
-                Filters
-              </h2>
-              <Button variant="ghost" size="xs" className="h-auto px-0 text-xs font-extrabold text-primary-container hover:bg-transparent hover:text-amber-600">
-                Clear all
-              </Button>
-            </div>
-            <Separator className="mb-7 bg-surface-variant/80" />
-
-            <div className="space-y-8">
-              <div>
-                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
+          <aside className="self-start border border-surface-variant bg-white px-8 py-8 shadow-sm lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+            <h2 className="mb-8 text-xl font-extrabold tracking-tight text-[#111827]">
+              Filters
+            </h2>
+            <div className="divide-y divide-surface-variant/80">
+              <div className="pb-7">
+                <div className="mb-4 text-base font-extrabold uppercase tracking-[0.08em] text-[#475569]">
                   Verdict
-                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
-                    i
-                  </span>
                 </div>
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {filters.map((filter) => (
                     <label
                       key={filter.label}
-                      className="flex items-center justify-between text-sm text-[#111827]"
+                      className="flex items-center gap-3 text-lg text-[#111827]"
                     >
-                      <span className="flex items-center gap-2.5">
-                        <input
-                          type="checkbox"
-                          className="peer sr-only"
-                          aria-label={`Filter ${filter.label} deals`}
-                        />
-                        <span className="relative grid size-4 shrink-0 place-items-center rounded-[3px] border border-outline bg-white transition-colors after:absolute after:left-1/2 after:top-1/2 after:h-2 after:w-1.5 after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-[#111827] after:opacity-0 after:content-[''] peer-focus-visible:ring-2 peer-focus-visible:ring-primary-container/40 peer-checked:border-[#111827] peer-checked:after:opacity-100" />
-                        <span className="font-medium">{filter.label}</span>
+                      <input
+                        type="checkbox"
+                        className="peer sr-only"
+                        defaultChecked={filter.checked}
+                        aria-label={`Filter ${filter.label} deals`}
+                      />
+                      <span className="relative grid size-5 shrink-0 place-items-center rounded-[3px] border border-[#9ca3af] bg-white transition-colors after:absolute after:left-1/2 after:top-1/2 after:h-2.5 after:w-1.5 after:-translate-x-1/2 after:-translate-y-[56%] after:rotate-45 after:border-b-2 after:border-r-2 after:border-white after:opacity-0 after:content-[''] peer-checked:border-[#2f8892] peer-checked:bg-[#2f8892] peer-checked:after:opacity-100 peer-focus-visible:ring-2 peer-focus-visible:ring-[#2f8892]/30" />
+                      <span className="font-medium">
+                        {filter.label} ({filter.count})
                       </span>
-                      <span className="font-semibold">{filter.count}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              <div>
-                <div className="mb-4 flex items-center gap-2 text-sm font-extrabold text-[#111827]">
+              <div className="py-7">
+                <PriceRangeFilter />
+              </div>
+
+              <div className="pt-7">
+                <div className="mb-4 text-base font-extrabold uppercase tracking-[0.08em] text-[#475569]">
                   Retailer
-                  <span className="grid size-6 place-items-center rounded-full border-2 border-[#6b4d2b] text-sm font-extrabold text-[#6b4d2b]">
-                    i
-                  </span>
                 </div>
-                <div className="relative mb-4">
-                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[17px] text-on-surface-variant">
-                    search
-                  </span>
-                  <Input
-                    className="h-10 rounded-lg border-surface-variant bg-white pl-9 pr-3 text-sm"
-                    placeholder="Search retailer..."
-                    type="text"
-                  />
-                </div>
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {retailers.map((retailer) => (
                     <label
                       key={retailer.label}
-                      className="flex items-center justify-between gap-3 text-sm text-[#111827]"
+                      className="flex items-center gap-3 text-lg text-[#111827]"
                     >
-                      <span className="flex min-w-0 items-center gap-2.5">
-                        <input
-                          type="checkbox"
-                          className="peer sr-only"
-                          aria-label={`Filter ${retailer.label} deals`}
-                        />
-                        <span className="relative grid size-4 overflow-hidden place-items-center rounded-[3px] border border-outline bg-white transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-primary-container/40 peer-checked:border-[#111827]">
-                          <span className="absolute left-1/2 top-1/2 h-2 w-1.5 -translate-x-1/2 -translate-y-[60%] rotate-45 border-b-2 border-r-2 border-[#111827] opacity-0 peer-checked:opacity-100" />
-                        </span>
-                        <span
-                          className={`grid size-6 shrink-0 place-items-center rounded-md text-center text-sm font-extrabold ${retailer.logoClass}`}
-                          aria-hidden="true"
-                        >
-                          {retailer.logo}
-                        </span>
-                        <span className="min-w-0 truncate font-medium">{retailer.label}</span>
+                      <input
+                        type="checkbox"
+                        className="peer sr-only"
+                        aria-label={`Filter ${retailer.label} deals`}
+                      />
+                      <span className="relative grid size-5 shrink-0 place-items-center rounded-[3px] border border-[#9ca3af] bg-white transition-colors after:absolute after:left-1/2 after:top-1/2 after:h-2.5 after:w-1.5 after:-translate-x-1/2 after:-translate-y-[56%] after:rotate-45 after:border-b-2 after:border-r-2 after:border-white after:opacity-0 after:content-[''] peer-checked:border-[#2f8892] peer-checked:bg-[#2f8892] peer-checked:after:opacity-100 peer-focus-visible:ring-2 peer-focus-visible:ring-[#2f8892]/30" />
+                      <span
+                        className={`grid size-6 shrink-0 place-items-center rounded-md text-center text-sm font-extrabold ${retailer.logoClass}`}
+                        aria-hidden="true"
+                      >
+                        {retailer.logo}
                       </span>
-                      <span className="font-semibold">{retailer.count}</span>
+                      <span className="min-w-0 truncate font-medium">{retailer.label}</span>
                     </label>
                   ))}
                 </div>
