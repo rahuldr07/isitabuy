@@ -1,15 +1,26 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import NextLink from "next/link";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { Line } from "react-chartjs-2";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  type ChartOptions,
+} from "chart.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
+  ArrowRightIcon,
   BadgeCheck,
   Bell,
   Camera,
@@ -19,16 +30,13 @@ import {
   ClipboardCheck,
   Dumbbell,
   Gamepad2,
-  Globe,
   HeartPulse,
   Home,
   ImageIcon,
   Info,
   Link,
   Lock,
-  Mail,
   Menu,
-  Plug,
   ScanBarcode,
   ShieldCheck,
   Shirt,
@@ -37,6 +45,7 @@ import {
   Sparkles,
   Star,
   Store,
+  TrendingDownIcon,
   Utensils,
   Wrench,
   X,
@@ -45,11 +54,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 const MotionButton = motion.create(Button);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
 const pageVariants: Variants = {
   hidden: { opacity: 1 },
@@ -58,15 +68,6 @@ const pageVariants: Variants = {
     transition: {
       staggerChildren: 0.08,
     },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 
@@ -88,16 +89,13 @@ const panelVariants: Variants = {
 
 const navItems = ["How It Works", "Categories", "Deals", "Chrome Extension", "Blog", "Retailers"];
 
-const retailers = ["amazon", "Walmart", "BEST BUY", "target", "ebay"];
-
-const scoreBreakdown = [
-  { label: "Value Score", value: 85, color: "bg-[var(--happy-green)]" },
-  { label: "Quality Score", value: 88, color: "bg-[var(--happy-blue)]" },
-  { label: "Price Score", value: 78, color: "bg-[var(--happy-orange)]" },
-  { label: "Review Trust", value: 86, color: "bg-[var(--happy-pink)]" },
-  { label: "Health & Safety", value: 90, color: "bg-[var(--happy-cyan)]" },
-  { label: "Confidence", value: 82, color: "bg-teal-300" },
-];
+const retailers = [
+  { name: "Amazon", src: "/home/logos/amazon-official.jpg" },
+  { name: "Walmart", src: "/home/logos/walmart-official.png" },
+  { name: "Best Buy", src: "/home/logos/bestbuy-official.jpeg" },
+  { name: "Target", src: "/home/logos/target-official.png" },
+  { name: "eBay", src: "/home/logos/ebay-official.png" },
+] as const;
 
 const steps = [
   { icon: Link, title: "1. Enter Product", text: "Paste a link, search, scan, or upload.", tint: "bg-purple-100 text-[var(--happy-purple)]" },
@@ -141,6 +139,93 @@ const footerColumns = [
   { title: "Legal", links: ["Affiliate Disclosure", "Privacy Policy", "Terms of Service", "How We Score"] },
 ];
 
+const socialLinks = [
+  { label: "X", src: "/home/logos/x.svg" },
+  { label: "Facebook", src: "/home/logos/facebook.svg" },
+  { label: "Instagram", src: "/home/logos/instagram.svg" },
+  { label: "YouTube", src: "/home/logos/youtube.svg" },
+] as const;
+
+interface ScoreItem {
+  label: string;
+  value: number;
+  color: string;
+}
+
+interface PriceRange {
+  labels: string[];
+  data: number[];
+}
+
+interface AlternativeProduct {
+  name: string;
+  price: number;
+  saving: number;
+  imageSrc: string;
+  imageAlt: string;
+}
+
+interface Product {
+  name: string;
+  category: string;
+  imageSrc: string;
+  imageAlt: string;
+  aiScore: number;
+  verdict: "Buy" | "Wait" | "Avoid";
+  description: string;
+  currentPrice: number;
+  priceDropAmount: number;
+  priceDropPercent: number;
+  scores: ScoreItem[];
+  priceHistory: Record<RangeKey, PriceRange>;
+  alternative: AlternativeProduct;
+}
+
+type RangeKey = "1m" | "3m" | "6m" | "1y";
+
+const RANGES: RangeKey[] = ["1m", "3m", "6m", "1y"];
+
+const VERDICT_STYLES: Record<Product["verdict"], { bg: string; text: string }> = {
+  Buy: { bg: "bg-emerald-100", text: "text-emerald-700" },
+  Wait: { bg: "bg-amber-100", text: "text-amber-700" },
+  Avoid: { bg: "bg-red-100", text: "text-red-700" },
+};
+
+const DEMO_PRODUCT: Product = {
+  name: "Apple AirPods Pro 2",
+  category: "Wireless Earbuds",
+  imageSrc: "/home/products/airpods-pro-2.png",
+  imageAlt: "Apple AirPods Pro 2 in charging case",
+  aiScore: 82,
+  verdict: "Buy",
+  description:
+    "Great value for the performance. Strong reviews, good reliability, and lower price than similar options.",
+  currentPrice: 249,
+  priceDropAmount: 28,
+  priceDropPercent: 10,
+  scores: [
+    { label: "Value Score", value: 85, color: "#1D9E75" },
+    { label: "Quality Score", value: 88, color: "#378ADD" },
+    { label: "Price Score", value: 78, color: "#EF9F27" },
+    { label: "Review Trust", value: 86, color: "#D4537E" },
+    { label: "Health & Safety", value: 90, color: "#5DCAA5" },
+    { label: "Confidence", value: 82, color: "#85B7EB" },
+  ],
+  priceHistory: {
+    "1m": { labels: ["1 Feb", "8 Feb", "15 Feb", "22 Feb", "1 Mar"], data: [279, 265, 269, 255, 249] },
+    "3m": { labels: ["Dec", "Jan", "Feb", "Mar"], data: [299, 279, 265, 249] },
+    "6m": { labels: ["Sep", "Oct", "Nov", "Dec", "Jan", "Mar"], data: [319, 309, 299, 285, 269, 249] },
+    "1y": { labels: ["Mar '24", "Jun", "Sep", "Dec", "Mar '25"], data: [349, 329, 319, 285, 249] },
+  },
+  alternative: {
+    name: "Sony WF-1000XM5",
+    price: 199.99,
+    saving: 49,
+    imageSrc: "/home/products/sony-wf1000xm5.png",
+    imageAlt: "Sony WF-1000XM5 earbuds",
+  },
+};
+
 interface IconText {
   icon: LucideIcon;
   title: string;
@@ -150,11 +235,11 @@ interface IconText {
 
 function Logo() {
   return (
-    <a href="#top" className="flex items-center gap-2.5" aria-label="Happy home">
-      <span className="grid size-7 place-items-center rounded-lg bg-[var(--happy-orange)] text-white shadow-sm">
+    <a href="#top" className="flex items-center gap-2.5" aria-label="IsItABuy home">
+      <span className="grid size-7 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-extrabold tracking-tight text-[var(--happy-ink)]">Happy</span>
+      <span className="text-xl font-extrabold tracking-tight text-[var(--happy-ink)]">IsItABuy</span>
     </a>
   );
 }
@@ -182,12 +267,12 @@ function Header() {
         </div>
         <div className="hidden items-center gap-3 md:flex">
           <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-            <Button asChild variant="outline" size="lg" className="h-8 rounded-lg px-5 text-xs font-bold">
+            <Button asChild variant="outline" size="lg" className="h-8 rounded-full px-5 text-xs font-bold">
               <NextLink href="/signin">Log in</NextLink>
             </Button>
           </motion.div>
           <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-            <Button asChild size="lg" className="h-8 rounded-lg bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
+            <Button asChild size="lg" className="h-8 rounded-full bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
               <NextLink href="/signin?mode=signup">Sign up</NextLink>
             </Button>
           </motion.div>
@@ -271,44 +356,6 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
   );
 }
 
-function ProductImage({
-  src,
-  alt,
-  className,
-  fallbackIcon: FallbackIcon = ImageIcon,
-}: {
-  src?: string;
-  alt: string;
-  className?: string;
-  fallbackIcon?: LucideIcon;
-}) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(!src);
-
-  if (failed || !src) {
-    return (
-      <div className={cn("grid place-items-center rounded-2xl bg-slate-100 text-slate-400", className)}>
-        <FallbackIcon className="size-10" aria-hidden="true" />
-        <span className="sr-only">{alt}</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className={cn("relative overflow-hidden rounded-2xl bg-slate-50", className)}>
-      <AnimatePresence>{!loaded ? <Skeleton className="absolute inset-0 rounded-2xl" /> : null}</AnimatePresence>
-      <img
-        src={src}
-        alt={alt}
-        className="h-full w-full object-cover"
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        onError={() => setFailed(true)}
-      />
-    </div>
-  );
-}
-
 function MiniChart({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 220 112" className={cn("h-24 w-full", className)} aria-hidden="true">
@@ -319,33 +366,68 @@ function MiniChart({ className }: { className?: string }) {
 }
 
 function HeroVisual() {
+  const visualRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (shouldReduceMotion || !visualRef.current) {
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>("[data-hero-float]").forEach((card, index) => {
+        gsap.to(card, {
+          y: index % 2 === 0 ? -10 : 10,
+          duration: 2.4 + index * 0.28,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: index * 0.25,
+        });
+      });
+
+      gsap.fromTo(
+        "[data-hero-products]",
+        { y: 28, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", delay: 0.2 }
+      );
+    }, visualRef);
+
+    return () => ctx.revert();
+  }, [shouldReduceMotion]);
+
   return (
-    <motion.div className="relative min-h-[19rem] overflow-visible bg-[image:var(--happy-hero-glow)] lg:min-h-[23rem]" variants={itemVariants}>
-      <motion.div
-        className="absolute left-[18%] top-[17%] z-10 h-52 w-40 rounded-[1.75rem] bg-gradient-to-br from-stone-100 to-stone-300 shadow-[var(--happy-float-shadow)]"
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="absolute left-4 top-4 grid size-14 grid-cols-2 gap-1.5 rounded-2xl bg-slate-900 p-2 shadow-inner">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <span key={index} className="rounded-full bg-slate-700 shadow-inner" />
-          ))}
-        </div>
-        <div className="absolute bottom-8 left-1/2 size-14 -translate-x-1/2 rounded-full bg-slate-300/70" />
-      </motion.div>
-      <motion.div className="absolute left-[6%] top-[26%] z-20 size-40 rounded-full border-[1.1rem] border-stone-200 bg-transparent shadow-[var(--happy-float-shadow)]" animate={{ rotate: [0, 2, 0] }} transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}>
-        <span className="absolute -bottom-7 left-5 h-20 w-12 rounded-3xl bg-stone-100 shadow-lg" />
-        <span className="absolute -bottom-7 right-5 h-20 w-12 rounded-3xl bg-stone-100 shadow-lg" />
-      </motion.div>
-      <motion.div className="absolute bottom-12 left-[41%] z-30 size-24 rounded-[1.5rem] bg-slate-950 shadow-[var(--happy-float-shadow)] ring-8 ring-slate-800" animate={{ y: [0, 8, 0] }} transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}>
-        <div className="m-3 h-16 rounded-2xl bg-black">
-          <MiniChart className="h-full text-orange-400" />
-        </div>
-      </motion.div>
-      <motion.div className="absolute bottom-9 left-[58%] z-20 size-24 rounded-full bg-slate-900 shadow-[var(--happy-float-shadow)]" animate={{ y: [0, -5, 0] }} transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}>
-        <span className="absolute left-7 top-6 size-14 rounded-full bg-slate-800" />
-      </motion.div>
-      <FloatingInfo className="right-4 top-9 w-44" title="AI Buy Score">
+    <motion.div
+      ref={visualRef}
+      className="relative min-h-[34rem] overflow-hidden rounded-[2rem] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,#ede9fe_0%,#fce7d6_42%,#f8f4ff_72%,#fff_100%)]"
+      initial={shouldReduceMotion ? false : { y: 18 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
+    >
+      <span aria-hidden="true" className="pointer-events-none absolute left-[58%] top-[18%] select-none text-2xl text-purple-400/70">&#10022;</span>
+      <span aria-hidden="true" className="pointer-events-none absolute right-[10%] top-[42%] select-none text-lg text-purple-300/60">&#10022;</span>
+      <span aria-hidden="true" className="pointer-events-none absolute left-[28%] bottom-[20%] select-none text-sm text-purple-300/50">&#10022;</span>
+
+      <div data-hero-products className="absolute inset-0 z-0">
+        <motion.div
+          className="absolute inset-0"
+          initial={shouldReduceMotion ? false : { y: 24, scale: 0.98 }}
+          animate={{ y: 0, scale: 1 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+        >
+          <Image
+            src="/home/products/hero-product-cluster.png"
+            alt="Premium phone, headphones, and watch product cluster"
+            fill
+            sizes="(max-width: 1024px) 100vw, 540px"
+            className="object-cover object-center"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/20" />
+        </motion.div>
+      </div>
+
+      <FloatingInfo dataFloat className="right-5 top-8 w-[190px]" title="AI Buy Score">
         <div className="flex items-center gap-3">
           <ScoreRing score={82} />
           <div>
@@ -354,32 +436,33 @@ function HeroVisual() {
           </div>
         </div>
       </FloatingInfo>
-      <FloatingInfo className="right-0 top-40 w-48" title="Price History">
+      <FloatingInfo dataFloat className="bottom-32 right-3 w-[180px]" title="Price History">
         <MiniChart />
       </FloatingInfo>
-      <FloatingInfo className="bottom-10 left-6 w-40" title="Better Alternative">
+      <FloatingInfo dataFloat className="bottom-24 left-4 w-[180px]" title="Better Alternative">
         <div className="flex items-center gap-3">
           <span className="grid size-8 place-items-center rounded-xl bg-amber-100"><Dumbbell className="size-4 text-amber-600" /></span>
           <div>
-            <p className="text-xs font-extrabold">Save $48</p>
+            <p className="text-xs font-extrabold text-[var(--happy-ink)]">Save $68</p>
           </div>
         </div>
       </FloatingInfo>
-      <FloatingInfo className="bottom-0 right-24 w-40" title="Trusted Reviews">
+      <FloatingInfo dataFloat className="bottom-5 left-1/2 w-[190px] -translate-x-1/4" title="Trusted Reviews">
         <div className="flex items-center gap-1 text-[var(--happy-orange)]">
-          <span className="text-base font-extrabold">4.6</span>
-          {Array.from({ length: 5 }).map((_, index) => <Star key={index} className="size-3 fill-current" />)}
+          <span className="text-xl font-black text-[var(--happy-ink)]">4.6</span>
+          {Array.from({ length: 5 }).map((_, index) => <Star key={index} className={cn("size-3.5 fill-current", index === 4 && "opacity-35")} />)}
         </div>
-        <p className="mt-1 text-[0.62rem] font-semibold text-slate-500">12,842 reviews</p>
+        <p className="mt-1 text-[0.62rem] font-semibold text-slate-500">12,642 reviews</p>
       </FloatingInfo>
     </motion.div>
   );
 }
 
-function FloatingInfo({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
+function FloatingInfo({ title, children, className, dataFloat = false }: { title: string; children: React.ReactNode; className?: string; dataFloat?: boolean }) {
   return (
     <motion.div
-      className={cn("absolute z-40 rounded-xl border border-[var(--happy-line)] bg-white/92 p-3 shadow-[var(--happy-float-shadow)] backdrop-blur", className)}
+      data-hero-float={dataFloat ? true : undefined}
+      className={cn("absolute z-40 rounded-2xl border border-[var(--happy-line)] bg-white/90 p-4 shadow-xl backdrop-blur-md", className)}
       initial={{ opacity: 0, y: 18, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.35, duration: 0.55 }}
@@ -393,6 +476,7 @@ function FloatingInfo({ title, children, className }: { title: string; children:
 function HeroSection() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const hasQuery = query.trim().length > 0;
 
@@ -403,7 +487,12 @@ function HeroSection() {
 
   return (
     <section id="top" className="mx-auto grid max-w-6xl gap-7 px-4 pb-5 pt-7 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pt-8">
-      <motion.div className="flex flex-col justify-center" variants={itemVariants}>
+      <motion.div
+        className="flex flex-col justify-center"
+        initial={shouldReduceMotion ? false : { y: 18 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <h1 className="max-w-xl text-4xl font-black leading-[1.05] tracking-normal text-[var(--happy-ink)] sm:text-5xl lg:text-6xl">
           Know what to buy <span className="text-[var(--happy-orange)]">before</span> you buy.
         </h1>
@@ -418,7 +507,7 @@ function HeroSection() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Paste product link or search product name..."
-                className="h-12 rounded-lg border-[var(--happy-line)] bg-white pl-12 text-sm font-semibold shadow-sm placeholder:text-slate-400"
+                className="h-12 rounded-full border-[var(--happy-line)] bg-white pl-12 text-sm font-semibold shadow-sm placeholder:text-slate-400"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runCheck();
                 }}
@@ -427,7 +516,7 @@ function HeroSection() {
             <MotionButton
               type="button"
               onClick={runCheck}
-              className="h-12 rounded-lg bg-[var(--happy-orange)] px-7 text-sm font-extrabold text-white hover:bg-[var(--happy-orange-dark)]"
+              className="h-12 rounded-full bg-[var(--happy-orange)] px-7 text-sm font-extrabold text-white hover:bg-[var(--happy-orange-dark)]"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -447,7 +536,7 @@ function HeroSection() {
 
 function ActionButton({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
-    <MotionButton variant="outline" className="h-12 rounded-lg border-[var(--happy-line)] bg-white text-sm font-extrabold text-[var(--happy-ink)] shadow-sm" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
+    <MotionButton variant="outline" className="h-12 rounded-full border-[var(--happy-line)] bg-white text-sm font-extrabold text-[var(--happy-ink)] shadow-sm" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
       <Icon className="size-5 text-[var(--happy-purple)]" aria-hidden="true" />
       {label}
     </MotionButton>
@@ -462,86 +551,187 @@ function RetailerStrip() {
           <h2 className="px-4 pt-5 text-center text-lg font-extrabold text-[var(--happy-ink)]">We check millions of products from trusted retailers</h2>
           <div className="mt-4 grid divide-y divide-[var(--happy-line)] border-t border-[var(--happy-line)] sm:grid-cols-5 sm:divide-x sm:divide-y-0">
             {retailers.map((retailer) => (
-              <motion.div key={retailer} className="grid h-20 place-items-center text-3xl font-black tracking-tight" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <RetailerLogo name={retailer} />
+              <motion.div key={retailer.name} className="grid h-24 place-items-center px-6" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                <Image src={retailer.src} alt={`${retailer.name} logo`} width={190} height={72} className="max-h-16 w-full object-contain" />
               </motion.div>
             ))}
           </div>
-          <LinkText className="mx-auto my-4 justify-center" label="View all retailers" />
+          <LinkText className="mx-auto my-4 w-fit justify-center text-[var(--happy-purple)]" label="View all retailers" />
         </CardContent>
       </Card>
     </section>
   );
-}
-
-function RetailerLogo({ name }: { name: string }) {
-  if (name === "amazon") return <span className="text-slate-800">amazon</span>;
-  if (name === "Walmart") return <span className="text-blue-600">Walmart <span className="text-amber-400">*</span></span>;
-  if (name === "BEST BUY") return <span className="leading-none text-slate-900">BEST<br />BUY</span>;
-  if (name === "target") return <span className="text-red-600">target</span>;
-  return <span><span className="text-blue-600">e</span><span className="text-red-500">b</span><span className="text-yellow-500">a</span><span className="text-green-600">y</span></span>;
 }
 
 function ProductVerdict() {
   return (
     <section className="scroll-reveal mx-auto mt-10 max-w-6xl px-4 sm:px-6 lg:px-10">
-      <Card className="rounded-xl border border-[var(--happy-line)] bg-white py-0 shadow-none">
-        <CardContent className="grid gap-0 px-0 lg:grid-cols-[1.32fr_0.85fr_0.78fr_0.92fr]">
-          <div className="grid gap-6 border-b border-[var(--happy-line)] p-6 sm:grid-cols-[10rem_1fr] lg:border-b-0 lg:border-r">
-            <ProductImage src="https://images.pexels.com/photos/3962285/pexels-photo-3962285.jpeg?auto=compress&cs=tinysrgb&w=360" alt="Apple AirPods Pro 2" className="aspect-square" />
-            <div className="min-w-0">
-              <h3 className="truncate text-xl font-extrabold text-[var(--happy-ink)]">Apple AirPods Pro 2</h3>
-              <p className="mt-1 text-sm font-semibold text-[var(--happy-muted)]">Wireless Earbuds</p>
-              <div className="mt-8 flex items-center gap-4">
-                <ScoreRing score={82} size="sm" />
-                <span className="text-sm font-extrabold text-[var(--happy-ink)]">AI Buy Score</span>
-                <Badge className="bg-[var(--happy-green-soft)] px-3 text-[var(--happy-green)] hover:bg-[var(--happy-green-soft)]">Buy</Badge>
-              </div>
-              <p className="mt-7 max-w-sm text-sm font-medium leading-6 text-[var(--happy-muted)]">Great value for the performance. Strong reviews, good reliability, and lower price than similar options.</p>
-            </div>
-          </div>
-          <Panel title="Scores Breakdown" className="border-b border-[var(--happy-line)] p-6 lg:border-b-0 lg:border-r">
-            <div className="grid gap-3">
-              {scoreBreakdown.map((score) => (
-                <div key={score.label} className="grid grid-cols-[7rem_1fr_3rem] items-center gap-3">
-                  <span className="truncate text-xs font-bold text-[var(--happy-muted)]">{score.label}</span>
-                  <span className="h-1.5 rounded-full bg-slate-100">
-                    <motion.span className={cn("block h-full rounded-full", score.color)} initial={{ width: 0 }} whileInView={{ width: `${score.value}%` }} viewport={{ once: true }} transition={{ duration: 0.8 }} />
-                  </span>
-                  <span className="text-right text-xs font-bold text-[var(--happy-ink)]">{score.value}/100</span>
-                </div>
-              ))}
-            </div>
-          </Panel>
-          <Panel title="Price History" className="border-b border-[var(--happy-line)] p-6 lg:border-b-0 lg:border-r">
-            <p className="text-2xl font-black text-[var(--happy-ink)]">$249</p>
-            <p className="text-xs font-semibold text-[var(--happy-muted)]">Current Price</p>
-            <MiniChart className="mt-2" />
-            <p className="mt-2 text-xs font-bold text-[var(--happy-green)]">↓ $28 (10%)</p>
-            <p className="text-xs font-semibold text-[var(--happy-muted)]">of 30-day avg</p>
-          </Panel>
-          <Panel title="Best Alternative" className="p-6">
-            <div className="mt-6 flex items-center gap-4">
-              <ProductImage src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=180" alt="Sony headphones" className="size-20" />
-              <div className="min-w-0">
-                <p className="truncate text-base font-extrabold text-[var(--happy-ink)]">Sony WF-1000XM5</p>
-                <p className="mt-2 text-xl font-black text-[var(--happy-ink)]">$199.99</p>
-                <Badge className="mt-2 bg-[var(--happy-green-soft)] text-[var(--happy-green)] hover:bg-[var(--happy-green-soft)]">Save $49</Badge>
-              </div>
-            </div>
-            <LinkText className="mt-10" label="View comparison" />
-          </Panel>
-        </CardContent>
-      </Card>
+      <ProductAnalysisCard />
     </section>
   );
 }
 
-function Panel({ title, className, children }: { title: string; className?: string; children: React.ReactNode }) {
+function ScoreBar({ item }: { item: ScoreItem }) {
   return (
-    <div className={className}>
-      <h3 className="mb-7 text-sm font-extrabold text-[var(--happy-ink)]">{title}</h3>
-      {children}
+    <div className="flex items-center gap-3">
+      <span className="w-[110px] shrink-0 truncate text-xs font-semibold text-gray-500">{item.label}</span>
+      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
+        <div
+          className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
+          style={{ width: `${item.value}%`, backgroundColor: item.color }}
+        />
+      </div>
+      <span className="w-[42px] shrink-0 text-right text-xs font-semibold text-gray-400">{item.value}/100</span>
+    </div>
+  );
+}
+
+function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
+  const [range, setRange] = useState<RangeKey>("1m");
+  const current = history[range];
+  const chartData = {
+    labels: current.labels,
+    datasets: [
+      {
+        data: current.data,
+        borderColor: "#1D9E75",
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: "#1D9E75",
+        tension: 0.4,
+        fill: true,
+        backgroundColor: "rgba(29,158,117,0.08)",
+      },
+    ],
+  };
+  const chartOptions: ChartOptions<"line"> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: {
+        ticks: { font: { size: 10 }, color: "#9ca3af" },
+        grid: { display: false },
+        border: { display: false },
+      },
+      y: {
+        ticks: {
+          font: { size: 10 },
+          color: "#9ca3af",
+          callback: (value) => `$${value}`,
+        },
+        grid: { color: "rgba(0,0,0,0.04)" },
+        border: { display: false },
+      },
+    },
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex gap-1.5">
+        {RANGES.map((item) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setRange(item)}
+            className={cn(
+              "rounded-full px-2.5 py-1 text-xs font-bold transition-colors",
+              range === item ? "bg-gray-100 text-gray-900" : "text-gray-400 hover:text-gray-600"
+            )}
+          >
+            {item.toUpperCase()}
+          </button>
+        ))}
+      </div>
+      <div className="relative h-[96px] w-full">
+        <Line data={chartData} options={chartOptions} />
+      </div>
+    </div>
+  );
+}
+
+function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) {
+  const verdict = VERDICT_STYLES[product.verdict];
+
+  return (
+    <div className="w-full">
+      <div className="mb-3 flex justify-center">
+        <NextLink href="/retailers" className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--happy-purple)] hover:text-violet-700">
+          View all retailers
+          <ArrowRightIcon className="size-3.5" />
+        </NextLink>
+      </div>
+      <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--happy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+        <div className="flex flex-col gap-4 p-6">
+          <div className="flex h-[120px] items-center justify-center overflow-hidden rounded-xl bg-gray-50">
+            <Image src={product.imageSrc} alt={product.imageAlt} width={150} height={115} className="object-contain" />
+          </div>
+          <div>
+            <h2 className="truncate text-[15px] font-black text-gray-900">{product.name}</h2>
+            <p className="text-sm font-semibold text-gray-400">{product.category}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <ScoreRing score={product.aiScore} size="sm" />
+            <div>
+              <p className="mb-1.5 text-xs font-semibold text-gray-400">AI Buy Score</p>
+              <span className={cn("inline-block rounded-full px-3 py-0.5 text-xs font-bold", verdict.bg, verdict.text)}>{product.verdict}</span>
+            </div>
+          </div>
+          <p className="line-clamp-4 text-[13px] font-medium leading-6 text-gray-500">{product.description}</p>
+        </div>
+        <div className="flex flex-col gap-3 p-6">
+          <h3 className="text-sm font-black text-gray-900">Scores breakdown</h3>
+          <div className="flex flex-col gap-3">
+            {product.scores.map((score) => (
+              <ScoreBar key={score.label} item={score} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 p-6">
+          <h3 className="text-sm font-black text-gray-900">Price history</h3>
+          <div>
+            <p className="text-2xl font-black text-gray-900">${product.currentPrice.toLocaleString()}</p>
+            <p className="text-xs font-semibold text-gray-400">Current price</p>
+          </div>
+          <PriceChart history={product.priceHistory} />
+          <div className="flex items-start gap-2">
+            <TrendingDownIcon className="mt-0.5 size-4 shrink-0 text-emerald-600" />
+            <div>
+              <p className="text-xs font-bold text-emerald-600">Down ${product.priceDropAmount} ({product.priceDropPercent}%)</p>
+              <p className="text-[11px] font-semibold text-gray-400">of 30-day avg</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 p-6">
+          <h3 className="text-sm font-black text-gray-900">Best alternative</h3>
+          <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
+            <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
+              <Image src={product.alternative.imageSrc} alt={product.alternative.imageAlt} width={52} height={52} className="object-contain" />
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-[13px] font-black text-gray-900">{product.alternative.name}</p>
+              <p className="mt-0.5 text-base font-black text-gray-900">${product.alternative.price.toFixed(2)}</p>
+              <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700">Save ${product.alternative.saving}</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            {[
+              { label: "Noise cancelling", value: "Better", positive: true },
+              { label: "Battery life", value: "12h vs 6h", positive: true },
+              { label: "AI score", value: "79/100", positive: false },
+            ].map(({ label, value, positive }) => (
+              <div key={label} className="flex items-center justify-between gap-3">
+                <span className="truncate text-[11px] font-semibold text-gray-400">{label}</span>
+                <span className={cn("shrink-0 text-[11px] font-bold", positive ? "text-emerald-600" : "text-gray-700")}>{value}</span>
+              </div>
+            ))}
+          </div>
+          <NextLink href="/compare" className="mt-auto inline-flex items-center gap-1 text-sm font-bold text-[var(--happy-purple)] hover:text-violet-700">
+            View comparison
+            <ArrowRightIcon className="size-3.5" />
+          </NextLink>
+        </div>
+      </div>
     </div>
   );
 }
@@ -582,14 +772,14 @@ function ExtensionSection() {
       <div className="grid overflow-hidden rounded-xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] lg:grid-cols-[1fr_1fr]">
         <div className="flex items-center gap-7 p-8">
           <span className="grid size-24 shrink-0 place-items-center rounded-full bg-white shadow-sm">
-            <Globe className="size-16 text-[var(--happy-orange)]" aria-hidden="true" />
+            <Image src="/home/logos/chrome.svg" alt="Chrome logo" width={72} height={72} className="size-16 object-contain" />
           </span>
           <div>
             <h2 className="text-2xl font-extrabold text-[var(--happy-ink)]">Get our free Chrome extension</h2>
             <p className="mt-3 max-w-lg text-sm font-medium leading-6 text-[var(--happy-muted)]">Instant AI insights on any product page. See scores, price history, and better alternatives without leaving the store.</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <MotionButton className="h-9 rounded-lg bg-[var(--happy-purple)] px-5 text-sm font-bold text-white hover:bg-violet-800" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Add to Chrome</MotionButton>
-              <MotionButton variant="outline" className="h-9 rounded-lg bg-white px-5 text-sm font-bold" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Learn more</MotionButton>
+              <MotionButton className="h-9 rounded-full bg-[var(--happy-purple)] px-5 text-sm font-bold text-white hover:bg-violet-800" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Add to Chrome</MotionButton>
+              <MotionButton variant="outline" className="h-9 rounded-full bg-white px-5 text-sm font-bold" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Learn more</MotionButton>
             </div>
           </div>
         </div>
@@ -616,7 +806,7 @@ function LogoMini() {
   return (
     <div className="flex items-center gap-1.5">
       <ShoppingBag className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
-      <span className="text-xs font-extrabold text-[var(--happy-ink)]">Happy</span>
+      <span className="text-xs font-extrabold text-[var(--happy-ink)]">IsItABuy</span>
     </div>
   );
 }
@@ -662,7 +852,7 @@ function CategoriesSection() {
 function TrustSection() {
   return (
     <section className="scroll-reveal mx-auto mt-8 grid max-w-6xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.05fr_1.45fr_0.82fr] lg:px-10">
-      <InfoCard title="Why trust Happy?" items={trustItems} />
+      <InfoCard title="Why trust IsItABuy?" items={trustItems} />
       <InfoCard title="Our data sources" items={sources} columns />
       <Card className="rounded-xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] py-0 shadow-none">
         <CardContent className="p-8">
@@ -722,8 +912,19 @@ function Footer() {
         <div>
           <Logo />
           <p className="mt-5 max-w-56 text-sm font-medium leading-6 text-[var(--happy-muted)]">AI product insights to help you buy smarter and spend better.</p>
-          <div className="mt-5 flex gap-3 text-[var(--happy-ink)]">
-            {[Mail, Globe, Camera, Plug].map((Icon, index) => <Icon key={index} className="size-4" aria-hidden="true" />)}
+          <div className="mt-5 flex gap-3">
+            {socialLinks.map((social) => (
+              <motion.a
+                key={social.label}
+                href="#"
+                aria-label={social.label}
+                className="grid size-8 place-items-center rounded-full border border-[var(--happy-line)] bg-white shadow-sm"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <Image src={social.src} alt="" width={16} height={16} className="size-4 object-contain" />
+              </motion.a>
+            ))}
           </div>
         </div>
         {footerColumns.map((column) => (
@@ -740,21 +941,20 @@ function Footer() {
           <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">Download</h3>
           <p className="mt-4 text-sm font-medium text-[var(--happy-muted)]">Get our mobile app</p>
           <div className="mt-4 grid gap-2">
-            <StoreButton label="App Store" />
-            <StoreButton label="Google Play" />
+            <StoreButton src="/home/badges/app-store.svg" label="App Store" />
+            <StoreButton src="/home/badges/google-play.svg" label="Google Play" />
           </div>
         </div>
       </div>
-      <p className="mt-8 text-center text-xs font-semibold text-[var(--happy-muted)]">© 2024 Happy. All rights reserved.</p>
+      <p className="mt-8 text-center text-xs font-semibold text-[var(--happy-muted)]">&copy; 2024 IsItABuy. All rights reserved.</p>
     </footer>
   );
 }
 
-function StoreButton({ label }: { label: string }) {
+function StoreButton({ src, label }: { src: string; label: string }) {
   return (
-    <motion.button type="button" className="flex h-10 items-center gap-3 rounded-md bg-black px-3 text-left text-white" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-      <Smartphone className="size-5" aria-hidden="true" />
-      <span className="text-xs font-bold leading-tight">Download on<br /><span className="text-sm">{label}</span></span>
+    <motion.button type="button" className="relative h-10 w-36 overflow-hidden rounded-lg bg-black shadow-sm" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
+      <Image src={src} alt={label} fill sizes="144px" className="object-contain" />
     </motion.button>
   );
 }
@@ -768,7 +968,7 @@ function LinkText({ label, className }: { label: string; className?: string }) {
   );
 }
 
-export default function HappyHomePage() {
+export default function IsItABuyHomePage() {
   const rootRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 

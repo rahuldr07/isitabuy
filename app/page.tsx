@@ -1,5 +1,5 @@
-import HappyHomePage from "@/components/home/happy-home-page";
+import IsItABuyHomePage from "@/components/home/isitabuy-home-page";
 
 export default function Home() {
-  return <HappyHomePage />;
+  return <IsItABuyHomePage />;
 }

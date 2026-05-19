@@ -356,7 +356,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
         </nav>
       </motion.header>
 
-      <div className="mx-auto grid w-full max-w-[1170px] gap-7 px-5 py-8 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-start lg:gap-8 lg:px-8 lg:py-8 xl:grid-cols-[480px_588px] xl:gap-[102px] xl:px-0">
+      <div className="mx-auto grid w-full max-w-[1240px] gap-7 px-5 py-8 sm:px-8 lg:grid-cols-[0.98fr_1.02fr] lg:items-start lg:gap-8 lg:px-8 lg:py-8 xl:grid-cols-[620px_588px] xl:gap-8 xl:px-0">
         <motion.section
           className="flex flex-col gap-5"
           variants={shouldReduceMotion ? undefined : itemVariants}
@@ -367,31 +367,31 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
           </Badge>
 
           <div className="flex flex-col gap-4">
-            <h1 className="max-w-[480px] text-[44px] font-black leading-[1.16] tracking-normal text-foreground sm:text-[48px]">
+            <h1 className="max-w-[560px] text-[44px] font-black leading-[1.16] tracking-normal text-foreground sm:text-[48px]">
               Shop smarter with your own AI buying{" "}
               <span className="text-buy">assistant</span>.
             </h1>
-            <p className="max-w-[390px] text-[16px] font-semibold leading-7 text-muted-foreground">
+            <p className="max-w-[520px] text-[16px] font-semibold leading-7 text-muted-foreground">
               Create an account to save products, track prices, upload receipts,
               and get personalized recommendations.
             </p>
           </div>
 
-          <Card className="max-w-[520px] rounded-2xl border-border bg-card/95 py-0 shadow-soft">
-            <CardContent className="grid grid-cols-[auto_auto_auto_auto] items-center justify-between gap-4 px-5 py-3.5 max-[520px]:grid-cols-2">
+          <Card className="w-full max-w-[620px] rounded-full border-border bg-card/95 py-0 shadow-soft">
+            <CardContent className="grid grid-cols-[max-content_max-content_max-content_max-content] items-center justify-between gap-5 px-6 py-4 max-sm:flex max-sm:flex-wrap max-sm:gap-x-5 max-sm:gap-y-3 max-sm:px-6">
               <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-3 rounded-full bg-buy" />
-                <span className="text-sm font-extrabold">Buy Now</span>
+                <span className="size-4 rounded-full bg-buy" />
+                <span className="text-[15px] font-black leading-none sm:text-base">Buy Now</span>
               </div>
               <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-3 rounded-full bg-wait" />
-                <span className="text-sm font-extrabold">Wait</span>
+                <span className="size-4 rounded-full bg-wait" />
+                <span className="text-[15px] font-black leading-none sm:text-base">Wait</span>
               </div>
               <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-3 rounded-full bg-avoid" />
-                <span className="text-sm font-extrabold">Avoid</span>
+                <span className="size-4 rounded-full bg-avoid" />
+                <span className="text-[15px] font-black leading-none sm:text-base">Avoid</span>
               </div>
-              <Badge className="justify-self-end whitespace-nowrap rounded-full bg-[image:var(--value-gradient)] px-3.5 py-1.5 text-xs font-black text-primary-foreground max-[520px]:justify-self-start">
+              <Badge className="whitespace-nowrap rounded-full bg-[image:var(--value-gradient)] px-3.5 py-1.5 text-xs font-black text-primary-foreground sm:text-sm">
                 <SparklesIcon data-icon="inline-start" />
                 BEST VALUE
               </Badge>
@@ -417,43 +417,52 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             ))}
           </div>
 
-          <Card data-scroll-reveal className="max-w-[520px] rounded-2xl bg-card py-0 shadow-soft">
-            <CardContent className="grid gap-0 p-0 sm:grid-cols-[1.35fr_0.85fr_0.85fr]">
-              <div className="flex items-center gap-4 bg-soft-buy px-5 py-4">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-buy text-primary-foreground">
+          <div data-scroll-reveal className="grid max-w-[620px] gap-3">
+            <Card className="rounded-2xl border-buy/10 bg-soft-buy py-0 shadow-soft">
+              <CardContent className="flex items-center gap-4 p-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-buy text-primary-foreground">
                   <ShieldCheckIcon aria-hidden="true" className="size-6" />
                 </span>
-                <div className="min-w-0">
-                  <h3 className="text-sm font-black leading-5 text-foreground">
-                    Basic checking is free
-                  </h3>
-                  <p className="mt-1 text-xs font-semibold leading-5 text-muted-foreground">
-                    No login required to search products.
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-black leading-5 text-foreground">
+                      Basic product checking is free
+                    </h3>
+                    <Link href="/" className="text-xs font-black text-buy">
+                      Learn more -&gt;
+                    </Link>
+                  </div>
+                  <p className="mt-1 text-sm font-semibold leading-6 text-muted-foreground">
+                    Search and check products before creating an account.
                   </p>
-                  <Link href="/" className="mt-2 inline-flex text-xs font-black text-buy">
-                    Learn more -&gt;
-                  </Link>
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              <div className="flex min-w-0 flex-col justify-center border-t px-5 py-4 sm:border-l sm:border-t-0">
-                <ShieldCheckIcon aria-hidden="true" className="mb-2 size-6 text-buy" />
-                <p className="text-xs font-semibold text-muted-foreground">Trusted by</p>
-                <p className="mt-1 text-xl font-black leading-none text-foreground">500K+</p>
-                <p className="mt-1 text-xs text-muted-foreground">smart shoppers</p>
-              </div>
-
-              <div className="flex min-w-0 flex-col justify-center border-t px-5 py-4 sm:border-l sm:border-t-0">
-                <div className="mb-2 flex gap-0.5 text-wait">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <StarIcon key={index} aria-hidden="true" className="size-3.5 fill-current" />
-                  ))}
+            <Card className="rounded-2xl bg-card py-0 shadow-soft">
+              <CardContent className="grid grid-cols-2 p-0">
+                <div className="flex items-center gap-4 px-5 py-4">
+                  <ShieldCheckIcon aria-hidden="true" className="size-8 shrink-0 text-buy" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-muted-foreground">Trusted by</p>
+                    <p className="mt-1 text-2xl font-black leading-none text-foreground">500K+</p>
+                    <p className="mt-1 text-xs text-muted-foreground">smart shoppers</p>
+                  </div>
                 </div>
-                <p className="text-xl font-black leading-none text-foreground">4.8/5</p>
-                <p className="mt-1 text-xs text-muted-foreground">20K+ reviews</p>
-              </div>
-            </CardContent>
-          </Card>
+                <div className="flex items-center gap-4 border-l px-5 py-4">
+                  <div className="min-w-0">
+                    <div className="mb-2 flex gap-0.5 text-wait">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <StarIcon key={index} aria-hidden="true" className="size-4 fill-current" />
+                      ))}
+                    </div>
+                    <p className="text-2xl font-black leading-none text-foreground">4.8/5</p>
+                    <p className="mt-1 text-xs text-muted-foreground">from 20K+ reviews</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </motion.section>
 
         <motion.section
@@ -684,6 +693,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
           </CardContent>
         </Card>
       </motion.footer>
+
     </motion.main>
   );
 }
