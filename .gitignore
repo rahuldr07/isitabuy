@@ -23,6 +23,9 @@ playwright-report/
 *.png
 *.jpg
 *.jpeg
+!public/**/*.png
+!public/**/*.jpg
+!public/**/*.jpeg
 
 # Logs
 npm-debug.log*

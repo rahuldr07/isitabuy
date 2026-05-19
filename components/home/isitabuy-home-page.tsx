@@ -87,7 +87,7 @@ const panelVariants: Variants = {
   },
 };
 
-const navItems = ["How It Works", "Categories", "Deals", "Chrome Extension", "Blog", "Retailers"];
+const navItems = ["How It Works", "Categories", "Deals", "Blog", "Retailers"];
 
 const retailers = [
   { name: "Amazon", src: "/home/logos/amazon-official.jpg" },
@@ -248,7 +248,7 @@ function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
+    <header className="sticky top-0 z-[100] border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary">
         <Logo />
         <div className="hidden items-center gap-8 text-xs font-bold text-[var(--happy-ink)] lg:flex">
@@ -409,12 +409,7 @@ function HeroVisual() {
       <span aria-hidden="true" className="pointer-events-none absolute left-[28%] bottom-[20%] select-none text-sm text-purple-300/50">&#10022;</span>
 
       <div data-hero-products className="absolute inset-0 z-0">
-        <motion.div
-          className="absolute inset-0"
-          initial={shouldReduceMotion ? false : { y: 24, scale: 0.98 }}
-          animate={{ y: 0, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-        >
+        <div className="absolute inset-0">
           <Image
             src="/home/products/hero-product-cluster.png"
             alt="Premium phone, headphones, and watch product cluster"
@@ -424,7 +419,7 @@ function HeroVisual() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/20" />
-        </motion.div>
+        </div>
       </div>
 
       <FloatingInfo dataFloat className="right-5 top-8 w-[190px]" title="AI Buy Score">
@@ -462,7 +457,7 @@ function FloatingInfo({ title, children, className, dataFloat = false }: { title
   return (
     <motion.div
       data-hero-float={dataFloat ? true : undefined}
-      className={cn("absolute z-40 rounded-2xl border border-[var(--happy-line)] bg-white/90 p-4 shadow-xl backdrop-blur-md", className)}
+      className={cn("absolute z-20 rounded-2xl border border-[var(--happy-line)] bg-white/90 p-4 shadow-xl backdrop-blur-md", className)}
       initial={{ opacity: 0, y: 18, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.35, duration: 0.55 }}
@@ -556,7 +551,9 @@ function RetailerStrip() {
               </motion.div>
             ))}
           </div>
-          <LinkText className="mx-auto my-4 w-fit justify-center text-[var(--happy-purple)]" label="View all retailers" />
+          <div className="flex justify-center py-4">
+            <LinkText className="text-[var(--happy-purple)]" label="View all retailers" />
+          </div>
         </CardContent>
       </Card>
     </section>
@@ -655,12 +652,6 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
 
   return (
     <div className="w-full">
-      <div className="mb-3 flex justify-center">
-        <NextLink href="/retailers" className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--happy-purple)] hover:text-violet-700">
-          View all retailers
-          <ArrowRightIcon className="size-3.5" />
-        </NextLink>
-      </div>
       <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--happy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         <div className="flex flex-col gap-4 p-6">
           <div className="flex h-[120px] items-center justify-center overflow-hidden rounded-xl bg-gray-50">
@@ -763,51 +754,6 @@ function StepItem({ step, showArrow }: { step: IconText; showArrow: boolean }) {
       <h3 className="mt-4 text-sm font-extrabold text-[var(--happy-ink)]">{step.title}</h3>
       <p className="mx-auto mt-2 max-w-36 text-xs font-medium leading-5 text-[var(--happy-muted)]">{step.text}</p>
     </article>
-  );
-}
-
-function ExtensionSection() {
-  return (
-    <section id="chrome-extension" className="scroll-reveal mx-auto mt-4 max-w-6xl px-4 sm:px-6 lg:px-10">
-      <div className="grid overflow-hidden rounded-xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] lg:grid-cols-[1fr_1fr]">
-        <div className="flex items-center gap-7 p-8">
-          <span className="grid size-24 shrink-0 place-items-center rounded-full bg-white shadow-sm">
-            <Image src="/home/logos/chrome.svg" alt="Chrome logo" width={72} height={72} className="size-16 object-contain" />
-          </span>
-          <div>
-            <h2 className="text-2xl font-extrabold text-[var(--happy-ink)]">Get our free Chrome extension</h2>
-            <p className="mt-3 max-w-lg text-sm font-medium leading-6 text-[var(--happy-muted)]">Instant AI insights on any product page. See scores, price history, and better alternatives without leaving the store.</p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <MotionButton className="h-9 rounded-full bg-[var(--happy-purple)] px-5 text-sm font-bold text-white hover:bg-violet-800" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Add to Chrome</MotionButton>
-              <MotionButton variant="outline" className="h-9 rounded-full bg-white px-5 text-sm font-bold" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>Learn more</MotionButton>
-            </div>
-          </div>
-        </div>
-        <div className="relative hidden min-h-44 items-end justify-center p-8 lg:flex">
-          <div className="h-32 w-96 rounded-t-2xl bg-white/70 p-5 shadow-[var(--happy-card-shadow)]">
-            <div className="mb-4 h-4 w-28 rounded-full bg-slate-200" />
-            <div className="grid gap-3">
-              <div className="h-4 rounded-full bg-slate-200" />
-              <div className="h-4 w-4/5 rounded-full bg-slate-100" />
-            </div>
-          </div>
-          <div className="absolute bottom-5 right-28 w-44 rounded-xl border border-[var(--happy-line)] bg-white p-4 shadow-[var(--happy-float-shadow)]">
-            <LogoMini />
-            <p className="mt-3 text-xs font-extrabold">AI Buy Score</p>
-            <div className="mt-2 flex items-center gap-3"><ScoreRing score={82} size="sm" /><Badge className="bg-[var(--happy-green-soft)] text-[var(--happy-green)]">Buy</Badge></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LogoMini() {
-  return (
-    <div className="flex items-center gap-1.5">
-      <ShoppingBag className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
-      <span className="text-xs font-extrabold text-[var(--happy-ink)]">IsItABuy</span>
-    </div>
   );
 }
 
@@ -1011,7 +957,6 @@ export default function IsItABuyHomePage() {
         <RetailerStrip />
         <ProductVerdict />
         <HowItWorks />
-        <ExtensionSection />
         <CategoriesSection />
         <TrustSection />
         <DisclosureStrip />
