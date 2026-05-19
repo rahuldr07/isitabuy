@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 86" role="img" aria-label="Best Buy">
+  <rect width="240" height="86" fill="none"/>
+  <text x="32" y="36" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#071426">BEST</text>
+  <text x="32" y="65" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#071426">BUY</text>
+  <path d="M139 20h52l23 23-23 23h-52z" fill="#ffed00"/>
+  <circle cx="149" cy="43" r="4" fill="#071426"/>
+</svg>

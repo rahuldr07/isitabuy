@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 86" role="img" aria-label="Walmart">
+  <rect width="270" height="86" fill="none"/>
+  <text x="26" y="52" font-family="Arial, Helvetica, sans-serif" font-size="39" font-weight="700" letter-spacing="-1.4" fill="#0071ce">Walmart</text>
+  <g transform="translate(224 43)" fill="#ffc220">
+    <rect x="-3.5" y="-30" width="7" height="17" rx="3.5"/>
+    <rect x="-3.5" y="13" width="7" height="17" rx="3.5"/>
+    <rect x="-30" y="-3.5" width="17" height="7" rx="3.5"/>
+    <rect x="13" y="-3.5" width="17" height="7" rx="3.5"/>
+    <rect x="-24" y="-23" width="7" height="17" rx="3.5" transform="rotate(-45 -20.5 -14.5)"/>
+    <rect x="17" y="-23" width="7" height="17" rx="3.5" transform="rotate(45 20.5 -14.5)"/>
+  </g>
+</svg>
