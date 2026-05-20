@@ -445,7 +445,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                   <ShieldCheckIcon aria-hidden="true" className="size-8 shrink-0 text-buy" />
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-muted-foreground">Trusted by</p>
-                    <p className="mt-1 text-2xl font-black leading-none text-foreground">500K+</p>
+                    <p className="font-numeric mt-1 text-2xl font-bold leading-none text-foreground">500K+</p>
                     <p className="mt-1 text-xs text-muted-foreground">smart shoppers</p>
                   </div>
                 </div>
@@ -456,7 +456,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                         <StarIcon key={index} aria-hidden="true" className="size-4 fill-current" />
                       ))}
                     </div>
-                    <p className="text-2xl font-black leading-none text-foreground">4.8/5</p>
+                    <p className="font-numeric text-2xl font-bold leading-none text-foreground">4.8/5</p>
                     <p className="mt-1 text-xs text-muted-foreground">from 20K+ reviews</p>
                   </div>
                 </div>

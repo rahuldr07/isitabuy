@@ -14,6 +14,7 @@ import {
   PointElement,
   Tooltip,
   type ChartOptions,
+  type Plugin,
 } from "chart.js";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,7 +29,6 @@ import {
   CircleDollarSign,
   CircleHelp,
   ClipboardCheck,
-  Dumbbell,
   Gamepad2,
   HeartPulse,
   Home,
@@ -50,10 +50,19 @@ import {
   Wrench,
   X,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { showFeatureSoonToast, showProductSearchToast } from "@/components/ui/app-toast";
 import { cn } from "@/lib/utils";
 
 const MotionButton = motion.create(Button);
@@ -351,158 +360,51 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
           transition={{ duration: 0.9, ease: "easeOut" }}
         />
       </svg>
-      <span className={cn("font-extrabold leading-none text-[var(--happy-green)]", size === "lg" ? "text-3xl" : "text-lg")}>{score}</span>
+      <span className={cn("font-numeric font-bold leading-none text-[var(--happy-green)]", size === "lg" ? "text-3xl" : "text-lg")}>{score}</span>
     </div>
-  );
-}
-
-function MiniChart({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 220 112" className={cn("h-24 w-full", className)} aria-hidden="true">
-      <path d="M8 86 C24 76, 30 52, 46 70 S75 80, 88 58 S112 64, 124 42 S148 28, 160 50 S188 34, 210 20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="text-[var(--happy-green)]" />
-      <path d="M8 86 C24 76, 30 52, 46 70 S75 80, 88 58 S112 64, 124 42 S148 28, 160 50 S188 34, 210 20 L210 104 L8 104 Z" className="fill-emerald-100/70" />
-    </svg>
-  );
-}
-
-function HeroVisual() {
-  const visualRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    if (shouldReduceMotion || !visualRef.current) {
-      return;
-    }
-
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>("[data-hero-float]").forEach((card, index) => {
-        gsap.to(card, {
-          y: index % 2 === 0 ? -10 : 10,
-          duration: 2.4 + index * 0.28,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-          delay: index * 0.25,
-        });
-      });
-
-      gsap.fromTo(
-        "[data-hero-products]",
-        { y: 28, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.9, ease: "power3.out", delay: 0.2 }
-      );
-    }, visualRef);
-
-    return () => ctx.revert();
-  }, [shouldReduceMotion]);
-
-  return (
-    <motion.div
-      ref={visualRef}
-      className="relative min-h-[34rem] overflow-hidden rounded-[2rem] bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,#ede9fe_0%,#fce7d6_42%,#f8f4ff_72%,#fff_100%)]"
-      initial={shouldReduceMotion ? false : { y: 18 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
-    >
-      <span aria-hidden="true" className="pointer-events-none absolute left-[58%] top-[18%] select-none text-2xl text-purple-400/70">&#10022;</span>
-      <span aria-hidden="true" className="pointer-events-none absolute right-[10%] top-[42%] select-none text-lg text-purple-300/60">&#10022;</span>
-      <span aria-hidden="true" className="pointer-events-none absolute left-[28%] bottom-[20%] select-none text-sm text-purple-300/50">&#10022;</span>
-
-      <div data-hero-products className="absolute inset-0 z-0">
-        <div className="absolute inset-0">
-          <Image
-            src="/home/products/hero-product-cluster.png"
-            alt="Premium phone, headphones, and watch product cluster"
-            fill
-            sizes="(max-width: 1024px) 100vw, 540px"
-            className="object-cover object-center"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-white/20" />
-        </div>
-      </div>
-
-      <FloatingInfo dataFloat className="right-5 top-8 w-[190px]" title="AI Buy Score">
-        <div className="flex items-center gap-3">
-          <ScoreRing score={82} />
-          <div>
-            <Badge className="bg-[var(--happy-green-soft)] text-[var(--happy-green)] hover:bg-[var(--happy-green-soft)]">Buy</Badge>
-            <p className="mt-2 text-[0.62rem] font-semibold leading-snug text-slate-500">Great value, high quality and positive reviews.</p>
-          </div>
-        </div>
-      </FloatingInfo>
-      <FloatingInfo dataFloat className="bottom-32 right-3 w-[180px]" title="Price History">
-        <MiniChart />
-      </FloatingInfo>
-      <FloatingInfo dataFloat className="bottom-24 left-4 w-[180px]" title="Better Alternative">
-        <div className="flex items-center gap-3">
-          <span className="grid size-8 place-items-center rounded-xl bg-amber-100"><Dumbbell className="size-4 text-amber-600" /></span>
-          <div>
-            <p className="text-xs font-extrabold text-[var(--happy-ink)]">Save $68</p>
-          </div>
-        </div>
-      </FloatingInfo>
-      <FloatingInfo dataFloat className="bottom-5 left-1/2 w-[190px] -translate-x-1/4" title="Trusted Reviews">
-        <div className="flex items-center gap-1 text-[var(--happy-orange)]">
-          <span className="text-xl font-black text-[var(--happy-ink)]">4.6</span>
-          {Array.from({ length: 5 }).map((_, index) => <Star key={index} className={cn("size-3.5 fill-current", index === 4 && "opacity-35")} />)}
-        </div>
-        <p className="mt-1 text-[0.62rem] font-semibold text-slate-500">12,642 reviews</p>
-      </FloatingInfo>
-    </motion.div>
-  );
-}
-
-function FloatingInfo({ title, children, className, dataFloat = false }: { title: string; children: React.ReactNode; className?: string; dataFloat?: boolean }) {
-  return (
-    <motion.div
-      data-hero-float={dataFloat ? true : undefined}
-      className={cn("absolute z-20 rounded-2xl border border-[var(--happy-line)] bg-white/90 p-4 shadow-xl backdrop-blur-md", className)}
-      initial={{ opacity: 0, y: 18, scale: 0.96 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ delay: 0.35, duration: 0.55 }}
-    >
-      <p className="mb-2 text-xs font-extrabold text-[var(--happy-ink)]">{title}</p>
-      {children}
-    </motion.div>
   );
 }
 
 function HeroSection() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [activeDialog, setActiveDialog] = useState<"scan" | "upload" | null>(null);
   const shouldReduceMotion = useReducedMotion();
 
-  const hasQuery = query.trim().length > 0;
-
   const runCheck = () => {
+    const trimmedQuery = query.trim();
+    showProductSearchToast(trimmedQuery);
     setLoading(true);
     window.setTimeout(() => setLoading(false), 950);
   };
 
+  const openToolDialog = () => {
+    setActiveDialog("scan");
+  };
+
   return (
-    <section id="top" className="mx-auto grid max-w-6xl gap-7 px-4 pb-5 pt-7 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pt-8">
+    <section id="top" className="mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-10 lg:pt-14">
       <motion.div
-        className="flex flex-col justify-center"
+        className="mx-auto flex max-w-4xl flex-col items-center text-center"
         initial={shouldReduceMotion ? false : { y: 18 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <h1 className="max-w-xl text-4xl font-black leading-[1.05] tracking-normal text-[var(--happy-ink)] sm:text-5xl lg:text-6xl">
+        <h1 className="max-w-3xl font-heading text-4xl font-bold leading-[1.05] tracking-normal text-[var(--happy-ink)] sm:text-5xl lg:text-6xl">
           Know what to buy <span className="text-[var(--happy-orange)]">before</span> you buy.
         </h1>
-        <p className="mt-5 max-w-lg text-base font-medium leading-7 text-[var(--happy-muted)]">
+        <p className="mt-5 max-w-2xl text-base font-medium leading-7 text-[var(--happy-muted)]">
           Paste a product link, search by name, scan a barcode, or upload a product image. Our AI checks reviews, price history, complaints, and better alternatives before you spend.
         </p>
-        <div className="mt-6 max-w-xl">
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <div className="relative flex-1">
+        <div className="mt-7 w-full max-w-3xl rounded-[2rem] border border-[var(--happy-line)] bg-white p-2 shadow-[var(--happy-card-shadow)]">
+          <div className="flex items-center gap-2">
+            <div className="relative min-w-0 flex-1">
               <Link className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
               <Input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Paste product link or search product name..."
-                className="h-12 rounded-full border-[var(--happy-line)] bg-white pl-12 text-sm font-semibold shadow-sm placeholder:text-slate-400"
+                className="h-12 rounded-full border-transparent bg-slate-50 pl-12 pr-4 text-sm font-semibold shadow-none placeholder:text-slate-400 focus-visible:ring-[var(--happy-orange)]"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runCheck();
                 }}
@@ -511,30 +413,143 @@ function HeroSection() {
             <MotionButton
               type="button"
               onClick={runCheck}
-              className="h-12 rounded-full bg-[var(--happy-orange)] px-7 text-sm font-extrabold text-white hover:bg-[var(--happy-orange-dark)]"
-              whileHover={{ y: -2 }}
+              className="h-12 shrink-0 rounded-full bg-[var(--happy-orange)] px-4 text-xs font-semibold text-white hover:bg-[var(--happy-orange-dark)] sm:px-7 sm:text-sm"
+              whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
             >
-              {loading ? "Checking..." : hasQuery ? "Check Product" : "Check Product"}
+              {loading ? "Checking..." : "Check"}
             </MotionButton>
           </div>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <ActionButton icon={ScanBarcode} label="Scan Barcode" />
-            <ActionButton icon={ImageIcon} label="Upload Image" />
-          </div>
         </div>
+        <SearchToolButton onClick={openToolDialog} />
       </motion.div>
-      <HeroVisual />
+      <HeroToolDialog
+        type={activeDialog}
+        open={activeDialog !== null}
+        onTypeChange={setActiveDialog}
+        onOpenChange={(open) => {
+          if (!open) setActiveDialog(null);
+        }}
+      />
     </section>
   );
 }
 
-function ActionButton({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
+function SearchToolButton({ onClick }: { onClick: () => void }) {
   return (
-    <MotionButton variant="outline" className="h-12 rounded-full border-[var(--happy-line)] bg-white text-sm font-extrabold text-[var(--happy-ink)] shadow-sm" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-      <Icon className="size-5 text-[var(--happy-purple)]" aria-hidden="true" />
-      {label}
+    <MotionButton
+      type="button"
+      variant="outline"
+      className="mt-4 h-11 rounded-full border-[var(--happy-line)] bg-white px-5 text-sm font-semibold text-[var(--happy-ink)] shadow-sm"
+      onClick={onClick}
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <ScanBarcode className="size-4 text-[var(--happy-purple)]" aria-hidden="true" />
+      Scan & Upload
     </MotionButton>
+  );
+}
+
+function HeroToolDialog({
+  type,
+  open,
+  onTypeChange,
+  onOpenChange,
+}: {
+  type: "scan" | "upload" | null;
+  open: boolean;
+  onTypeChange: (type: "scan" | "upload") => void;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const activeTool = type ?? "scan";
+  const setTool = (tool: "scan" | "upload") => {
+    onTypeChange(tool);
+    showFeatureSoonToast(tool === "scan" ? "Barcode scanner" : "Image upload");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="rounded-3xl border border-[var(--happy-line)] bg-white p-6 sm:max-w-lg">
+        <DialogHeader>
+          <div className="mb-1 grid size-12 place-items-center rounded-2xl bg-purple-100 text-[var(--happy-purple)]">
+            {activeTool === "scan" ? <ScanBarcode className="size-6" aria-hidden="true" /> : <ImageIcon className="size-6" aria-hidden="true" />}
+          </div>
+          <DialogTitle className="text-xl font-extrabold text-[var(--happy-ink)]">Scan or upload product</DialogTitle>
+          <DialogDescription className="text-sm font-medium leading-6 text-[var(--happy-muted)]">
+            Use a barcode for exact product matching, or upload a clear product image when you do not have a link.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <ToolOptionCard
+            active={activeTool === "scan"}
+            icon={ScanBarcode}
+            title="Scan barcode"
+            description="Open camera scanner and match the exact item."
+            onClick={() => setTool("scan")}
+          />
+          <ToolOptionCard
+            active={activeTool === "upload"}
+            icon={ImageIcon}
+            title="Upload image"
+            description="Choose a product photo, label, or packaging image."
+            onClick={() => setTool("upload")}
+          />
+        </div>
+        <div className="grid min-h-36 place-items-center rounded-2xl border border-dashed border-[var(--happy-line)] bg-slate-50 p-6 text-center">
+          {activeTool === "scan" ? (
+            <div>
+              <ScanBarcode className="mx-auto size-9 text-[var(--happy-purple)]" aria-hidden="true" />
+              <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">Camera scanner preview</p>
+              <p className="mt-2 text-xs font-medium leading-5 text-[var(--happy-muted)]">Camera permissions and live barcode detection will appear here.</p>
+            </div>
+          ) : (
+            <div>
+              <ImageIcon className="mx-auto size-9 text-[var(--happy-purple)]" aria-hidden="true" />
+              <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">Drop image here or choose a file</p>
+              <p className="mt-2 text-xs font-medium leading-5 text-[var(--happy-muted)]">PNG, JPG, and WEBP product photos will be supported.</p>
+            </div>
+          )}
+        </div>
+        <DialogFooter className="-mx-6 -mb-6 rounded-b-3xl bg-slate-50 px-6">
+          <DialogClose asChild>
+            <Button variant="outline" className="rounded-full">Cancel</Button>
+          </DialogClose>
+          <Button className="rounded-full bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]" onClick={() => showFeatureSoonToast(activeTool === "scan" ? "Barcode scanner" : "Image upload")}>
+            {activeTool === "scan" ? "Start scan" : "Choose image"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ToolOptionCard({
+  active,
+  icon: Icon,
+  title,
+  description,
+  onClick,
+}: {
+  active: boolean;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className={cn(
+        "rounded-2xl border p-4 text-left transition-colors",
+        active ? "border-[var(--happy-purple)] bg-purple-50" : "border-[var(--happy-line)] bg-white hover:bg-slate-50"
+      )}
+      onClick={onClick}
+    >
+      <Icon className="size-5 text-[var(--happy-purple)]" aria-hidden="true" />
+      <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">{title}</p>
+      <p className="mt-1 text-xs font-medium leading-5 text-[var(--happy-muted)]">{description}</p>
+    </button>
   );
 }
 
@@ -578,14 +593,50 @@ function ScoreBar({ item }: { item: ScoreItem }) {
           style={{ width: `${item.value}%`, backgroundColor: item.color }}
         />
       </div>
-      <span className="w-[42px] shrink-0 text-right text-xs font-semibold text-gray-400">{item.value}/100</span>
+      <span className="font-numeric w-[42px] shrink-0 text-right text-xs font-semibold text-gray-400">{item.value}/100</span>
     </div>
   );
 }
 
 function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
   const [range, setRange] = useState<RangeKey>("1m");
+  const [chartBackground, setChartBackground] = useState<string | CanvasGradient>("rgba(29,158,117,0.08)");
+  const chartRef = useRef<ChartJS<"line">>(null);
   const current = history[range];
+
+  useEffect(() => {
+    const canvas = chartRef.current?.canvas;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const gradient = ctx.createLinearGradient(0, 0, 0, 90);
+    gradient.addColorStop(0, "rgba(29,158,117,0.18)");
+    gradient.addColorStop(1, "rgba(29,158,117,0)");
+    setChartBackground(gradient);
+  }, [range]);
+
+  const crosshairPlugin: Plugin<"line"> = {
+    id: "crosshair",
+    afterDraw(chart) {
+      const active = chart.tooltip?.getActiveElements?.() ?? [];
+      if (active.length) {
+        const x = active[0].element.x;
+        const ctx = chart.ctx;
+        const top = chart.chartArea.top;
+        const bottom = chart.chartArea.bottom;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, top);
+        ctx.lineTo(x, bottom);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(0,0,0,0.1)";
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.restore();
+      }
+    },
+  };
+
   const chartData = {
     labels: current.labels,
     datasets: [
@@ -593,18 +644,36 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
         data: current.data,
         borderColor: "#1D9E75",
         borderWidth: 2,
-        pointRadius: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
         pointBackgroundColor: "#1D9E75",
-        tension: 0.4,
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 2,
+        pointHoverBorderWidth: 2,
+        tension: 0.45,
         fill: true,
-        backgroundColor: "rgba(29,158,117,0.08)",
+        backgroundColor: chartBackground,
       },
     ],
   };
   const chartOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#111",
+        titleColor: "#fff",
+        bodyColor: "#1D9E75",
+        padding: 10,
+        cornerRadius: 8,
+        displayColors: false,
+        callbacks: {
+          title: (items) => items[0]?.label ?? "",
+          label: (item) => `$${item.parsed.y}`,
+        },
+      },
+    },
     scales: {
       x: {
         ticks: { font: { size: 10 }, color: "#9ca3af" },
@@ -641,7 +710,7 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
         ))}
       </div>
       <div className="relative h-[96px] w-full">
-        <Line data={chartData} options={chartOptions} />
+        <Line ref={chartRef} data={chartData} options={chartOptions} plugins={[crosshairPlugin]} />
       </div>
     </div>
   );
@@ -681,14 +750,14 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
         <div className="flex flex-col gap-4 p-6">
           <h3 className="text-sm font-black text-gray-900">Price history</h3>
           <div>
-            <p className="text-2xl font-black text-gray-900">${product.currentPrice.toLocaleString()}</p>
+            <p className="font-numeric text-2xl font-bold text-gray-900">${product.currentPrice.toLocaleString()}</p>
             <p className="text-xs font-semibold text-gray-400">Current price</p>
           </div>
           <PriceChart history={product.priceHistory} />
           <div className="flex items-start gap-2">
             <TrendingDownIcon className="mt-0.5 size-4 shrink-0 text-emerald-600" />
             <div>
-              <p className="text-xs font-bold text-emerald-600">Down ${product.priceDropAmount} ({product.priceDropPercent}%)</p>
+              <p className="font-numeric text-xs font-bold text-emerald-600">Down ${product.priceDropAmount} ({product.priceDropPercent}%)</p>
               <p className="text-[11px] font-semibold text-gray-400">of 30-day avg</p>
             </div>
           </div>
@@ -701,8 +770,8 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
             </div>
             <div className="min-w-0">
               <p className="truncate text-[13px] font-black text-gray-900">{product.alternative.name}</p>
-              <p className="mt-0.5 text-base font-black text-gray-900">${product.alternative.price.toFixed(2)}</p>
-              <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700">Save ${product.alternative.saving}</span>
+              <p className="font-numeric mt-0.5 text-base font-bold text-gray-900">${product.alternative.price.toFixed(2)}</p>
+              <span className="font-numeric mt-1 inline-block rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700">Save ${product.alternative.saving}</span>
             </div>
           </div>
           <div className="flex flex-col gap-2">
@@ -713,7 +782,7 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
             ].map(({ label, value, positive }) => (
               <div key={label} className="flex items-center justify-between gap-3">
                 <span className="truncate text-[11px] font-semibold text-gray-400">{label}</span>
-                <span className={cn("shrink-0 text-[11px] font-bold", positive ? "text-emerald-600" : "text-gray-700")}>{value}</span>
+                <span className={cn("font-numeric shrink-0 text-[11px] font-bold", positive ? "text-emerald-600" : "text-gray-700")}>{value}</span>
               </div>
             ))}
           </div>
