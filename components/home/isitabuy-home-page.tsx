@@ -235,6 +235,10 @@ const DEMO_PRODUCT: Product = {
   },
 };
 
+function homeHref(label: string) {
+  return label === "Deals" ? "/deals" : `#${label.toLowerCase().replaceAll(" ", "-")}`;
+}
+
 interface IconText {
   icon: LucideIcon;
   title: string;
@@ -264,7 +268,7 @@ function Header() {
           {navItems.map((item) => (
             <motion.a
               key={item}
-              href={`#${item.toLowerCase().replaceAll(" ", "-")}`}
+              href={homeHref(item)}
               className="inline-flex items-center gap-1.5 whitespace-nowrap"
               whileHover={{ y: -1, color: "var(--happy-orange)" }}
               whileTap={{ scale: 0.98 }}
@@ -309,7 +313,7 @@ function Header() {
           >
             <div className="grid gap-3">
               {navItems.map((item) => (
-                <a key={item} href={`#${item.toLowerCase().replaceAll(" ", "-")}`} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
+                <a key={item} href={homeHref(item)} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
                   {item}
                 </a>
               ))}
@@ -947,7 +951,7 @@ function Footer() {
             <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">{column.title}</h3>
             <ul className="mt-4 grid gap-3">
               {column.links.map((link) => (
-                <li key={link}><a href="#" className="text-sm font-medium text-[var(--happy-muted)] hover:text-[var(--happy-orange)]">{link}</a></li>
+                <li key={link}><a href={homeHref(link)} className="text-sm font-medium text-[var(--happy-muted)] hover:text-[var(--happy-orange)]">{link}</a></li>
               ))}
             </ul>
           </div>
