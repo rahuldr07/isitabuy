@@ -211,6 +211,7 @@ interface SignInScreenProps {
 export default function SignInScreen({ initialMode = "login" }: SignInScreenProps) {
   const [authState, setAuthState] = useState<"idle" | "checking" | "success">("idle");
   const [authMode, setAuthMode] = useState<AuthMode>(initialMode);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -266,6 +267,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
 
   const switchAuthMode = (nextMode: AuthMode) => {
     setAuthState("idle");
+    setPasswordVisible(false);
     setAuthMode(nextMode);
   };
 
@@ -505,18 +507,18 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                             />
                             <Input
                               id="password"
-                              type="password"
+                              type={passwordVisible ? "text" : "password"}
                               placeholder="Enter your password"
                               className="h-12 rounded-xl border-border bg-card pl-12 pr-12 text-sm shadow-none placeholder:text-muted-foreground/80"
                             />
                             <button
                               type="button"
-                              aria-label="Show password"
-                              aria-pressed="false"
+                              aria-label={passwordVisible ? "Hide password" : "Show password"}
+                              aria-pressed={passwordVisible}
                               className="absolute right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              onClick={() => setPasswordVisible((visible) => !visible)}
                               data-password-toggle
-                              data-password-input="password"
-                              data-visible="false"
+                              data-visible={passwordVisible ? "true" : "false"}
                             >
                               <EyeIcon aria-hidden="true" className="password-eye-show size-5" />
                               <EyeOffIcon aria-hidden="true" className="password-eye-hide size-5" />
@@ -635,32 +637,6 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
           </CardContent>
         </Card>
       </footer>
-
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-(() => {
-  if (window.__isitabuyPasswordToggleReady) return;
-  window.__isitabuyPasswordToggleReady = true;
-  document.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-    const button = target.closest("[data-password-toggle]");
-    if (!(button instanceof HTMLElement)) return;
-    const inputId = button.getAttribute("data-password-input");
-    const input = inputId ? document.getElementById(inputId) : null;
-    if (!(input instanceof HTMLInputElement)) return;
-    event.preventDefault();
-    const shouldShow = input.type === "password";
-    input.type = shouldShow ? "text" : "password";
-    button.dataset.visible = String(shouldShow);
-    button.setAttribute("aria-pressed", String(shouldShow));
-    button.setAttribute("aria-label", shouldShow ? "Hide password" : "Show password");
-  });
-})();
-          `,
-        }}
-      />
 
     </main>
   );

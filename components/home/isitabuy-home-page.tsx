@@ -25,7 +25,6 @@ import {
   BadgeCheck,
   Bell,
   Camera,
-  ChevronDown,
   CircleDollarSign,
   CircleHelp,
   ClipboardCheck,
@@ -99,7 +98,12 @@ const panelVariants: Variants = {
   },
 };
 
-const navItems = ["How It Works", "Categories", "Deals", "Blog", "Retailers"];
+const navItems = [
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Compare", href: "/compare" },
+  { label: "Deals", href: "/deals" },
+  { label: "Retailers", href: "/#retailers" },
+];
 
 const retailers = [
   { name: "Amazon", src: "/home/logos/amazon-official.jpg" },
@@ -251,12 +255,12 @@ interface IconText {
 
 function Logo() {
   return (
-    <a href="#top" className="flex items-center gap-2.5" aria-label="IsItABuy home">
+    <NextLink href="/" className="flex items-center gap-2.5" aria-label="IsItABuy home">
       <span className="grid size-7 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
       <span className="text-xl font-extrabold tracking-tight text-[var(--happy-ink)]">IsItABuy</span>
-    </a>
+    </NextLink>
   );
 }
 
@@ -270,14 +274,13 @@ function Header() {
         <div className="hidden items-center gap-8 text-xs font-bold text-[var(--happy-ink)] lg:flex">
           {navItems.map((item) => (
             <motion.a
-              key={item}
-              href={homeHref(item)}
+              key={item.label}
+              href={item.href}
               className="inline-flex items-center gap-1.5 whitespace-nowrap"
               whileHover={{ y: -1, color: "var(--happy-orange)" }}
               whileTap={{ scale: 0.98 }}
             >
-              {item}
-              {item === "Categories" ? <ChevronDown className="size-3.5" aria-hidden="true" /> : null}
+              {item.label}
             </motion.a>
           ))}
         </div>
@@ -316,8 +319,8 @@ function Header() {
           >
             <div className="grid gap-3">
               {navItems.map((item) => (
-                <a key={item} href={homeHref(item)} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
-                  {item}
+                <a key={item.label} href={item.href} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
+                  {item.label}
                 </a>
               ))}
               <div className="grid grid-cols-2 gap-3 pt-2">
