@@ -1332,6 +1332,34 @@ const deals: DealCardData[] = Object.entries(referenceProductSeeds).flatMap(([ca
   buildDeals(category as CategorySlug, seeds),
 );
 
+function productSlug(value: string) {
+  return (
+    value
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "deal"
+  );
+}
+
+function productDetailHref(deal: DealCardData) {
+  return {
+    pathname: `/product/${productSlug(deal.name)}`,
+    query: {
+      name: deal.name,
+      subtitle: deal.subtitle,
+      image: deal.image,
+      price: deal.price,
+      oldPrice: deal.oldPrice,
+      retailer: deal.retailer,
+      rating: deal.rating,
+      reviews: deal.reviews,
+      score: deal.score,
+      discount: deal.discount,
+    },
+  };
+}
+
 const validCategories = new Set<CategorySlug>([
   "electronics",
   "home",
@@ -1540,6 +1568,7 @@ function RetailerLogo({ compact = false, retailer }: { compact?: boolean; retail
 }
 
 function DealCard({ deal }: { deal: DealCardData }) {
+  const detailHref = productDetailHref(deal);
 
   return (
     <Card className="gap-1 rounded-xl border border-border bg-white p-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_14px_30px_rgba(15,23,42,0.1)]">
@@ -1600,10 +1629,11 @@ function DealCard({ deal }: { deal: DealCardData }) {
 
       <div className="grid grid-cols-2 gap-2 border-t-2 border-[#1f7ae0] pt-2">
         <Button
+          asChild
           variant="outline"
           className="h-8 rounded-lg border-border bg-white px-2 text-[11px] font-extrabold text-foreground transition-colors hover:border-[#1f7ae0] hover:bg-[#1f7ae0] hover:text-white"
         >
-          View Deal
+          <Link href={detailHref}>View Deal</Link>
         </Button>
         <Button className="h-8 rounded-lg bg-[#ffd200] px-2 text-[11px] font-extrabold text-foreground shadow-none hover:bg-[#ffc400]">
           Buy Now
