@@ -117,6 +117,28 @@
   --happy-warm-strip: linear-gradient(90deg, rgb(255 246 230 / 0.95), rgb(255 252 247 / 0.98));
   --happy-card-shadow: 0 18px 50px rgb(15 23 42 / 0.08);
   --happy-float-shadow: 0 14px 32px rgb(15 23 42 / 0.12);
+  --compare-page: #fbfcfe;
+  --compare-ink: #080b1f;
+  --compare-muted: #596174;
+  --compare-line: #e8ebf1;
+  --compare-soft: #f4f6fb;
+  --compare-soft-panel: #fbfcff;
+  --compare-orange: #ff8800;
+  --compare-orange-dark: #ea7400;
+  --compare-orange-border: #f6c079;
+  --compare-green: #18b865;
+  --compare-green-dark: #079348;
+  --compare-green-soft: #e9f8ef;
+  --compare-purple: #4d0aa8;
+  --compare-lavender: #eee5ff;
+  --compare-blue: #075bc6;
+  --compare-blue-soft: #e9f1ff;
+  --compare-red: #f11835;
+  --compare-wait-soft: #fff1df;
+  --compare-input-shadow: 0 8px 24px rgb(15 23 42 / 0.04);
+  --compare-hover-shadow: 0 12px 30px rgb(15 23 42 / 0.08);
+  --compare-card-shadow: 0 1px 2px rgb(15 23 42 / 0.025);
+  --compare-logo-shadow: 0 8px 16px rgb(24 184 101 / 0.22);
   --radius: 0.75rem;
   --sidebar: oklch(1 0 0);
   --sidebar-foreground: #071426;
@@ -185,6 +207,28 @@
   --happy-warm-strip: linear-gradient(90deg, oklch(0.24 0.06 75), oklch(0.18 0.016 255));
   --happy-card-shadow: 0 18px 50px rgb(0 0 0 / 0.22);
   --happy-float-shadow: 0 14px 32px rgb(0 0 0 / 0.24);
+  --compare-page: oklch(0.14 0.014 255);
+  --compare-ink: oklch(0.97 0.006 255);
+  --compare-muted: oklch(0.72 0.016 255);
+  --compare-line: oklch(1 0 0 / 12%);
+  --compare-soft: oklch(0.24 0.018 255);
+  --compare-soft-panel: oklch(0.18 0.016 255);
+  --compare-orange: oklch(0.78 0.15 75);
+  --compare-orange-dark: oklch(0.7 0.17 62);
+  --compare-orange-border: oklch(0.78 0.15 75 / 52%);
+  --compare-green: oklch(0.72 0.17 148);
+  --compare-green-dark: oklch(0.74 0.17 148);
+  --compare-green-soft: oklch(0.24 0.06 148);
+  --compare-purple: oklch(0.78 0.18 290);
+  --compare-lavender: oklch(0.24 0.06 290);
+  --compare-blue: oklch(0.72 0.13 250);
+  --compare-blue-soft: oklch(0.24 0.04 250);
+  --compare-red: oklch(0.72 0.18 27);
+  --compare-wait-soft: oklch(0.25 0.06 75);
+  --compare-input-shadow: 0 8px 24px rgb(0 0 0 / 0.16);
+  --compare-hover-shadow: 0 12px 30px rgb(0 0 0 / 0.2);
+  --compare-card-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  --compare-logo-shadow: 0 8px 16px rgb(0 0 0 / 0.22);
   --sidebar: oklch(0.18 0.016 255);
   --sidebar-foreground: oklch(0.97 0.006 255);
   --sidebar-primary: oklch(0.96 0.008 255);
@@ -207,6 +251,16 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-geist), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+
+  [data-password-toggle][data-visible="false"] .password-eye-hide,
+  [data-password-toggle][data-visible="true"] .password-eye-show {
+    display: none;
   }
 
   h1,
@@ -232,4 +286,12 @@
 .font-numeric {
   font-family: var(--font-space-grotesk), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
+}
+
+.compare-dashboard [data-slot="table-container"] {
+  scrollbar-width: none;
+}
+
+.compare-dashboard [data-slot="table-container"]::-webkit-scrollbar {
+  display: none;
 }

@@ -10,7 +10,7 @@ import {
   ArrowLeftIcon,
   AwardIcon,
   BellIcon,
-  BookmarkIcon,
+  EyeIcon,
   EyeOffIcon,
   LockIcon,
   MailCheckIcon,
@@ -52,13 +52,6 @@ import {
   showSignupToast,
 } from "@/components/auth/auth-toasts";
 
-const pageVariants: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 18 },
   show: {
@@ -70,7 +63,7 @@ const itemVariants: Variants = {
 
 const benefitItems = [
   {
-    title: "AI-Powered Insights",
+    title: "AI Insights",
     description: "Get AI scores and recommendations based on reviews, price history, and real data.",
     icon: SearchCheckIcon,
     tone: "buy",
@@ -82,16 +75,10 @@ const benefitItems = [
     tone: "wait",
   },
   {
-    title: "Save & Watchlist",
-    description: "Save products, create watchlists, and never miss a good deal.",
-    icon: BookmarkIcon,
-    tone: "buy",
-  },
-  {
     title: "Best Deals",
     description: "Discover handpicked deals and historical low prices.",
     icon: TagIcon,
-    tone: "wait",
+    tone: "value",
   },
 ] as const;
 
@@ -199,13 +186,15 @@ function BenefitIcon({
   tone,
 }: {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  tone: "buy" | "wait";
+  tone: "buy" | "wait" | "value";
 }) {
   return (
     <div
       className={cn(
-        "flex size-12 shrink-0 items-center justify-center rounded-2xl",
-        tone === "buy" ? "bg-soft-buy text-buy" : "bg-soft-wait text-wait",
+        "flex size-14 shrink-0 items-center justify-center rounded-full",
+        tone === "buy" && "bg-soft-buy text-buy",
+        tone === "wait" && "bg-soft-wait text-wait",
+        tone === "value" && "bg-soft-value text-value",
       )}
     >
       <Icon aria-hidden="true" className="size-6" />
@@ -316,22 +305,16 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
   }[authMode];
 
   return (
-    <motion.main
+    <main
       className="min-h-screen bg-[image:var(--page-glow)]"
-      variants={shouldReduceMotion ? undefined : pageVariants}
-      initial={shouldReduceMotion ? false : "hidden"}
-      animate="show"
     >
-      <motion.header
-        className="sticky top-0 z-40 border-b bg-card/95 shadow-[0_1px_0_rgb(15_23_42/0.03)] backdrop-blur-xl"
-        variants={shouldReduceMotion ? undefined : itemVariants}
-      >
+      <header className="sticky top-0 z-40 border-b bg-card/95 shadow-[0_1px_0_rgb(15_23_42/0.03)] backdrop-blur-xl">
         <nav className="mx-auto flex h-[72px] w-full max-w-[1352px] items-center justify-between gap-4 px-5 sm:px-8 xl:px-0">
           <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="IsItABuy home">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-buy text-primary-foreground shadow-soft">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[image:var(--brand-gradient)] text-white shadow-soft">
               <ShoppingBagIcon aria-hidden="true" className="size-6" />
             </span>
-            <span className="truncate text-2xl font-extrabold tracking-normal text-buy">IsItABuy</span>
+            <span className="truncate text-2xl font-bold tracking-normal text-[var(--happy-ink)]">IsItABuy</span>
           </Link>
 
           <div className="flex items-center gap-3">
@@ -340,7 +323,8 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             </p>
             <Button
               asChild
-              className="h-10 rounded-xl bg-[image:var(--brand-gradient)] px-6 text-sm font-extrabold text-primary-foreground shadow-soft hover:opacity-95"
+              variant="outline"
+              className="h-10 rounded-xl border-buy/40 bg-card px-6 text-sm font-bold text-buy shadow-none hover:bg-soft-buy hover:text-buy"
             >
               <Link
                 href={authCopy.headerHref}
@@ -354,22 +338,21 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             </Button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
-      <div className="mx-auto grid w-full max-w-[1240px] gap-7 px-5 py-8 sm:px-8 lg:grid-cols-[0.98fr_1.02fr] lg:items-start lg:gap-8 lg:px-8 lg:py-8 xl:grid-cols-[620px_588px] xl:gap-8 xl:px-0">
-        <motion.section
+      <div className="mx-auto grid w-full max-w-[1360px] gap-7 px-5 py-8 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(340px,0.92fr)] md:items-start md:gap-4 lg:grid-cols-[0.98fr_1.02fr] lg:gap-8 lg:px-8 lg:py-8 xl:grid-cols-[620px_588px] xl:gap-8 xl:px-0">
+        <section
           className="flex flex-col gap-5"
-          variants={shouldReduceMotion ? undefined : itemVariants}
         >
-          <Badge className="w-fit rounded-full bg-soft-value px-4 py-1.5 text-sm font-extrabold text-value" variant="secondary">
+          <Badge className="w-fit rounded-full bg-soft-buy px-4 py-1.5 text-sm font-bold text-buy" variant="secondary">
             <SparklesIcon data-icon="inline-start" />
             AI-Powered Shopping Advisor
           </Badge>
 
           <div className="flex flex-col gap-4">
-            <h1 className="max-w-[560px] text-[44px] font-black leading-[1.16] tracking-normal text-foreground sm:text-[48px]">
-              Shop smarter with your own AI buying{" "}
-              <span className="text-buy">assistant</span>.
+            <h1 className="max-w-[560px] text-[38px] font-bold leading-[1.16] tracking-normal text-foreground sm:text-[42px] lg:text-[44px] xl:text-[48px]">
+              Shop smarter with your{" "}
+              <span className="text-buy">AI shopping assistant</span>
             </h1>
             <p className="max-w-[520px] text-[16px] font-semibold leading-7 text-muted-foreground">
               Create an account to save products, track prices, upload receipts,
@@ -377,39 +360,18 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             </p>
           </div>
 
-          <Card className="w-full max-w-[620px] rounded-full border-border bg-card/95 py-0 shadow-soft">
-            <CardContent className="grid grid-cols-[max-content_max-content_max-content_max-content] items-center justify-between gap-5 px-6 py-4 max-sm:flex max-sm:flex-wrap max-sm:gap-x-5 max-sm:gap-y-3 max-sm:px-6">
-              <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-4 rounded-full bg-buy" />
-                <span className="text-[15px] font-black leading-none sm:text-base">Buy Now</span>
-              </div>
-              <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-4 rounded-full bg-wait" />
-                <span className="text-[15px] font-black leading-none sm:text-base">Wait</span>
-              </div>
-              <div className="flex items-center gap-3 whitespace-nowrap">
-                <span className="size-4 rounded-full bg-avoid" />
-                <span className="text-[15px] font-black leading-none sm:text-base">Avoid</span>
-              </div>
-              <Badge className="whitespace-nowrap rounded-full bg-[image:var(--value-gradient)] px-3.5 py-1.5 text-xs font-black text-primary-foreground sm:text-sm">
-                <SparklesIcon data-icon="inline-start" />
-                BEST VALUE
-              </Badge>
-            </CardContent>
-          </Card>
-
-          <div className="flex flex-col gap-4 pt-0.5">
+          <div className="flex flex-col gap-5 pt-6">
             {benefitItems.map((item) => (
               <motion.article
                 key={item.title}
-                className="flex gap-4"
+                className="flex gap-5"
                 variants={shouldReduceMotion ? undefined : itemVariants}
                 layout
               >
                 <BenefitIcon icon={item.icon} tone={item.tone} />
                 <div className="min-w-0 pt-0.5">
-                  <h2 className="truncate text-[15px] font-black">{item.title}</h2>
-                  <p className="line-clamp-2 max-w-sm text-[13px] font-semibold leading-5 text-muted-foreground">
+                  <h2 className="truncate text-lg font-bold">{item.title}</h2>
+                  <p className="line-clamp-2 max-w-sm text-sm font-semibold leading-6 text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
@@ -417,61 +379,45 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             ))}
           </div>
 
-          <div data-scroll-reveal className="grid max-w-[620px] gap-3">
-            <Card className="rounded-2xl border-buy/10 bg-soft-buy py-0 shadow-soft">
-              <CardContent className="flex items-center gap-4 p-4">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-buy text-primary-foreground">
-                  <ShieldCheckIcon aria-hidden="true" className="size-6" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-sm font-black leading-5 text-foreground">
+          <div data-scroll-reveal className="max-w-[620px] pt-4">
+            <Card className="overflow-hidden rounded-2xl bg-card/95 py-0 shadow-soft">
+              <CardContent className="grid p-0 sm:grid-cols-[2fr_0.7fr_0.7fr]">
+                <div className="flex items-center gap-2.5 p-3.5 lg:gap-3 lg:p-5">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-buy text-primary-foreground lg:size-10">
+                    <ShieldCheckIcon aria-hidden="true" className="size-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-[11px] font-bold leading-4 text-foreground lg:text-sm lg:leading-5">
                       Basic product checking is free
                     </h3>
-                    <Link href="/" className="text-xs font-black text-buy">
-                      Learn more -&gt;
-                    </Link>
-                  </div>
-                  <p className="mt-1 text-sm font-semibold leading-6 text-muted-foreground">
-                    Search and check products before creating an account.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-2xl bg-card py-0 shadow-soft">
-              <CardContent className="grid grid-cols-2 p-0">
-                <div className="flex items-center gap-4 px-5 py-4">
-                  <ShieldCheckIcon aria-hidden="true" className="size-8 shrink-0 text-buy" />
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-muted-foreground">Trusted by</p>
-                    <p className="font-numeric mt-1 text-2xl font-bold leading-none text-foreground">500K+</p>
-                    <p className="mt-1 text-xs text-muted-foreground">smart shoppers</p>
+                    <p className="mt-1 line-clamp-2 text-[11px] font-semibold leading-4 text-muted-foreground lg:text-sm lg:leading-6">
+                      No login required to search and check products.
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 border-l px-5 py-4">
+                <div className="flex items-center justify-center gap-1.5 border-l p-3.5 lg:gap-2 lg:p-4">
+                  <UsersIcon aria-hidden="true" className="size-5 shrink-0 text-muted-foreground lg:size-6" />
                   <div className="min-w-0">
-                    <div className="mb-2 flex gap-0.5 text-wait">
-                      {Array.from({ length: 5 }).map((_, index) => (
-                        <StarIcon key={index} aria-hidden="true" className="size-4 fill-current" />
-                      ))}
-                    </div>
-                    <p className="font-numeric text-2xl font-bold leading-none text-foreground">4.8/5</p>
-                    <p className="mt-1 text-xs text-muted-foreground">from 20K+ reviews</p>
+                    <p className="font-numeric text-lg font-bold leading-none text-foreground lg:text-xl">500K+</p>
+                    <p className="mt-1 text-[10px] font-semibold leading-3 text-muted-foreground lg:text-xs">smart shoppers</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1.5 border-l p-3.5 lg:gap-2 lg:p-4">
+                  <StarIcon aria-hidden="true" className="size-5 shrink-0 text-muted-foreground lg:size-6" />
+                  <div className="min-w-0">
+                    <p className="font-numeric text-lg font-bold leading-none text-foreground lg:text-xl">4.8/5</p>
+                    <p className="mt-1 text-[10px] font-semibold leading-3 text-muted-foreground lg:text-xs">from 20K+ reviews</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        </motion.section>
+        </section>
 
-        <motion.section
-          className="flex justify-center lg:justify-start"
-          variants={shouldReduceMotion ? undefined : itemVariants}
-        >
-          <Card className="w-full max-w-[588px] rounded-3xl bg-card/95 py-0 shadow-[var(--auth-card-shadow)]">
-            <CardHeader className="px-6 pt-10 sm:px-8 lg:px-10">
-              <CardTitle className="text-[28px] font-black tracking-normal">
+        <section className="flex justify-center md:justify-start">
+          <Card className="w-full max-w-[588px] rounded-3xl bg-card/95 py-0 shadow-[var(--auth-card-shadow)] md:max-w-none xl:max-w-[588px]">
+            <CardHeader className="px-6 pt-8 sm:px-8 lg:px-10 lg:pt-10">
+              <CardTitle className="text-[28px] font-bold tracking-normal">
                 {authCopy.title}
               </CardTitle>
               <CardDescription className="text-base font-semibold">
@@ -481,13 +427,9 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             <CardContent className="px-6 pb-5 pt-6 sm:px-8 lg:px-10">
               <AnimatePresence mode="wait">
                 {authMode === "resetSent" ? (
-                  <motion.div
+                  <div
                     key="reset-sent"
                     className="flex flex-col gap-5"
-                    initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-                    animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-                    exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <div className="rounded-2xl bg-soft-buy p-5 text-buy">
                       <MailCheckIcon aria-hidden="true" className="mb-3 size-7" />
@@ -498,7 +440,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                       </p>
                     </div>
                     <MotionButton
-                      className="bg-[image:var(--brand-gradient)] text-primary-foreground hover:opacity-95"
+                      className="bg-buy text-primary-foreground hover:bg-buy/90"
                       type="button"
                       onClick={showResetLinkResentToast}
                     >
@@ -513,16 +455,11 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                       <ArrowLeftIcon data-icon="inline-start" />
                       Back to login
                     </Button>
-                  </motion.div>
+                  </div>
                 ) : (
-                  <motion.form
+                  <form
                     key={authMode}
                     className="flex flex-col gap-5"
-                    variants={shouldReduceMotion ? undefined : pageVariants}
-                    initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
-                    animate={shouldReduceMotion ? "show" : { opacity: 1, y: 0 }}
-                    exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12 }}
-                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                     onSubmit={handleSubmit}
                   >
                     <FieldGroup>
@@ -570,12 +507,20 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                               id="password"
                               type="password"
                               placeholder="Enter your password"
-                              className="h-12 rounded-xl border-border bg-card px-12 text-sm shadow-none placeholder:text-muted-foreground/80"
+                              className="h-12 rounded-xl border-border bg-card pl-12 pr-12 text-sm shadow-none placeholder:text-muted-foreground/80"
                             />
-                            <EyeOffIcon
-                              aria-hidden="true"
-                              className="pointer-events-none absolute right-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground"
-                            />
+                            <button
+                              type="button"
+                              aria-label="Show password"
+                              aria-pressed="false"
+                              className="absolute right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              data-password-toggle
+                              data-password-input="password"
+                              data-visible="false"
+                            >
+                              <EyeIcon aria-hidden="true" className="password-eye-show size-5" />
+                              <EyeOffIcon aria-hidden="true" className="password-eye-hide size-5" />
+                            </button>
                           </div>
                         </Field>
                       ) : null}
@@ -588,7 +533,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                       >
                         <Button
                           asChild
-                          className="h-11 w-full rounded-xl bg-[image:var(--brand-gradient)] text-sm font-bold text-primary-foreground shadow-none hover:opacity-95"
+                          className="h-11 w-full rounded-xl bg-buy text-sm font-bold text-primary-foreground shadow-none hover:bg-buy/90"
                         >
                           <Link
                             href="/signin?mode=resetSent"
@@ -605,7 +550,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                     ) : (
                       <MotionButton
                         type="submit"
-                        className="bg-[image:var(--brand-gradient)] text-primary-foreground hover:opacity-95"
+                        className="bg-buy text-primary-foreground hover:bg-buy/90"
                       >
                         {authState === "checking"
                           ? "Checking..."
@@ -663,11 +608,11 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                         </div>
                       </>
                     ) : null}
-                  </motion.form>
+                  </form>
                 )}
               </AnimatePresence>
             </CardContent>
-            <CardFooter className="flex items-start gap-3 rounded-b-3xl border-0 bg-transparent px-6 pb-10 pt-4 sm:px-8 lg:px-10">
+            <CardFooter className="flex items-start gap-3 rounded-b-3xl border-0 bg-transparent px-6 pb-8 pt-4 sm:px-8 lg:px-10 lg:pb-10">
               <ShieldCheckIcon aria-hidden="true" className="mt-1 size-5 shrink-0 text-buy" />
               <FieldDescription className="text-xs leading-6">
                 We protect your privacy and your data. By continuing, you agree
@@ -675,25 +620,48 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
               </FieldDescription>
             </CardFooter>
           </Card>
-        </motion.section>
+        </section>
       </div>
 
-      <motion.footer
-        className="mx-auto w-full max-w-[1170px] px-5 pb-8 sm:px-8 xl:px-0"
-        variants={shouldReduceMotion ? undefined : itemVariants}
-      >
+      <footer className="mx-auto w-full max-w-[1170px] px-5 pb-8 sm:px-8 xl:px-0">
         <Card className="rounded-2xl bg-card/90 py-0 shadow-soft">
-          <CardContent className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-4">
+          <CardContent className="grid grid-cols-4 gap-0 p-4">
             {trustItems.map((item) => (
-              <div key={item.title} className="flex items-center gap-4 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:pl-8">
-                <item.icon aria-hidden="true" className="size-7 shrink-0 text-muted-foreground" />
-                <p className="text-[13px] font-bold leading-5 text-muted-foreground">{item.title}</p>
+              <div key={item.title} className="flex items-center gap-3 px-4 [&:not(:first-child)]:border-l">
+                <item.icon aria-hidden="true" className="size-6 shrink-0 text-muted-foreground" />
+                <p className="text-[11px] font-bold leading-4 text-muted-foreground lg:text-[13px] lg:leading-5">{item.title}</p>
               </div>
             ))}
           </CardContent>
         </Card>
-      </motion.footer>
+      </footer>
 
-    </motion.main>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+(() => {
+  if (window.__isitabuyPasswordToggleReady) return;
+  window.__isitabuyPasswordToggleReady = true;
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const button = target.closest("[data-password-toggle]");
+    if (!(button instanceof HTMLElement)) return;
+    const inputId = button.getAttribute("data-password-input");
+    const input = inputId ? document.getElementById(inputId) : null;
+    if (!(input instanceof HTMLInputElement)) return;
+    event.preventDefault();
+    const shouldShow = input.type === "password";
+    input.type = shouldShow ? "text" : "password";
+    button.dataset.visible = String(shouldShow);
+    button.setAttribute("aria-pressed", String(shouldShow));
+    button.setAttribute("aria-label", shouldShow ? "Hide password" : "Show password");
+  });
+})();
+          `,
+        }}
+      />
+
+    </main>
   );
 }

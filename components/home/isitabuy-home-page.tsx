@@ -37,6 +37,8 @@ import {
   Link,
   Lock,
   Menu,
+  Scale,
+  Search,
   ScanBarcode,
   ShieldCheck,
   Shirt,
@@ -46,6 +48,7 @@ import {
   Star,
   Store,
   TrendingDownIcon,
+  TrendingUp,
   Utensils,
   Wrench,
   X,
@@ -373,7 +376,6 @@ function HeroSection() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [activeDialog, setActiveDialog] = useState<"scan" | "upload" | null>(null);
-  const shouldReduceMotion = useReducedMotion();
 
   const runCheck = () => {
     const trimmedQuery = query.trim();
@@ -382,51 +384,134 @@ function HeroSection() {
     window.setTimeout(() => setLoading(false), 950);
   };
 
-  const openToolDialog = () => {
-    setActiveDialog("scan");
-  };
+  const heroHighlights = [
+    {
+      icon: Star,
+      title: "Reviews & ratings",
+      text: "from real shoppers",
+    },
+    {
+      icon: TrendingUp,
+      title: "Price history",
+      text: "& price trends",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Hidden issues",
+      text: "& red flags",
+    },
+    {
+      icon: Scale,
+      title: "Better alternatives",
+      text: "compared for you",
+    },
+  ] as const;
 
   return (
-    <section id="top" className="mx-auto max-w-6xl px-4 pb-8 pt-10 sm:px-6 lg:px-8 lg:pb-10 lg:pt-14">
-      <motion.div
-        className="mx-auto flex max-w-4xl flex-col items-center text-center"
-        initial={shouldReduceMotion ? false : { y: 18 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+    <section id="top" className="mx-auto max-w-[1080px] px-4 pb-6 pt-4 sm:px-6 lg:px-8 lg:pb-8 lg:pt-6">
+      <div
+        className="mx-auto flex flex-col items-center text-center"
       >
-        <h1 className="max-w-3xl font-heading text-4xl font-bold leading-[1.05] tracking-normal text-[var(--happy-ink)] sm:text-5xl lg:text-6xl">
-          Know what to buy <span className="text-[var(--happy-orange)]">before</span> you buy.
+        <div
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-[var(--happy-card-shadow)] backdrop-blur lg:text-sm"
+        >
+          <Sparkles className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
+          AI-Powered Shopping Advisor
+        </div>
+
+        <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-bold leading-[1.02] tracking-normal text-[var(--happy-ink)]">
+          <span className="whitespace-nowrap"><span className="text-[var(--happy-orange)]">Know</span> what to buy before</span>
+          <span className="block">
+            you <span className="text-[var(--happy-orange)]">buy.</span>
+          </span>
         </h1>
-        <p className="mt-5 max-w-2xl text-base font-medium leading-7 text-[var(--happy-muted)]">
-          Paste a product link, search by name, scan a barcode, or upload a product image. Our AI checks reviews, price history, complaints, and better alternatives before you spend.
-        </p>
-        <div className="mt-7 w-full max-w-3xl rounded-[2rem] border border-[var(--happy-line)] bg-white p-2 shadow-[var(--happy-card-shadow)]">
-          <div className="flex items-center gap-2">
+
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-[var(--happy-card-shadow)] backdrop-blur sm:text-base">
+          <span className="grid size-7 place-items-center rounded-lg bg-[var(--happy-orange)] text-white">
+            <ShieldCheck className="size-3.5" aria-hidden="true" />
+          </span>
+          100% Independent & Commission-Free Scores
+        </div>
+
+        <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--happy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
+          <div className="flex flex-col gap-2 lg:h-12 lg:flex-row lg:items-center">
             <div className="relative min-w-0 flex-1">
-              <Link className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+              <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-800" aria-hidden="true" />
               <Input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Paste product link or search product name..."
-                className="h-12 rounded-full border-transparent bg-slate-50 pl-12 pr-4 text-sm font-semibold shadow-none placeholder:text-slate-400 focus-visible:ring-[var(--happy-orange)]"
+                placeholder="Paste a product link, search by name, take a photo or upload an image."
+                className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--happy-muted)] focus-visible:ring-[var(--happy-orange)] lg:h-11 lg:text-sm"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runCheck();
                 }}
               />
             </div>
+            <div className="hidden h-7 w-px bg-[var(--happy-line)] lg:block" />
+            <div className="grid grid-cols-2 gap-2 lg:flex lg:items-center lg:gap-0">
+              <MotionButton
+                type="button"
+                variant="ghost"
+                size="icon-lg"
+                className="h-9 w-full rounded-full text-[var(--happy-ink)] hover:bg-slate-50 lg:size-10"
+                onClick={() => setActiveDialog("scan")}
+                aria-label="Take a product photo"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <Camera className="size-4" aria-hidden="true" />
+              </MotionButton>
+            <div className="hidden h-7 w-px bg-[var(--happy-line)] lg:block" />
+              <MotionButton
+                type="button"
+                variant="ghost"
+                size="icon-lg"
+                className="h-9 w-full rounded-full text-[var(--happy-ink)] hover:bg-slate-50 lg:size-10"
+                onClick={() => setActiveDialog("upload")}
+                aria-label="Upload product image"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <ImageIcon className="size-4" aria-hidden="true" />
+              </MotionButton>
+            </div>
             <MotionButton
               type="button"
               onClick={runCheck}
-              className="h-12 shrink-0 rounded-full bg-[var(--happy-orange)] px-4 text-xs font-semibold text-white hover:bg-[var(--happy-orange-dark)] sm:px-7 sm:text-sm"
+              className="h-10 shrink-0 rounded-full bg-[var(--happy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--happy-orange-dark)] lg:h-11 lg:px-6"
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
             >
-              {loading ? "Checking..." : "Check"}
+              {loading ? "Checking..." : "Start Saving"}
             </MotionButton>
           </div>
         </div>
-        <SearchToolButton onClick={openToolDialog} />
-      </motion.div>
+
+        <div
+          className="mt-5 grid w-full max-w-[920px] gap-3 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {heroHighlights.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <article
+                key={item.title}
+                className={cn(
+                  "flex items-center gap-3 text-left",
+                  index > 0 && "lg:border-l lg:border-[var(--happy-line)] lg:pl-4",
+                )}
+              >
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[var(--happy-orange)] shadow-[var(--happy-card-shadow)] lg:size-11">
+                  <Icon className="size-4" aria-hidden="true" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-xs font-bold leading-4 text-[var(--happy-ink)] lg:text-sm">{item.title}</span>
+                  <span className="mt-0.5 block text-xs font-medium leading-4 text-[var(--happy-muted)] lg:text-sm">{item.text}</span>
+                </span>
+              </article>
+            );
+          })}
+        </div>
+      </div>
       <HeroToolDialog
         type={activeDialog}
         open={activeDialog !== null}
@@ -436,22 +521,6 @@ function HeroSection() {
         }}
       />
     </section>
-  );
-}
-
-function SearchToolButton({ onClick }: { onClick: () => void }) {
-  return (
-    <MotionButton
-      type="button"
-      variant="outline"
-      className="mt-4 h-11 rounded-full border-[var(--happy-line)] bg-white px-5 text-sm font-semibold text-[var(--happy-ink)] shadow-sm"
-      onClick={onClick}
-      whileHover={{ y: -1 }}
-      whileTap={{ scale: 0.98 }}
-    >
-      <ScanBarcode className="size-4 text-[var(--happy-purple)]" aria-hidden="true" />
-      Scan & Upload
-    </MotionButton>
   );
 }
 
