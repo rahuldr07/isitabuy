@@ -3,12 +3,10 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
+  ArrowLeft,
   BarChart3,
   Bell,
-  Bot,
   CheckCircle2,
-  ClipboardCheck,
-  Crown,
   DollarSign,
   ExternalLink,
   Heart,
@@ -72,12 +70,11 @@ const fallbackProduct: ProductData = {
 const sidebarItems = [
   { label: "Overview", icon: Home, key: "overview" },
   { label: "Price & History", icon: BarChart3, key: "price-history" },
-  { label: "Reviews AI", icon: MessageCircle },
-  { label: "Alternatives", icon: Sparkles },
-  { label: "YouTube Insights", icon: CirclePlay },
-  { label: "Track Price", icon: ClipboardCheck },
-  { label: "My Lists", icon: ListChecks },
-] satisfies Array<{ label: string; icon: LucideIcon; key?: "overview" | "price-history" }>;
+  { label: "Reviews AI", icon: MessageCircle, key: "reviews-ai" },
+  { label: "Alternatives", icon: Sparkles, key: "alternatives" },
+  { label: "YouTube Insights", icon: CirclePlay, key: "youtube-insights" },
+  { label: "My Lists", icon: ListChecks, key: "my-lists" },
+] satisfies Array<{ label: string; icon: LucideIcon; key?: "overview" | "price-history" | "reviews-ai" | "alternatives" | "youtube-insights" | "my-lists" }>;
 
 const pros = ["Outstanding noise cancellation", "Excellent sound quality", "Very comfortable"];
 const cons = ["Expensive", "Ear cups get warm", "Call quality could be better"];
@@ -151,9 +148,20 @@ function scoreBreakdown(product: ProductData) {
   ] as const;
 }
 
-function productHref(slug: string, product: ProductData, section: "overview" | "price-history") {
+function productHref(slug: string, product: ProductData, section: "overview" | "price-history" | "reviews-ai" | "alternatives" | "youtube-insights" | "my-lists") {
   return {
-    pathname: section === "overview" ? `/product/${slug}` : `/product/${slug}/price-history`,
+    pathname:
+      section === "overview"
+        ? `/product/${slug}`
+        : section === "price-history"
+          ? `/product/${slug}/price-history`
+          : section === "reviews-ai"
+            ? `/product/${slug}/reviews-ai`
+            : section === "alternatives"
+              ? `/product/${slug}/alternatives`
+              : section === "youtube-insights"
+                ? `/product/${slug}/youtube-insights`
+                : `/product/${slug}/my-lists`,
     query: {
       name: product.name,
       subtitle: product.subtitle,
@@ -171,7 +179,7 @@ function productHref(slug: string, product: ProductData, section: "overview" | "
 
 function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
-    <aside className="hidden min-h-screen w-[250px] shrink-0 border-r border-border bg-white px-4 py-5 lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-5 lg:flex lg:flex-col">
       <Link className="mb-6 flex items-center gap-3" href="/deals">
         <span className="grid size-11 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
           BW
@@ -179,6 +187,10 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         <span className="text-3xl font-extrabold tracking-tight text-[#0f172a]">
           BuyWise <span className="text-[#4f46e5]">AI</span>
         </span>
+      </Link>
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+        <ArrowLeft className="size-4" />
+        Back to Deals
       </Link>
 
       <nav className="flex flex-col gap-2">
@@ -202,19 +214,6 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
       </nav>
 
       <div className="mt-auto flex flex-col gap-5">
-        <Card className="rounded-xl border-0 bg-[#f2efff] p-4">
-          <div className="flex items-center gap-3">
-            <Crown className="size-7 text-[#f5b400]" />
-            <div>
-              <p className="font-extrabold text-[#4f46e5]">Pro Plan</p>
-              <p className="text-xs font-medium text-muted-foreground">You&apos;re saving more with BuyWise AI</p>
-            </div>
-          </div>
-          <Button className="mt-4 h-9 w-full rounded-lg bg-[#4f46e5] text-xs font-extrabold text-white hover:bg-[#4338ca]">
-            Upgrade Now
-          </Button>
-        </Card>
-
         <Card className="rounded-xl border border-border bg-white p-5">
           <div className="flex items-start justify-between">
             <div>
@@ -361,8 +360,8 @@ function AiScoreCard({ product }: { product: ProductData }) {
           </Badge>
         </div>
         <div className="relative grid size-40 place-items-center rounded-full border-[14px] border-buy bg-soft-buy">
-          <span className="grid size-20 place-items-center rounded-full bg-[#243b8f] text-white">
-            <Bot className="size-10" />
+          <span className="grid size-24 place-items-center rounded-full bg-white shadow-sm">
+            <BrainAiMark />
           </span>
         </div>
         <div>
@@ -445,6 +444,47 @@ function YouTubeLogo() {
     <span aria-hidden="true" className="grid h-6 w-8 place-items-center rounded-md bg-[#ff0033] shadow-sm">
       <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-white" />
     </span>
+  );
+}
+
+function BrainAiMark() {
+  return (
+    <svg aria-hidden="true" className="size-16" viewBox="0 0 96 96">
+      <defs>
+        <linearGradient id="brain-ai-gradient" x1="14" x2="82" y1="82" y2="14" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#9bc5ff" />
+          <stop offset="0.52" stopColor="#4f7cff" />
+          <stop offset="1" stopColor="#1d4ed8" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M46 17c-8 0-14 6-15 14-8 1-14 8-14 16 0 6 3 11 8 14-1 9 6 16 15 16h6V17Z"
+        fill="url(#brain-ai-gradient)"
+      />
+      <path
+        d="M50 17c8 0 14 6 15 14 8 1 14 8 14 16 0 6-3 11-8 14 1 9-6 16-15 16h-6V17Z"
+        fill="url(#brain-ai-gradient)"
+      />
+      <path
+        d="M46 22v56M32 34c5 0 9 3 9 8M27 49c6 1 10 5 10 11M33 66c3-4 7-6 12-6M64 34c-5 0-9 3-9 8M69 49c-6 1-10 5-10 11M63 66c-3-4-7-6-12-6"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeWidth="4"
+      />
+      <path
+        d="M27 67H13M20 75H9M50 78v9M69 67h14M76 75h11"
+        fill="none"
+        stroke="#9bc5ff"
+        strokeLinecap="round"
+        strokeWidth="4"
+      />
+      <circle cx="13" cy="67" fill="#9bc5ff" r="4" />
+      <circle cx="9" cy="75" fill="#9bc5ff" r="4" />
+      <circle cx="50" cy="88" fill="#9bc5ff" r="4" />
+      <circle cx="83" cy="67" fill="#9bc5ff" r="4" />
+      <circle cx="87" cy="75" fill="#9bc5ff" r="4" />
+    </svg>
   );
 }
 
@@ -546,18 +586,18 @@ export default async function ProductAnalysisPage({
                 <YouTubeLogo /> YouTube Insights <Info className="size-4 text-muted-foreground" />
               </h2>
               <p className="mt-2 text-sm font-medium text-muted-foreground">Analyzed 24 trusted review videos</p>
-              <div className="mt-7 grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-sm font-semibold">Positive Mentions</p>
-                  <p className="mt-2 text-2xl font-extrabold text-buy">92%</p>
+              <div className="mt-7 grid grid-cols-3 items-start gap-3 text-center">
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Positive Mentions</p>
+                  <p className="text-2xl font-extrabold leading-none text-buy">92%</p>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold">Overall Rating</p>
-                  <p className="mt-2 text-2xl font-extrabold text-[#4f46e5]">4.6/5</p>
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Overall Rating</p>
+                  <p className="text-2xl font-extrabold leading-none text-[#4f46e5]">4.6/5</p>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold">Review Quality</p>
-                  <p className="mt-2 text-2xl font-extrabold text-[#7c3aed]">High</p>
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Review Quality</p>
+                  <p className="text-2xl font-extrabold leading-none text-[#7c3aed]">High</p>
                 </div>
               </div>
               <a className="mt-7 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
