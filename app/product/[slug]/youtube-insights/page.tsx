@@ -29,9 +29,10 @@ import {
   Volume2,
 } from "lucide-react";
 
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export const metadata = {
@@ -312,7 +313,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <Card className="mt-auto flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <BentoCard className="mt-auto flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-muted">
             <User className="size-5" />
@@ -323,14 +324,14 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-      </Card>
+      </BentoCard>
     </aside>
   );
 }
 
 function TopControls({ product }: { product: ProductData }) {
   return (
-    <Card className="flex flex-col gap-4 rounded-xl border border-border bg-white p-4 shadow-soft xl:flex-row xl:items-center xl:justify-between">
+    <BentoCard className="flex flex-col gap-4 p-4 xl:flex-row xl:items-center xl:justify-between">
       <button className="flex min-w-0 items-center gap-4">
         <span className="grid size-16 place-items-center rounded-lg bg-muted">
           <img alt={product.name} className="max-h-14 w-full object-contain mix-blend-multiply" src={product.image} />
@@ -349,17 +350,17 @@ function TopControls({ product }: { product: ProductData }) {
           <CirclePlay className="size-4" /> All Videos <ChevronDown className="size-4" />
         </Button>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; label: string; value: React.ReactNode; note: string; tone: string }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <p className="flex items-center gap-2 text-sm font-extrabold">
         {label} <Info className="size-4 text-muted-foreground" />
       </p>
-      <div className="mt-6 flex items-center gap-5">
+      <div className="mt-4 flex items-center gap-4">
         <span className={`grid size-14 place-items-center rounded-full ${tone}`}>
           <Icon className="size-7" />
         </span>
@@ -368,17 +369,17 @@ function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; 
           <p className="mt-3 text-sm font-semibold text-buy">{note}</p>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function SentimentTrend() {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Creator sentiment trend <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-6 lg:grid-cols-[1.5fr_0.9fr]">
+      <div className="mt-4 grid gap-4 lg:grid-cols-[1.5fr_0.9fr]">
         <div>
           <svg className="h-[190px] w-full overflow-visible" viewBox="0 0 520 190" role="img" aria-label="Creator sentiment trend">
             {[0, 25, 50, 75, 100].map((tick, index) => (
@@ -394,7 +395,7 @@ function SentimentTrend() {
               <text fill="#64748b" fontSize="12" key={month} x={36 + index * 76} y="184">{month}</text>
             ))}
           </svg>
-          <div className="mt-2 flex flex-wrap gap-6 text-xs font-semibold">
+          <div className="mt-2 flex flex-wrap gap-4 text-xs font-semibold">
             <span className="text-buy">Positive</span>
             <span className="text-accent">Mixed</span>
             <span className="text-red-500">Negative</span>
@@ -404,7 +405,7 @@ function SentimentTrend() {
           <div className="grid size-36 place-items-center rounded-full" style={{ background: "conic-gradient(#22c55e 0 72%, #fbbf24 72% 93%, #ef4444 93% 100%)" }}>
             <div className="grid size-24 place-items-center rounded-full bg-white text-center">
               <span className="text-3xl font-extrabold">72%</span>
-              <span className="-mt-6 text-xs font-semibold">Positive</span>
+              <span className="-mt-4 text-xs font-semibold">Positive</span>
             </div>
           </div>
           <div className="mt-4 grid w-full gap-2 text-sm font-semibold">
@@ -414,17 +415,17 @@ function SentimentTrend() {
           </div>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function MentionList({ title, items, positive }: { title: string; items: InsightProfile["pros"]; positive: boolean }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         {title} <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-4">
         {items.map(([label, value, Icon]) => (
           <div className="flex items-center gap-4" key={label}>
             <span className={`grid size-9 place-items-center rounded-full ${positive ? "bg-soft-buy text-buy" : "bg-red-50 text-red-500"}`}>
@@ -435,10 +436,10 @@ function MentionList({ title, items, positive }: { title: string; items: Insight
           </div>
         ))}
       </div>
-      <a className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
         View all {positive ? "pros" : "cons"} <ChevronDown className="-rotate-90 size-4" />
       </a>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -471,29 +472,29 @@ function VideoCard({ video }: { video: ReturnType<typeof videoSet>[number] }) {
 
 function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Top videos analyzed <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {videos.map((video) => (
           <VideoCard key={video.title} video={video} />
         ))}
       </div>
-      <a className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
         View all videos analyzed <ChevronDown className="-rotate-90 size-4" />
       </a>
-    </Card>
+    </BentoCard>
   );
 }
 
 function Takeaways({ items }: { items: string[] }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Key takeaways from creators <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-4">
         {items.map((item) => (
           <p className="flex gap-3 text-sm font-medium leading-6" key={item}>
             <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#4f46e5]" />
@@ -501,17 +502,17 @@ function Takeaways({ items }: { items: string[] }) {
           </p>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function QuoteHighlights({ quotes }: { quotes: InsightProfile["quotes"] }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Quote highlights <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-4 sm:grid-cols-3">
+      <div className="mt-4 grid gap-4 sm:grid-cols-3">
         {quotes.map(([quote, source]) => (
           <div className="rounded-xl bg-[#faf8ff] p-4" key={quote}>
             <p className="text-3xl font-black leading-none text-[#7c3aed]">“</p>
@@ -520,7 +521,7 @@ function QuoteHighlights({ quotes }: { quotes: InsightProfile["quotes"] }) {
           </div>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -534,12 +535,20 @@ export default async function YoutubeInsightsPage({
   const { slug } = await params;
   const product = productFromSearchParams(await searchParams);
   const profile = inferProfile(product);
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: key ? productHref(slug, product, key) : "#",
+    icon,
+    label,
+    navKey: key ?? "youtube-insights",
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
-      <main className="min-w-0 flex-1 p-5 lg:p-7">
-        <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+      <div className="min-w-0 flex-1">
+        <ProductMobileNav activeKey="youtube-insights" items={mobileNavItems} />
+        <main className="p-4 lg:p-5">
+          <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight">YouTube Insights</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
@@ -554,39 +563,39 @@ export default async function YoutubeInsightsPage({
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
-        </div>
+          </div>
 
-        <div className="mb-5">
+          <div className="mb-5">
           <div className="relative max-w-[520px]">
             <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
             <Input className="h-11 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search creator videos..." />
           </div>
-        </div>
+          </div>
 
-        <TopControls product={product} />
+          <TopControls product={product} />
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-4">
+          <section className="mt-4 grid gap-4 xl:grid-cols-4">
           <StatCard icon={CirclePlay} label="Videos analyzed" value="126" note="+18 vs last 6 months" tone="bg-[#f0ecff] text-[#4f46e5]" />
           <StatCard icon={Star} label="Average creator rating" value={<><span>4.4</span><span className="text-xl text-muted-foreground"> /5</span></>} note="Very positive" tone="bg-soft-buy text-buy" />
           <StatCard icon={ShieldCheck} label="Most mentioned strength" value={<span className="block max-w-[170px] text-2xl text-blue-600">{profile.strength}</span>} note="Mentioned in 78% of videos" tone="bg-blue-50 text-blue-600" />
           <StatCard icon={AlertTriangle} label="Most mentioned concern" value={<span className="block max-w-[170px] text-2xl text-red-500">{profile.concern}</span>} note="Mentioned in 61% of videos" tone="bg-red-50 text-red-500" />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_0.75fr_0.75fr]">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.35fr_0.75fr_0.75fr]">
           <SentimentTrend />
           <MentionList positive title="Top mentioned pros" items={profile.pros} />
           <MentionList positive={false} title="Top mentioned cons" items={profile.cons} />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.45fr_1fr]">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.45fr_1fr]">
           <VideosAnalyzed videos={profile.videos} />
-          <div className="grid gap-5">
+          <div className="grid gap-4">
             <Takeaways items={profile.takeaways} />
             <QuoteHighlights quotes={profile.quotes} />
           </div>
-        </section>
+          </section>
 
-        <Card className="mt-5 grid gap-5 rounded-xl border border-border bg-white p-5 shadow-soft md:grid-cols-[auto_1fr_repeat(4,minmax(110px,1fr))] md:items-center">
+          <BentoCard className="mt-4 grid gap-4 p-4 md:grid-cols-[auto_1fr_repeat(4,minmax(110px,1fr))] md:items-center">
           <span className="grid size-16 place-items-center rounded-full bg-[#f0ecff] text-[#4f46e5]">
             <Users className="size-8" />
           </span>
@@ -612,8 +621,9 @@ export default async function YoutubeInsightsPage({
             <p className="text-2xl font-extrabold text-[#4f46e5]">87</p>
             <p className="text-sm font-medium text-muted-foreground">unique creators</p>
           </div>
-        </Card>
-      </main>
+          </BentoCard>
+        </main>
+      </div>
     </div>
   );
 }

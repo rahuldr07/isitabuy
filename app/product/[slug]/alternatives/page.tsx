@@ -30,9 +30,10 @@ import {
   XCircle,
 } from "lucide-react";
 
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export const metadata = {
@@ -719,7 +720,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <Card className="mt-auto flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <BentoCard className="mt-auto flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-muted">
             <User className="size-5" />
@@ -730,43 +731,43 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-      </Card>
+      </BentoCard>
     </aside>
   );
 }
 
 function ProductSelector({ product }: { product: ProductData }) {
   return (
-    <Card className="flex h-16 items-center gap-4 rounded-xl border border-border bg-white px-5 shadow-soft">
+    <BentoCard className="flex h-16 items-center gap-4 px-5">
       <img alt={product.name} className="size-12 object-contain mix-blend-multiply" src={product.image} />
       <span className="min-w-0 flex-1 truncate text-lg font-extrabold">{product.name}</span>
       <ChevronDown className="size-4 text-muted-foreground" />
-    </Card>
+    </BentoCard>
   );
 }
 
 function FilterBox({ label, value }: { label: string; value: string }) {
   return (
-    <Card className="flex h-16 items-center justify-between rounded-xl border border-border bg-white px-5 shadow-soft">
+    <BentoCard className="flex h-16 items-center justify-between px-5">
       <div>
         <p className="text-xs font-semibold text-muted-foreground">{label}</p>
         <p className="mt-1 text-sm font-extrabold">{value}</p>
       </div>
       <ChevronDown className="size-4 text-muted-foreground" />
-    </Card>
+    </BentoCard>
   );
 }
 
 function HighlightCard({ product, title, icon: Icon }: { product: AlternativeProduct; title: string; icon: LucideIcon }) {
   return (
-    <Card className="min-h-[190px] rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="min-h-[190px] p-4">
       <p className="flex min-h-7 items-center gap-2 text-sm font-extrabold">
         <span className="grid size-7 place-items-center rounded-full bg-[#f0ecff] text-[#4f46e5]">
           <Icon className="size-4" />
         </span>
         {title}
       </p>
-      <div className="mt-5 grid grid-cols-[82px_minmax(0,1fr)] items-center gap-4">
+      <div className="mt-4 grid grid-cols-[82px_minmax(0,1fr)] items-center gap-4">
         <div className="grid size-[82px] place-items-center rounded-lg bg-white">
           <img alt={product.name} className="max-h-20 max-w-20 object-contain mix-blend-multiply" src={product.image} />
         </div>
@@ -779,19 +780,19 @@ function HighlightCard({ product, title, icon: Icon }: { product: AlternativePro
           <p className="mt-2 truncate font-extrabold leading-none text-buy">{title.includes("Overall") ? "Save $49" : product.price}</p>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function AlternativeCard({ item }: { item: AlternativeProduct }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-4 shadow-soft">
+    <BentoCard className="p-4">
       <div className="grid grid-cols-[90px_1fr] gap-4">
         <div className="relative">
           <span className="absolute left-0 top-0 grid size-7 place-items-center rounded-full bg-[#4f46e5] text-xs font-extrabold text-white">
             {item.rank}
           </span>
-          <img alt={item.name} className="mt-5 size-24 object-contain mix-blend-multiply" src={item.image} />
+          <img alt={item.name} className="mt-4 size-24 object-contain mix-blend-multiply" src={item.image} />
         </div>
         <div>
           <h3 className="font-extrabold">{item.name}</h3>
@@ -812,7 +813,7 @@ function AlternativeCard({ item }: { item: AlternativeProduct }) {
           </div>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -827,11 +828,11 @@ function WhyAlternatives() {
   ] as const;
 
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Why these alternatives? <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-4">
         {reasons.map(([title, body, Icon, tone]) => (
           <div className="flex gap-4" key={title}>
             <span className={`grid size-9 shrink-0 place-items-center rounded-full ${tone}`}>
@@ -844,7 +845,7 @@ function WhyAlternatives() {
           </div>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -861,7 +862,7 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
   ];
 
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="mb-4 text-base font-extrabold">
         Side-by-side comparison <Info className="inline size-4 text-muted-foreground" />
       </h2>
@@ -879,7 +880,7 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
             {rows.map((row) => (
               <tr className="border-b border-border" key={row[0]}>
                 {row.map((cell, index) => (
-                  <td className={`p-3 ${index === 0 ? "text-left font-extrabold" : "font-semibold text-muted-foreground"}`} key={`${row[0]}-${cell}`}>
+                  <td className={`p-3 ${index === 0 ? "text-left font-extrabold" : "font-semibold text-muted-foreground"}`} key={`${row[0]}-${index}-${cell}`}>
                     {cell === "Yes" ? <CheckCircle2 className="mx-auto size-5 text-buy" /> : cell === "No" ? <XCircle className="mx-auto size-5 text-avoid" /> : cell}
                   </td>
                 ))}
@@ -888,7 +889,7 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
           </tbody>
         </table>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -902,7 +903,7 @@ function NeedsPanel({ alternatives, product }: { alternatives: AlternativeProduc
   ] as const;
 
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="mb-4 text-base font-extrabold">
         Best for your needs <Info className="inline size-4 text-muted-foreground" />
       </h2>
@@ -919,27 +920,27 @@ function NeedsPanel({ alternatives, product }: { alternatives: AlternativeProduc
           </div>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function MoreAlternatives({ alternatives, moreAlternatives }: { alternatives: AlternativeProduct[]; moreAlternatives: string[][] }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="mb-4 text-base font-extrabold">More top alternatives</h2>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {moreAlternatives.map(([name, price, score], index) => (
-          <Card className="flex items-center gap-4 rounded-xl border border-border bg-white p-4 shadow-none" key={name}>
+          <BentoCard className="flex items-center gap-4 p-4 shadow-none hover:translate-y-0" key={name}>
             <img alt={name} className="size-14 object-contain mix-blend-multiply" src={alternatives[index % alternatives.length].image} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-extrabold">{name}</p>
               <p className="text-sm font-extrabold">{price} <span className="ml-2 text-[#4f46e5]">{score}</span></p>
             </div>
             <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-          </Card>
+          </BentoCard>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -956,12 +957,20 @@ export default async function AlternativesPage({
   const alternativeSet = alternativeCatalog[alternativeCategory];
   const alternatives = alternativeSet.products;
   const moreAlternatives = alternativeSet.more;
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: key ? productHref(slug, product, key) : "#",
+    icon,
+    label,
+    navKey: key ?? "alternatives",
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
-      <main className="min-w-0 flex-1 p-5 lg:p-7">
-        <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+      <div className="min-w-0 flex-1">
+        <ProductMobileNav activeKey="alternatives" items={mobileNavItems} />
+        <main className="p-4 lg:p-5">
+          <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight">Alternatives</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
@@ -976,27 +985,27 @@ export default async function AlternativesPage({
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
-        </div>
+          </div>
 
-        <div className="mb-5">
+          <div className="mb-5">
           <div className="relative max-w-[520px]">
             <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
             <Input className="h-11 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search alternatives..." />
           </div>
-        </div>
+          </div>
 
-        <section className="grid gap-4 xl:grid-cols-[minmax(320px,1.8fr)_1fr_1fr_1fr]">
+          <section className="grid gap-4 xl:grid-cols-[minmax(320px,1.8fr)_1fr_1fr_1fr]">
           <ProductSelector product={product} />
           <FilterBox label="Budget range" value="$0 - $1000" />
           <FilterBox label="Category" value={alternativeSet.label} />
           <FilterBox label="Sort by" value="Best Match" />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-4">
+          <section className="mt-4 grid gap-4 xl:grid-cols-4">
           <HighlightCard icon={Trophy} product={alternatives[0]} title="Best Overall Alternative" />
           <HighlightCard icon={CircleDollarSign} product={alternatives[1]} title="Best Budget Pick" />
           <HighlightCard icon={Star} product={alternatives[2]} title="Best Premium Pick" />
-          <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
             <p className="flex items-center gap-2 text-sm font-extrabold">
               <span className="grid size-7 place-items-center rounded-full bg-soft-wait text-accent">
                 <Sparkles className="size-4" />
@@ -1006,11 +1015,11 @@ export default async function AlternativesPage({
             <p className="mt-7 text-center text-5xl font-extrabold text-accent">26</p>
             <p className="mt-1 text-center text-lg font-semibold">matching products</p>
             <p className="mt-3 text-center text-sm font-medium text-muted-foreground">Continuously updated</p>
-          </Card>
-        </section>
+    </BentoCard>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.45fr_1fr]">
-          <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.45fr_1fr]">
+          <BentoCard className="p-4">
             <h2 className="mb-4 text-base font-extrabold">
               Top AI Alternatives <Info className="inline size-4 text-muted-foreground" />
             </h2>
@@ -1019,19 +1028,20 @@ export default async function AlternativesPage({
                 <AlternativeCard item={item} key={item.name} />
               ))}
             </div>
-          </Card>
+          </BentoCard>
           <WhyAlternatives />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.55fr_1fr]">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.55fr_1fr]">
           <ComparisonTable alternatives={alternatives} product={product} />
           <NeedsPanel alternatives={alternatives} product={product} />
-        </section>
+          </section>
 
-        <section className="mt-5">
-          <MoreAlternatives alternatives={alternatives} moreAlternatives={moreAlternatives} />
-        </section>
-      </main>
+          <section className="mt-4">
+            <MoreAlternatives alternatives={alternatives} moreAlternatives={moreAlternatives} />
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

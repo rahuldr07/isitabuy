@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
+import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 
 export interface SavedDeal {
@@ -70,18 +71,22 @@ export default function SavedDealButton({ deal }: { deal: SavedDeal }) {
   }
 
   return (
-    <button
+    <motion.button
+      animate={saved ? { scale: [1, 1.18, 1], rotate: [0, -8, 0] } : { scale: 1, rotate: 0 }}
       aria-label={saved ? `Remove ${deal.name} from saved products` : `Save ${deal.name}`}
       aria-pressed={saved}
       className={`grid size-6 place-items-center rounded-full border shadow-sm transition-colors ${
         saved
-          ? "border-[#4f46e5] bg-[#f0ecff] text-[#4f46e5]"
-          : "border-border bg-white text-muted-foreground hover:border-[#4f46e5] hover:text-[#4f46e5]"
+          ? "border-[#f97316] bg-[#ffedd5] text-[#ea580c] shadow-[0_8px_18px_rgba(249,115,22,0.24)]"
+          : "border-[#fed7aa] bg-[#fff7ed] text-[#c2410c] hover:border-[#fb923c] hover:bg-[#ffedd5] hover:text-[#ea580c]"
       }`}
+      transition={{ duration: 0.28, ease: "easeOut" }}
+      whileHover={{ scale: 1.08, y: -1 }}
+      whileTap={{ scale: 0.9 }}
       onClick={toggleSaved}
       type="button"
     >
       <Heart className={`size-3.5 ${saved ? "fill-current" : ""}`} />
-    </button>
+    </motion.button>
   );
 }

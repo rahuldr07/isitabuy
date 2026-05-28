@@ -26,8 +26,8 @@ import DealsSearchForm from "@/components/deals/deals-search-form";
 import PriceRangeFilter from "@/components/deals/price-range-filter";
 import SavedDealButton from "@/components/deals/saved-deal-button";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard, BentoGrid } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
@@ -1344,6 +1344,10 @@ function buildDeals(category: CategorySlug, seeds: DealSeed[]) {
   });
 }
 
+function enhanceProductImage(src: string) {
+  return src.replace("w=500", "w=900");
+}
+
 const deals: DealCardData[] = Object.entries(referenceProductSeeds).flatMap(([category, seeds]) =>
   buildDeals(category as CategorySlug, seeds),
 );
@@ -1623,7 +1627,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
   const detailHref = productDetailHref(deal);
 
   return (
-    <Card className="gap-1 rounded-xl border border-border bg-white p-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_14px_30px_rgba(15,23,42,0.1)]">
+    <BentoCard className="flex flex-col gap-2 p-3">
       <div className="flex items-center justify-between">
         <Badge className={`h-[18px] rounded px-2 text-[9px] font-extrabold leading-none ${badgeClass(deal.badge)}`}>
           {deal.badge}
@@ -1637,8 +1641,13 @@ function DealCard({ deal }: { deal: DealCardData }) {
         )}
       </div>
 
-      <div className="grid h-[78px] place-items-center overflow-hidden rounded-lg bg-gradient-to-b from-white to-[#f8fafc]">
-        <img alt={deal.name} className="max-h-[72px] w-full object-contain mix-blend-multiply" src={deal.image} />
+      <div className="grid h-[118px] place-items-center overflow-hidden rounded-xl border border-[#eef2f7] bg-[#f8fafc]">
+        <img
+          alt={deal.name}
+          className="h-full w-full object-contain p-2 transition-transform duration-200 group-hover/bento:scale-[1.035]"
+          loading="lazy"
+          src={enhanceProductImage(deal.image)}
+        />
       </div>
 
       <div className="min-h-8">
@@ -1677,15 +1686,15 @@ function DealCard({ deal }: { deal: DealCardData }) {
         <span className="text-[9px] text-muted-foreground">AI Deal Score</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 border-t-2 border-[#1f7ae0] pt-2">
+      <div className="mt-auto grid grid-cols-2 gap-2 border-t-2 border-[#1f7ae0] pt-2">
         <Button
           asChild
           variant="outline"
-          className="h-8 rounded-lg border-border bg-white px-2 text-[11px] font-extrabold text-foreground transition-colors hover:border-[#1f7ae0] hover:bg-[#1f7ae0] hover:text-white"
+          className="h-8 rounded-lg border-[#71389f] bg-white px-2 text-[11px] font-extrabold text-[#581f86] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#71389f] hover:bg-[#71389f] hover:text-white hover:shadow-[0_10px_22px_rgba(113,56,159,0.28)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#71389f] focus-visible:bg-[#71389f] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(113,56,159,0.28)]"
         >
-          <Link href={detailHref}>View Deal</Link>
+          <Link href={detailHref}>AI Score</Link>
         </Button>
-        <Button className="h-8 rounded-lg bg-[#ffd200] px-2 text-[11px] font-extrabold text-foreground shadow-none hover:bg-[#ffc400]">
+        <Button className="h-8 rounded-lg border border-[#007a28] bg-white px-2 text-[11px] font-extrabold text-[#007a28] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#007a28] hover:bg-[#007a28] hover:text-white hover:shadow-[0_10px_22px_rgba(0,122,40,0.24)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#007a28] focus-visible:bg-[#007a28] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(0,122,40,0.24)]">
           Buy Now
         </Button>
       </div>
@@ -1694,7 +1703,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
         <User className="size-3" />
         Saved by {deal.savedBy}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -1820,7 +1829,7 @@ export default async function DealsPage({
           </div>
         </div>
 
-        <nav className="grid h-14 w-full grid-cols-[repeat(11,minmax(0,1fr))] items-center overflow-x-auto border-t border-border px-5 text-sm font-extrabold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex h-14 w-full items-center gap-1 overflow-x-auto border-t border-border px-5 text-sm font-extrabold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => {
             const active = item.slug === activeCategory;
             const Icon = item.icon;
@@ -1828,7 +1837,7 @@ export default async function DealsPage({
             return (
               <Link
                 aria-current={active ? "page" : undefined}
-                className={`relative flex h-14 min-w-0 items-center justify-center gap-2 px-2 ${
+                className={`relative flex h-14 shrink-0 items-center justify-center gap-2 px-3 ${
                   active ? "text-accent" : "text-foreground"
                 }`}
                 href={dealsHref(item.slug, activeDealTypes, activeRetailers, [], activeQuery)}
@@ -1842,15 +1851,15 @@ export default async function DealsPage({
               </Link>
             );
           })}
-          <button className="flex h-14 min-w-0 items-center justify-center gap-1 px-2">
+          <button className="flex h-14 shrink-0 items-center justify-center gap-1 px-3">
             More <ChevronDown className="size-4" />
           </button>
         </nav>
       </header>
 
       <main className="w-full px-5 py-5 sm:px-8">
-        <div className="grid gap-6 lg:grid-cols-[270px_minmax(0,1fr)]">
-          <aside className="self-start rounded-xl border border-border bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.06)] lg:sticky lg:top-36">
+        <div className="grid gap-4 lg:grid-cols-[270px_minmax(0,1fr)]">
+          <aside className="hidden self-start rounded-xl border border-border bg-white p-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)] lg:sticky lg:top-36 lg:block">
             <div className="mb-4 flex items-center justify-between border-b border-border pb-4">
               <h2 className="text-xl font-extrabold tracking-tight">Filters</h2>
               <Link className="text-xs font-extrabold text-value" href="/deals">
@@ -2095,7 +2104,7 @@ export default async function DealsPage({
             </div>
 
             <div className="mb-5 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-              <div className="grid min-w-0 flex-1 grid-cols-[repeat(7,minmax(0,1fr))] gap-3">
+              <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] xl:grid xl:grid-cols-[repeat(7,minmax(0,1fr))] xl:overflow-visible xl:pb-0 [&::-webkit-scrollbar]:hidden">
                 {retailerChips.map((retailer) => {
                   const active =
                     retailer.slug === null
@@ -2104,7 +2113,7 @@ export default async function DealsPage({
                   return (
                     <Link
                       aria-current={active ? "true" : undefined}
-                      className={`inline-flex h-12 min-w-0 items-center justify-center gap-3 rounded-lg border bg-white px-5 text-sm font-extrabold shadow-sm transition-colors ${
+                      className={`inline-flex h-11 min-w-max shrink-0 items-center justify-center gap-2 rounded-lg border bg-white px-4 text-sm font-extrabold shadow-sm transition-colors xl:h-12 xl:min-w-0 xl:gap-3 xl:px-5 ${
                         active
                           ? "border-value text-value"
                           : "border-border text-foreground hover:border-value/40"
@@ -2145,19 +2154,13 @@ export default async function DealsPage({
               </div>
             </div>
 
-            <div
-              className="grid gap-3.5"
-              style={{
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(min(100%, max(190px, calc((100% - 2.625rem) / 4))), 1fr))",
-              }}
-            >
+            <BentoGrid className="gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {searchedDeals.map((deal) => (
                 <DealCard deal={deal} key={`${deal.name}-${deal.retailer}`} />
               ))}
-            </div>
+            </BentoGrid>
             {searchedDeals.length === 0 ? (
-              <div className="mt-5 rounded-xl border border-dashed border-border bg-white p-8 text-center shadow-sm">
+              <div className="mt-4 rounded-xl border border-dashed border-border bg-white p-6 text-center shadow-sm">
                 <h2 className="text-lg font-extrabold text-foreground">No matching deals found</h2>
                 <p className="mt-2 text-sm font-medium text-muted-foreground">
                   Try searching by product, brand, category, or retailer.
@@ -2165,7 +2168,7 @@ export default async function DealsPage({
               </div>
             ) : null}
 
-            <div className="mt-5 grid gap-4 rounded-2xl bg-[#f3edff] p-5 shadow-[0_12px_30px_rgba(109,40,217,0.08)] md:grid-cols-4">
+            <div className="mt-4 grid gap-3 rounded-2xl bg-[#f3edff] p-4 shadow-[0_12px_30px_rgba(109,40,217,0.08)] md:grid-cols-4">
               {[
                 { title: "Price history", body: "Track price trends and historical lows.", icon: Sparkles },
                 { title: "AI analysis", body: "Smart scoring and insights to find the best deals.", icon: Brain },

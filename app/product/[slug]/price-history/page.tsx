@@ -21,9 +21,10 @@ import {
   User,
 } from "lucide-react";
 
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export const metadata = {
@@ -188,7 +189,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <Card className="mt-auto flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <BentoCard className="mt-auto flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-muted">
             <User className="size-5" />
@@ -199,15 +200,15 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-      </Card>
+      </BentoCard>
     </aside>
   );
 }
 
 function ProductPanel({ product }: { product: ProductData }) {
   return (
-    <Card className="min-h-[699px] rounded-xl border border-border bg-white p-4 shadow-soft">
-      <div className="grid grid-cols-[64px_1fr] gap-5">
+    <BentoCard className="min-h-[560px] p-4">
+      <div className="grid grid-cols-[64px_1fr] gap-4">
         <div className="grid gap-2">
           {[0, 1, 2, 3].map((item) => (
             <div className={`grid size-16 place-items-center rounded-lg border ${item === 0 ? "border-[#6d28d9]" : "border-border"}`} key={item}>
@@ -217,8 +218,8 @@ function ProductPanel({ product }: { product: ProductData }) {
           <div className="grid size-16 place-items-center rounded-lg border border-border text-sm font-extrabold">+3</div>
         </div>
         <div>
-          <div className="grid min-h-[420px] place-items-center rounded-xl bg-white">
-            <img alt={product.name} className="max-h-[390px] w-full object-contain mix-blend-multiply" src={product.image} />
+          <div className="grid min-h-[300px] place-items-center rounded-xl bg-white">
+            <img alt={product.name} className="max-h-[280px] w-full object-contain mix-blend-multiply" src={product.image} />
           </div>
           <Badge className="mt-4 rounded bg-muted text-xs font-extrabold text-foreground">{product.name.split(" ")[0]}</Badge>
           <h1 className="mt-3 text-2xl font-extrabold leading-tight">{product.name}</h1>
@@ -239,25 +240,25 @@ function ProductPanel({ product }: { product: ProductData }) {
           </div>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function MetricCard({ label, value, note }: { label: string; value: string; note: string }) {
   return (
-    <Card className="flex h-[190px] self-start rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="flex h-[136px] self-start p-3">
       <div className="flex h-full flex-col">
-        <p className="min-h-20 text-[15px] font-extrabold leading-5 text-muted-foreground">{label}</p>
-        <p className="text-3xl font-extrabold leading-none">{value}</p>
-        <p className="mt-auto text-sm font-semibold leading-5 text-buy">{note}</p>
+        <p className="min-h-10 text-sm font-extrabold leading-5 text-muted-foreground">{label}</p>
+        <p className="text-2xl font-extrabold leading-none tracking-normal">{value}</p>
+        <p className="mt-auto text-xs font-semibold leading-4 text-buy">{note}</p>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function PriceChart({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <div className="mb-4 flex flex-col gap-3 2xl:flex-row 2xl:items-center 2xl:justify-between">
         <h2 className="text-lg font-extrabold">Price history <span className="font-medium text-muted-foreground">(90 days)</span></h2>
         <div className="flex w-fit rounded-lg border border-border bg-white p-1 text-xs font-extrabold">
@@ -300,13 +301,13 @@ function PriceChart({ product }: { product: ProductData }) {
           </span>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function VerdictPanel({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-[#fde7c7] bg-[#fff8ed] p-5 shadow-soft">
+    <BentoCard className="p-4" variant="warning">
       <p className="text-sm font-extrabold uppercase tracking-wide">AI Price Verdict <Info className="inline size-4 text-muted-foreground" /></p>
       <div className="mt-3 grid grid-cols-[1fr_96px] gap-4">
         <div>
@@ -331,7 +332,7 @@ function VerdictPanel({ product }: { product: ProductData }) {
           <TrendingDown className="size-4" /> View Predictions
         </Button>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -339,7 +340,7 @@ function RetailerTable({ product }: { product: ProductData }) {
   const rows = buildRetailerRows(product);
 
   return (
-    <Card className="rounded-xl border border-border bg-white p-6 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="mb-5 text-lg font-extrabold">Compare prices by retailer</h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[820px] text-left text-sm">
@@ -379,8 +380,8 @@ function RetailerTable({ product }: { product: ProductData }) {
           </tbody>
         </table>
       </div>
-      <button className="mx-auto mt-5 flex items-center gap-2 text-sm font-extrabold text-[#6d28d9]">View all 12 retailers</button>
-    </Card>
+      <button className="mx-auto mt-4 flex items-center gap-2 text-sm font-extrabold text-[#6d28d9]">View all 12 retailers</button>
+    </BentoCard>
   );
 }
 
@@ -388,7 +389,7 @@ function PredictionCard({ product }: { product: ProductData }) {
   const base = moneyValue(product.price) || 278;
 
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4" variant="success">
       <h2 className="text-lg font-extrabold">Price drop prediction <Info className="inline size-4 text-muted-foreground" /></h2>
       <p className="mt-3 text-lg font-extrabold text-buy">High chance of price drop</p>
       <p className="mt-3 text-sm font-semibold leading-5 text-muted-foreground">We predict the price will drop to</p>
@@ -398,7 +399,7 @@ function PredictionCard({ product }: { product: ProductData }) {
         Best time to buy:<br /> Jun 5 - Jun 20, 2024
       </div>
       <button className="mt-4 text-sm font-extrabold text-buy">How we predict</button>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -406,21 +407,21 @@ function AlertCard({ product }: { product: ProductData }) {
   const base = moneyValue(product.price) || 278;
 
   return (
-    <Card className="rounded-xl border border-[#e8dcff] bg-[#fbf8ff] p-6 shadow-soft">
+    <BentoCard className="p-4" variant="accent">
       <h2 className="text-lg font-extrabold">Create a price alert</h2>
-      <p className="mt-5 text-sm font-semibold text-muted-foreground">Notify me when the price drops to</p>
+      <p className="mt-4 text-sm font-semibold text-muted-foreground">Notify me when the price drops to</p>
       <div className="mt-3 flex gap-3">
         <Button variant="outline" className="h-11 rounded-lg bg-white">$</Button>
         <Input className="h-11 rounded-lg bg-white font-extrabold" defaultValue={Math.round(base * 0.88)} />
         <span className="self-center text-sm font-semibold text-muted-foreground">or less</span>
       </div>
-      <p className="mt-5 text-sm font-semibold">Email (you@example.com)</p>
+      <p className="mt-4 text-sm font-semibold">Email (you@example.com)</p>
       <Input className="mt-2 h-11 rounded-lg bg-white" placeholder="you@example.com" />
-      <Button className="mt-5 h-12 w-full rounded-lg bg-[#6d28d9] font-extrabold text-white hover:bg-[#5b21b6]">
+      <Button className="mt-4 h-12 w-full rounded-lg bg-[#6d28d9] font-extrabold text-white hover:bg-[#5b21b6]">
         <Bell className="size-4" /> Create Alert
       </Button>
-      <p className="mt-5 text-xs font-semibold text-muted-foreground">You can manage your alerts anytime in your account.</p>
-    </Card>
+      <p className="mt-4 text-xs font-semibold text-muted-foreground">You can manage your alerts anytime in your account.</p>
+    </BentoCard>
   );
 }
 
@@ -434,12 +435,20 @@ export default async function PriceHistoryPage({
   const { slug } = await params;
   const product = productFromSearchParams(await searchParams);
   const base = moneyValue(product.price) || 278;
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: productHref(slug, product, key),
+    icon,
+    label,
+    navKey: key,
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
-      <main className="min-w-0 flex-1 p-5 lg:p-7">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+      <div className="min-w-0 flex-1">
+        <ProductMobileNav activeKey="price-history" items={mobileNavItems} />
+        <main className="p-4 lg:p-5">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-muted-foreground">
             <Home className="size-5 text-foreground" />
             <span>Electronics</span>
@@ -454,11 +463,11 @@ export default async function PriceHistoryPage({
             <Button variant="outline" className="h-10 rounded-lg font-extrabold"><Share2 className="size-4" /> Share</Button>
             <Button variant="outline" className="h-10 rounded-lg font-extrabold"><Heart className="size-4" /> Save</Button>
           </div>
-        </div>
+          </div>
 
-        <section className="grid items-start gap-6 xl:grid-cols-[360px_minmax(0,1fr)_390px]">
+          <section className="grid items-start gap-4 xl:grid-cols-[360px_minmax(0,1fr)_390px]">
           <ProductPanel product={product} />
-          <div className="grid content-start gap-6">
+          <div className="grid content-start gap-4">
             <div className="grid items-start gap-4 lg:grid-cols-3">
               <MetricCard label="Current Price" note={`List price: ${product.oldPrice}`} value={product.price} />
               <MetricCard label="Lowest Price (90 days)" note="May 8, 2024" value={formatMoney(base * 0.83)} />
@@ -466,17 +475,18 @@ export default async function PriceHistoryPage({
             </div>
             <PriceChart product={product} />
           </div>
-          <div className="grid content-start gap-6">
+          <div className="grid content-start gap-4">
             <VerdictPanel product={product} />
             <PredictionCard product={product} />
           </div>
-        </section>
+          </section>
 
-        <section className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_390px]">
-          <RetailerTable product={product} />
-          <AlertCard product={product} />
-        </section>
-      </main>
+          <section className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_390px]">
+            <RetailerTable product={product} />
+            <AlertCard product={product} />
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

@@ -28,9 +28,10 @@ import {
   User,
 } from "lucide-react";
 
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export const metadata = {
@@ -228,8 +229,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <div className="mt-auto grid gap-5">
-        <Card className="flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <div className="mt-auto grid gap-4">
+        <BentoCard className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
             <span className="grid size-10 place-items-center rounded-full bg-muted">
               <User className="size-5" />
@@ -240,7 +241,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
             </div>
           </div>
           <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-        </Card>
+        </BentoCard>
       </div>
     </aside>
   );
@@ -248,7 +249,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
 
 function TopControls({ product }: { product: ProductData }) {
   return (
-    <Card className="flex flex-col gap-4 rounded-xl border border-border bg-white p-4 shadow-soft xl:flex-row xl:items-center xl:justify-between">
+    <BentoCard className="flex flex-col gap-4 p-4 xl:flex-row xl:items-center xl:justify-between">
       <button className="flex min-w-0 items-center gap-4">
         <span className="grid size-16 place-items-center rounded-lg bg-muted">
           <img alt={product.name} className="max-h-14 w-full object-contain mix-blend-multiply" src={product.image} />
@@ -264,7 +265,7 @@ function TopControls({ product }: { product: ProductData }) {
           <CalendarDays className="size-4" /> Last 90 days <ChevronDown className="size-4" />
         </Button>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -284,11 +285,11 @@ function ScoreCard({
   subtext: string;
 }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <p className="text-sm font-semibold">
         {label} <Info className="inline size-4 text-muted-foreground" />
       </p>
-      <div className="mt-6 flex items-center gap-5">
+      <div className="mt-4 flex items-center gap-4">
         <span className={`grid size-14 place-items-center rounded-full ${iconClass}`}>
           <Icon className="size-8" />
         </span>
@@ -298,17 +299,17 @@ function ScoreCard({
           <p className="mt-2 text-xs font-semibold text-muted-foreground">{meta}</p>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function SentimentDistribution({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Review Sentiment Distribution <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-6 grid items-center gap-6 md:grid-cols-[250px_1fr]">
+      <div className="mt-4 grid items-center gap-4 md:grid-cols-[250px_1fr]">
         <div className="relative mx-auto grid size-44 place-items-center rounded-full border-[28px] border-buy border-l-[#91d9aa] border-t-[#fbbf24]">
           <div className="absolute -right-1 bottom-10 rounded-full bg-buy px-2 py-1 text-xs font-extrabold text-white">65%</div>
           <div className="text-center">
@@ -339,8 +340,8 @@ function SentimentDistribution({ product }: { product: ProductData }) {
           ))}
         </div>
       </div>
-      <p className="mt-5 text-sm font-medium text-muted-foreground">Total reviews analyzed: 13,176</p>
-    </Card>
+      <p className="mt-4 text-sm font-medium text-muted-foreground">Total reviews analyzed: 13,176</p>
+    </BentoCard>
   );
 }
 
@@ -356,11 +357,11 @@ function ListPanel({
   tone: "good" | "bad";
 }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         {title} <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid gap-4">
+      <div className="mt-4 grid gap-4">
         {items.map(([label, value]) => (
           <div className="flex items-center gap-3 text-sm font-semibold" key={label}>
             <span className={`grid size-7 place-items-center rounded-lg ${tone === "good" ? "bg-soft-buy text-buy" : "bg-red-50 text-avoid"}`}>
@@ -371,61 +372,61 @@ function ListPanel({
           </div>
         ))}
       </div>
-      <a className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
         View more {tone === "good" ? "pros" : "cons"} <ExternalLink className="size-4" />
       </a>
-    </Card>
+    </BentoCard>
   );
 }
 
 function AiSummary({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="flex items-center gap-2 text-base font-extrabold">
         <Sparkles className="size-5 text-[#6d28d9]" /> AI Summary
       </h2>
-      <p className="mt-5 text-sm font-medium leading-6 text-foreground">
+      <p className="mt-4 text-sm font-medium leading-6 text-foreground">
         The {product.name} receives overwhelmingly positive feedback for its exceptional sound quality,
         reliable performance, and comfort. Most users highlight the immersive experience and effective core features.
       </p>
-      <p className="mt-5 text-sm font-medium leading-6 text-foreground">
+      <p className="mt-4 text-sm font-medium leading-6 text-foreground">
         Common criticisms include the high price point and warm ear cups during extended use. A small number of users
         also mention case size and controls as minor drawbacks.
       </p>
-      <Button variant="outline" className="mt-6 h-10 rounded-lg border-[#d8d5ff] bg-[#f8f5ff] px-6 font-extrabold text-[#4f46e5]">
+      <Button variant="outline" className="mt-4 h-10 rounded-lg border-[#d8d5ff] bg-[#f8f5ff] px-6 font-extrabold text-[#4f46e5]">
         <Sparkles className="size-4" /> Generate Full Summary
       </Button>
-    </Card>
+    </BentoCard>
   );
 }
 
 function KeywordsPanel() {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Keyword / Topics <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 flex flex-wrap gap-3">
+      <div className="mt-4 flex flex-wrap gap-3">
         {topics.map(([topic, count]) => (
           <Badge className="rounded-full bg-[#f0ecff] px-4 py-2 text-sm font-semibold text-[#4f46e5]" key={topic}>
             {topic} <span className="ml-2 text-[#756bb6]">{count}</span>
           </Badge>
         ))}
       </div>
-      <a className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
         View all topics <ExternalLink className="size-4" />
       </a>
-    </Card>
+    </BentoCard>
   );
 }
 
 function AuthenticityPanel() {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="text-base font-extrabold">
         Review Authenticity <Info className="inline size-4 text-muted-foreground" />
       </h2>
-      <div className="mt-5 grid items-center gap-5 sm:grid-cols-[150px_1fr]">
+      <div className="mt-4 grid items-center gap-4 sm:grid-cols-[150px_1fr]">
         <div className="relative grid size-36 place-items-center rounded-full border-[16px] border-[#4f46e5] border-l-[#c4b5fd]">
           <div className="text-center">
             <p className="text-lg font-extrabold">Low Risk</p>
@@ -438,24 +439,24 @@ function AuthenticityPanel() {
           <span className="flex justify-between"><span className="text-avoid">High Risk</span> 3%</span>
         </div>
       </div>
-      <div className="mt-5 rounded-xl bg-[#f4f1ff] p-4 text-sm font-medium leading-6 text-foreground">
+      <div className="mt-4 rounded-xl bg-[#f4f1ff] p-4 text-sm font-medium leading-6 text-foreground">
         We didn&apos;t find significant signs of fake or incentivized reviews for this product.
         <br />
         <a className="font-extrabold text-[#4f46e5]" href="#">Learn more about our methodology</a>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function ReviewSnippets() {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <h2 className="mb-5 text-base font-extrabold">
         Recent Review Snippets <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="grid gap-4 xl:grid-cols-4">
         {snippets.map((snippet) => (
-          <Card className="rounded-xl border border-border bg-white p-4 shadow-none" key={`${snippet.source}-${snippet.time}`}>
+          <BentoCard className="p-4 shadow-none hover:translate-y-0" key={`${snippet.source}-${snippet.time}`}>
             <div className={`mb-3 flex ${snippet.tone === "negative" ? "text-avoid" : snippet.tone === "mixed" ? "text-wait" : "text-buy"}`}>
               {Array.from({ length: 5 }).map((_, index) => (
                 <Star className={`size-4 ${index < (snippet.tone === "negative" ? 2 : snippet.tone === "mixed" ? 3 : 5) ? "fill-current" : ""}`} key={index} />
@@ -466,11 +467,11 @@ function ReviewSnippets() {
               <span className="text-buy">Verified Purchase</span>
             </div>
             <p className="text-sm font-medium leading-6 text-foreground">{snippet.text}</p>
-            <p className="mt-5 text-sm font-extrabold">{snippet.source}</p>
-          </Card>
+            <p className="mt-4 text-sm font-extrabold">{snippet.source}</p>
+          </BentoCard>
         ))}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -485,12 +486,20 @@ export default async function ReviewsAiPage({
   const product = productFromSearchParams(await searchParams);
   const trustScore = Math.min(99, product.score + 1);
   const verifiedRatio = Math.max(55, product.score - 11);
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: key ? productHref(slug, product, key) : "#",
+    icon,
+    label,
+    navKey: key ?? "reviews-ai",
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
-      <main className="min-w-0 flex-1 p-5 lg:p-7">
-        <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+      <div className="min-w-0 flex-1">
+        <ProductMobileNav activeKey="reviews-ai" items={mobileNavItems} />
+        <main className="p-4 lg:p-5">
+          <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight">Reviews AI</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
@@ -505,40 +514,41 @@ export default async function ReviewsAiPage({
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
-        </div>
+          </div>
 
-        <div className="mb-5">
+          <div className="mb-5">
           <div className="relative max-w-[520px]">
             <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
             <Input className="h-11 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search review insights..." />
           </div>
-        </div>
+          </div>
 
-        <TopControls product={product} />
+          <TopControls product={product} />
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-4">
+          <section className="mt-4 grid gap-4 xl:grid-cols-4">
           <ScoreCard icon={ShieldCheck} iconClass="bg-[#eee9ff] text-[#4f46e5]" label="Review Trust Score" meta="5 pts vs last 90 days" score={`${trustScore}/100`} subtext="High trust" />
           <ScoreCard icon={Smile} iconClass="bg-soft-buy text-buy" label="Sentiment Score" meta="0.4 vs last 90 days" score={`${product.rating}/5`} subtext="Very Positive" />
           <ScoreCard icon={BadgeCheck} iconClass="bg-blue-100 text-blue-600" label="Verified Review Ratio" meta="8% vs last 90 days" score={`${verifiedRatio}%`} subtext="Verified" />
           <ScoreCard icon={AlertTriangle} iconClass="bg-red-50 text-avoid" label="Common Complaints" meta="Similar vs last 90 days" score="4" subtext="High impact" />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.5fr_1fr_1fr]">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.5fr_1fr_1fr]">
           <SentimentDistribution product={product} />
           <ListPanel icon={ThumbsUp} items={pros} title="Top Pros" tone="good" />
           <ListPanel icon={ThumbsDown} items={cons} title="Top Cons" tone="bad" />
-        </section>
+          </section>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.1fr_1fr_1.1fr]">
+          <section className="mt-4 grid gap-4 xl:grid-cols-[1.1fr_1fr_1.1fr]">
           <AiSummary product={product} />
           <KeywordsPanel />
           <AuthenticityPanel />
-        </section>
+          </section>
 
-        <section className="mt-5">
-          <ReviewSnippets />
-        </section>
-      </main>
+          <section className="mt-4">
+            <ReviewSnippets />
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

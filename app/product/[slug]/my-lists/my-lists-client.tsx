@@ -27,9 +27,10 @@ import {
 } from "lucide-react";
 
 import type { SavedDeal } from "@/components/deals/saved-deal-button";
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 interface ProductData {
@@ -191,7 +192,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <Card className="mt-auto flex items-center justify-between rounded-xl border border-border bg-white p-4">
+      <BentoCard className="mt-auto flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <span className="grid size-10 place-items-center rounded-full bg-muted">
             <User className="size-5" />
@@ -202,7 +203,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
-      </Card>
+      </BentoCard>
     </aside>
   );
 }
@@ -220,8 +221,8 @@ function RetailerMark({ retailer }: { retailer: string }) {
 
 function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; label: string; value: string; note: string; tone: string }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
-      <div className="flex items-center gap-5">
+    <BentoCard className="p-4">
+      <div className="flex items-center gap-4">
         <span className={`grid size-14 place-items-center rounded-full ${tone}`}>
           <Icon className="size-7" />
         </span>
@@ -231,7 +232,7 @@ function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; 
           <p className="mt-2 text-xs font-medium text-muted-foreground">{note}</p>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -265,12 +266,12 @@ function SavedCollectionCard({ title, deals, tint, extra }: { title: string; dea
   const previewDeals = deals.slice(0, 3);
 
   return (
-    <Card className={`rounded-xl border border-border p-4 shadow-soft ${tint}`}>
+    <BentoCard className={`p-4 ${tint}`}>
       <div className="flex items-start justify-between">
         <h2 className="text-base font-extrabold">{title}</h2>
         <button className="text-muted-foreground">⋮</button>
       </div>
-      <div className="mt-5 flex gap-2">
+      <div className="mt-4 flex gap-2">
         {previewDeals.map((deal) => (
           <span className="grid size-16 place-items-center rounded-lg bg-white/85" key={deal.name}>
             <img alt={deal.name} className="max-h-12 max-w-12 object-contain mix-blend-multiply" src={deal.image} />
@@ -280,7 +281,7 @@ function SavedCollectionCard({ title, deals, tint, extra }: { title: string; dea
           {extra ?? `+${Math.max(0, deals.length - previewDeals.length)}`}
         </span>
       </div>
-      <div className="mt-5 flex items-end justify-between">
+      <div className="mt-4 flex items-end justify-between">
         <div>
           <p className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <span className="grid size-5 place-items-center rounded-full bg-muted">
@@ -295,24 +296,24 @@ function SavedCollectionCard({ title, deals, tint, extra }: { title: string; dea
           <Link href="#recently-saved">View List</Link>
         </Button>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function EmptyState() {
   return (
-    <Card className="rounded-xl border border-dashed border-[#d8d5ff] bg-white p-10 text-center shadow-soft">
+    <BentoCard className="border-dashed border-[#d8d5ff] p-10 text-center">
       <span className="mx-auto grid size-16 place-items-center rounded-full bg-[#f0ecff] text-[#4f46e5]">
         <Heart className="size-8" />
       </span>
-      <h2 className="mt-5 text-xl font-extrabold">No saved products yet</h2>
+      <h2 className="mt-4 text-xl font-extrabold">No saved products yet</h2>
       <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-6 text-muted-foreground">
         Go to the deals page and click the heart icon on products you want to keep. They will appear here automatically.
       </p>
-      <Button asChild className="mt-6 h-11 rounded-lg bg-[#4f46e5] px-6 font-extrabold text-white hover:bg-[#4338ca]">
+      <Button asChild className="mt-4 h-11 rounded-lg bg-[#4f46e5] px-6 font-extrabold text-white hover:bg-[#4338ca]">
         <Link href="/deals">Browse deals</Link>
       </Button>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -323,12 +324,20 @@ export default function MyListsClient({ product, slug }: { product: ProductData;
   const averageScore = savedDeals.length
     ? Math.round(savedDeals.reduce((total, deal) => total + Number(deal.score), 0) / savedDeals.length)
     : 0;
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: key ? productHref(slug, product, key) : "#",
+    icon,
+    label,
+    navKey: key ?? "my-lists",
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
-      <main className="min-w-0 flex-1 p-5 lg:p-7">
-        <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+      <div className="min-w-0 flex-1">
+        <ProductMobileNav activeKey="my-lists" items={mobileNavItems} />
+        <main className="p-4 lg:p-5">
+          <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
             <h1 className="text-4xl font-extrabold tracking-tight">My Lists</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
@@ -343,37 +352,37 @@ export default function MyListsClient({ product, slug }: { product: ProductData;
               <Share2 className="size-4" /> Share
             </Button>
           </div>
-        </div>
+          </div>
 
-        <div className="max-w-[560px]">
+          <div className="max-w-[560px]">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
             <Input className="h-12 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search lists or products..." />
           </div>
-        </div>
+          </div>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-4">
+          <section className="mt-4 grid gap-4 xl:grid-cols-4">
           <StatCard icon={Bookmark} label="Total saved products" value={String(savedDeals.length)} note="Across all lists" tone="bg-[#f0ecff] text-[#4f46e5]" />
           <StatCard icon={Clock3} label="Active watchlists" value={savedDeals.length ? "1" : "0"} note="Being monitored" tone="bg-soft-buy text-buy" />
           <StatCard icon={Tag} label="Price drop opportunities" value={String(savedDeals.filter((deal) => deal.discount !== "0% OFF").length)} note="From saved deals" tone="bg-red-50 text-red-500" />
           <StatCard icon={Sparkles} label="Better alternatives found" value={String(Math.max(0, Math.ceil(savedDeals.length / 2)))} note="Higher value picks" tone="bg-blue-50 text-blue-600" />
-        </section>
+          </section>
 
         {savedDeals.length === 0 ? (
-          <section className="mt-5">
+          <section className="mt-4">
             <EmptyState />
           </section>
         ) : (
           <>
-            <section className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_1fr]">
-              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <section className="mt-4 grid gap-4 xl:grid-cols-[1.35fr_1fr]">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <SavedCollectionCard title="Saved from Deals" deals={savedDeals} tint="bg-[#faf8ff]" />
                 <SavedCollectionCard title="Best Deals This Month" deals={savedDeals.slice(0, Math.max(1, Math.ceil(savedDeals.length / 2)))} tint="bg-[#fff8e7]" />
                 <SavedCollectionCard title="Compare Later" deals={savedDeals.slice().reverse()} tint="bg-[#eefaf4]" />
               </div>
 
-              <Card id="recently-saved" className="overflow-hidden rounded-xl border border-border bg-white shadow-soft">
-                <div className="flex items-center justify-between p-5">
+              <BentoCard id="recently-saved" className="overflow-hidden">
+                <div className="flex items-center justify-between p-4">
                   <h2 className="text-base font-extrabold">Recently saved</h2>
                   <button className="text-sm font-extrabold text-[#4f46e5]">View all</button>
                 </div>
@@ -390,13 +399,13 @@ export default function MyListsClient({ product, slug }: { product: ProductData;
                 <div className="flex items-center justify-center gap-2 border-t border-border p-4 text-xs font-medium text-muted-foreground">
                   Prices updated just now <RefreshCw className="size-4" />
                 </div>
-              </Card>
+              </BentoCard>
             </section>
 
-            <section className="mt-5 grid gap-5 xl:grid-cols-[1fr_1.5fr]">
-              <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+            <section className="mt-4 grid gap-4 xl:grid-cols-[1fr_1.5fr]">
+              <BentoCard className="p-4">
                 <h2 className="text-base font-extrabold">Smart suggestions for your lists</h2>
-                <div className="mt-5 grid gap-3">
+                <div className="mt-4 grid gap-3">
                   {savedDeals.slice(0, 3).map((deal) => (
                     <div className="flex items-center gap-3 rounded-lg border border-border p-3" key={deal.name}>
                       <img alt={deal.name} className="size-12 object-contain mix-blend-multiply" src={deal.image} />
@@ -411,16 +420,16 @@ export default function MyListsClient({ product, slug }: { product: ProductData;
                     </div>
                   ))}
                 </div>
-              </Card>
+              </BentoCard>
 
-              <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+              <BentoCard className="p-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-base font-extrabold">List insights</h2>
                   <Button variant="outline" className="h-9 rounded-lg text-xs font-extrabold">
                     This month <ChevronDown className="size-4" />
                   </Button>
                 </div>
-                <div className="mt-5 grid gap-5 md:grid-cols-3">
+                <div className="mt-4 grid gap-4 md:grid-cols-3">
                   <div>
                     <p className="text-xs font-semibold text-muted-foreground">Saved value</p>
                     <p className="mt-1 text-3xl font-extrabold text-buy">${Math.round(savedTotal).toLocaleString()}</p>
@@ -437,11 +446,12 @@ export default function MyListsClient({ product, slug }: { product: ProductData;
                     <p className="text-xs font-medium text-muted-foreground">Quality signal</p>
                   </div>
                 </div>
-              </Card>
+              </BentoCard>
             </section>
           </>
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
