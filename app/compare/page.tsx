@@ -1,5 +1,5 @@
-import CompareLanding from "@/components/compare/compare-landing";
+import CompareHomeClient from "@/components/compare-home/CompareHomeClient";
 
 export default function ComparePage() {
-  return <CompareLanding />;
+  return <CompareHomeClient />;
 }

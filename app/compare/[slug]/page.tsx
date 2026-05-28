@@ -1,5 +1,5 @@
 import ComparePageClient from "@/components/compare/ComparePageClient";
 
-export default function ComparisonDashboard() {
+export default function CompareSlugPage() {
   return <ComparePageClient />;
 }

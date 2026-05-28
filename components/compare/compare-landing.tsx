@@ -1,83 +1,212 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
+  BarChart3,
+  ChevronDown,
+  Menu,
   Search,
   ShieldCheck,
   ShoppingBag,
+  Shuffle,
   Sparkles,
-  Link as LinkIcon,
-  Menu,
-  X,
-  Scale,
-  TrendingUp,
+  Star,
   Tag,
-  MonitorPlay,
-  MonitorSmartphone,
-  Lock,
+  Trash2,
+  X,
+  Zap,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { showProductSearchToast } from "@/components/ui/app-toast";
+import { Input } from "@/components/ui/input";
+import { showCompareToast } from "@/components/ui/app-toast";
+import { mockProducts } from "@/lib/mockCompareData";
 import { cn } from "@/lib/utils";
+import type { Product } from "@/types/compare";
 
-const MotionButton = motion.create(Button);
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+type CompareSlotId = "A" | "B";
 
-const pageVariants: Variants = {
-  hidden: { opacity: 1 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
+interface BuilderState {
+  productA: Product | null;
+  productB: Product | null;
+  query: string;
+  activeSlot: CompareSlotId;
+}
 
-const panelVariants: Variants = {
-  hidden: { opacity: 0, y: 14, scale: 0.98 },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.45, ease: "easeOut" },
-  },
-  exit: {
-    opacity: 0,
-    y: 10,
-    scale: 0.98,
-    transition: { duration: 0.2 },
-  },
-};
+interface SearchResult {
+  product: Product;
+  score: number;
+  matchLabel: string;
+}
+
+interface BuilderRecommendation {
+  winner: Product | null;
+  title: string;
+  body: string;
+  confidence: number;
+  badges: string[];
+}
 
 const navItems = [
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Compare", href: "/compare" },
-  { label: "Deals", href: "/#deals" },
+  { label: "Deals", href: "/deals" },
   { label: "Retailers", href: "/#retailers" },
 ];
 
-// Footer links matching home page
-const footerColumns = [
-  { title: "Explore", links: ["Categories", "Deals", "How It Works", "Blog"] },
-  { title: "Company", links: ["About Us", "Careers", "Press", "Contact"] },
-  { title: "Support", links: ["Help Center", "Contact Us", "Report an Issue", "Product Requests"] },
-  { title: "Legal", links: ["Affiliate Disclosure", "Privacy Policy", "Terms of Service", "How We Score"] },
+const presetPairs = [
+  { title: "Noise-cancelling leaders", a: "sony-wh-1000xm5", b: "bose-quietcomfort-ultra" },
+  { title: "Battery vs comfort", a: "sennheiser-momentum-4", b: "bose-quietcomfort-ultra" },
+  { title: "Apple ecosystem vs value", a: "apple-airpods-max", b: "beats-studio-pro" },
+  { title: "Best deal check", a: "beats-studio-pro", b: "sony-wh-1000xm5" },
 ];
 
-const socialLinks = [
-  { label: "X", src: "/home/logos/x.svg" },
-  { label: "Facebook", src: "/home/logos/facebook.svg" },
-  { label: "Instagram", src: "/home/logos/instagram.svg" },
-  { label: "YouTube", src: "/home/logos/youtube.svg" },
-] as const;
+const currency = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+const integer = new Intl.NumberFormat("en-US");
+
+function formatPrice(value: number) {
+  return currency.format(value);
+}
+
+function productById(id: string) {
+  return mockProducts.find((product) => product.id === id) ?? null;
+}
+
+function getSearchText(product: Product) {
+  return [
+    product.name,
+    product.subtitle,
+    product.bestFor,
+    product.verdict,
+    product.reviewTrust,
+    ...product.tags,
+    ...product.pros,
+    ...product.cons,
+  ]
+    .join(" ")
+    .toLowerCase();
+}
+
+function getSearchResult(product: Product, query: string): SearchResult {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) {
+    return {
+      product,
+      score: product.scores.aiBuy + product.scores.price / 10,
+      matchLabel: `${product.bestFor} pick`,
+    };
+  }
+
+  const terms = normalized.split(/\s+/).filter(Boolean);
+  const searchText = getSearchText(product);
+  const reasons: string[] = [];
+  let score = 0;
+
+  if (product.name.toLowerCase().includes(normalized)) {
+    score += 70;
+    reasons.push("name match");
+  }
+  if (product.subtitle.toLowerCase().includes(normalized)) {
+    score += 24;
+    reasons.push("category match");
+  }
+
+  for (const tag of product.tags) {
+    const tagText = tag.toLowerCase();
+    if (tagText.includes(normalized) || terms.some((term) => tagText.includes(term))) {
+      score += 20;
+      reasons.push(tag);
+      break;
+    }
+  }
+
+  for (const term of terms) {
+    if (searchText.includes(term)) score += 8;
+  }
+
+  if (["cheap", "deal", "value", "budget", "price"].some((term) => normalized.includes(term))) {
+    score += product.scores.price / 2;
+    reasons.push("value match");
+  }
+  if (["comfort", "comfortable", "flight", "long"].some((term) => normalized.includes(term))) {
+    score += product.scores.comfort / 2;
+    reasons.push("comfort match");
+  }
+  if (["battery", "travel", "traveler"].some((term) => normalized.includes(term))) {
+    score += product.scores.battery / 2;
+    reasons.push("battery match");
+  }
+  if (["anc", "noise", "cancelling", "canceling"].some((term) => normalized.includes(term))) {
+    score += product.scores.performance / 2;
+    reasons.push("ANC match");
+  }
+
+  return {
+    product,
+    score,
+    matchLabel: reasons[0] ?? "related match",
+  };
+}
+
+function getPrimaryScore(product: Product) {
+  return Math.round(product.scores.aiBuy * 0.45 + product.scores.price * 0.25 + product.scores.comfort * 0.15 + product.scores.performance * 0.15);
+}
+
+function getAdvantageBadges(product: Product, competitor: Product) {
+  const badges: string[] = [];
+  if (product.currentPrice < competitor.currentPrice) badges.push("Lower price");
+  if (product.scores.price >= competitor.scores.price + 8) badges.push("Better value");
+  if (product.scores.comfort >= competitor.scores.comfort + 8) badges.push("Comfort edge");
+  if (product.scores.battery >= competitor.scores.battery + 8) badges.push("Battery edge");
+  if (product.scores.performance >= competitor.scores.performance + 3) badges.push("ANC edge");
+  if (product.verdict === "WAIT") badges.push("Price may improve");
+  return badges.slice(0, 4);
+}
+
+function getRecommendation(productA: Product | null, productB: Product | null): BuilderRecommendation {
+  if (!productA || !productB) {
+    return {
+      winner: null,
+      title: "Choose two products to unlock the AI preview.",
+      body: "Search the catalog and fill both slots to see value, comfort, price, and performance signals before opening the full comparison.",
+      confidence: 0,
+      badges: ["Smart matching", "Independent scores"],
+    };
+  }
+
+  const scoreA = getPrimaryScore(productA);
+  const scoreB = getPrimaryScore(productB);
+  const winner = scoreA >= scoreB ? productA : productB;
+  const runnerUp = winner.id === productA.id ? productB : productA;
+  const badges = getAdvantageBadges(winner, runnerUp);
+  const gap = Math.abs(scoreA - scoreB);
+  const confidence = Math.min(92, Math.max(70, 74 + gap * 2 + badges.length * 2));
+
+  return {
+    winner,
+    title: `${winner.name} looks like the smarter buy.`,
+    body: `${winner.name} has the stronger blended score today. ${runnerUp.name} can still be better if you care most about ${runnerUp.bestFor.toLowerCase()}, but the current value signal favors ${winner.name}.`,
+    confidence,
+    badges: badges.length ? badges : ["Close match", "Preference driven"],
+  };
+}
+
+function getCompareHref(productA: Product | null, productB: Product | null) {
+  if (!productA || !productB) return "/compare";
+  const ids = [productA.id, productB.id].sort().join("|");
+  if (ids === ["sony-wh-1000xm5", "bose-quietcomfort-ultra"].sort().join("|")) {
+    return "/compare/sony-wh-1000xm5-vs-bose-quietcomfort-ultra";
+  }
+  return "/compare/results";
+}
 
 function Logo() {
   return (
@@ -94,283 +223,339 @@ function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary">
         <Logo />
         <div className="hidden items-center gap-8 text-xs font-bold text-[var(--happy-ink)] lg:flex">
           {navItems.map((item) => (
-            <motion.a
-              key={item.label}
-              href={item.href}
-              className="inline-flex items-center gap-1.5 whitespace-nowrap"
-              whileHover={{ y: -1, color: "var(--happy-orange)" }}
-              whileTap={{ scale: 0.98 }}
-            >
+            <NextLink key={item.label} href={item.href} className="inline-flex items-center gap-1.5 whitespace-nowrap transition hover:-translate-y-px hover:text-[var(--happy-orange)]">
               {item.label}
-            </motion.a>
+            </NextLink>
           ))}
         </div>
         <div className="hidden items-center gap-3 md:flex">
-          <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-            <Button asChild variant="outline" size="lg" className="h-8 rounded-full px-5 text-xs font-bold">
+          <Button asChild variant="outline" size="lg" className="h-8 rounded-full px-5 text-xs font-bold">
+            <NextLink href="/signin">Log in</NextLink>
+          </Button>
+          <Button asChild size="lg" className="h-8 rounded-full bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
+            <NextLink href="/signin?mode=signup">Sign up</NextLink>
+          </Button>
+        </div>
+        <Button variant="outline" size="icon-lg" className="md:hidden" aria-label="Open menu" onClick={() => setOpen((value) => !value)}>
+          {open ? <X className="size-4" /> : <Menu className="size-4" />}
+        </Button>
+      </nav>
+      {open ? (
+        <div className="grid gap-2 border-t border-[var(--happy-line)] bg-white px-4 py-4 md:hidden">
+          {navItems.map((item) => (
+            <NextLink key={item.label} href={item.href} className="rounded-lg px-3 py-2 text-sm font-bold text-[var(--happy-ink)] hover:bg-slate-50">
+              {item.label}
+            </NextLink>
+          ))}
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            <Button asChild variant="outline" className="h-10">
               <NextLink href="/signin">Log in</NextLink>
             </Button>
-          </motion.div>
-          <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-            <Button asChild size="lg" className="h-8 rounded-full bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
+            <Button asChild className="h-10 bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]">
               <NextLink href="/signin?mode=signup">Sign up</NextLink>
             </Button>
-          </motion.div>
+          </div>
         </div>
-        <MotionButton
-          variant="outline"
-          size="icon-lg"
-          className="md:hidden"
-          onClick={() => setOpen((value) => !value)}
-          aria-label="Toggle menu"
-          whileHover={{ y: -1 }}
-          whileTap={{ scale: 0.96 }}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </MotionButton>
-      </nav>
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            className="border-t border-[var(--happy-line)] bg-white px-4 py-4 md:hidden"
-            variants={panelVariants}
-            initial="hidden"
-            animate="show"
-            exit="exit"
-          >
-            <div className="grid gap-3">
-              {navItems.map((item) => (
-                <a key={item.label} href={item.href} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
-                  {item.label}
-                </a>
-              ))}
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <Button asChild variant="outline" className="h-10">
-                  <NextLink href="/signin">Log in</NextLink>
-                </Button>
-                <Button asChild className="h-10 bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]">
-                  <NextLink href="/signin?mode=signup">Sign up</NextLink>
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      ) : null}
     </header>
   );
 }
 
-function HeroSection() {
-  const [query, setQuery] = useState("");
-
-  const runCheck = () => {
-    const trimmedQuery = query.trim();
-    if (!trimmedQuery) return;
-    showProductSearchToast(trimmedQuery);
-    // Simulate navigation/loading
-    window.setTimeout(() => {}, 950);
-  };
+function ProductImage({ product }: { product: Product }) {
+  if (product.imageSrc) {
+    return (
+      <span className="relative block size-16 overflow-hidden rounded-xl bg-slate-50">
+        <Image src={product.imageSrc} alt={product.imageAlt} fill sizes="64px" className="object-contain p-1.5" />
+      </span>
+    );
+  }
 
   return (
-    <section className="mx-auto max-w-[1240px] px-4 pb-12 pt-16 sm:px-6 lg:px-8 lg:pb-16 lg:pt-20">
-      <div className="mx-auto flex flex-col items-center text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--happy-purple)]/20 bg-purple-50 px-4 py-1.5 text-sm font-bold text-[var(--happy-purple)]">
-          <Sparkles className="size-4" aria-hidden="true" />
-          AI-Powered Comparison
+    <span className="grid size-16 place-items-center rounded-xl bg-slate-50 text-slate-400">
+      <ShoppingBag className="size-6" aria-hidden="true" />
+    </span>
+  );
+}
+
+function ProductSlotCard({
+  slot,
+  product,
+  active,
+  onActivate,
+  onRemove,
+}: {
+  slot: CompareSlotId;
+  product: Product | null;
+  active: boolean;
+  onActivate: () => void;
+  onRemove: () => void;
+}) {
+  return (
+    <Card
+      className={cn(
+        "min-h-[15rem] rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[var(--happy-card-shadow)]",
+        active ? "border-[var(--happy-orange)] ring-4 ring-orange-100/70" : "border-[var(--happy-line)]"
+      )}
+    >
+      <CardContent className="flex h-full flex-col p-4">
+        <div className="flex items-center justify-between gap-3">
+          <button type="button" className="text-left" onClick={onActivate}>
+            <span className="text-[0.7rem] font-black uppercase text-[var(--happy-orange)]">Product {slot}</span>
+            <span className="mt-1 block text-sm font-black text-[var(--happy-ink)]">{product ? product.name : "Choose a product"}</span>
+          </button>
+          {product ? (
+            <Button variant="ghost" size="icon-sm" aria-label={`Remove Product ${slot}`} onClick={onRemove}>
+              <Trash2 className="size-4" aria-hidden="true" />
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" className="rounded-full text-xs font-black" onClick={onActivate}>
+              Select
+            </Button>
+          )}
         </div>
+        {product ? (
+          <div className="mt-4 grid flex-1 gap-4 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
+            <ProductImage product={product} />
+            <div className="min-w-0">
+              <p className="text-xs font-semibold leading-5 text-[var(--happy-muted)]">{product.subtitle}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-[0.7rem] font-bold">
+                <span className="inline-flex items-center gap-1 text-[var(--happy-orange)]">
+                  <Star className="size-3.5 fill-current" aria-hidden="true" />
+                  {product.rating.toFixed(1)}
+                </span>
+                <span className="text-[var(--happy-muted)]">({integer.format(product.reviews)})</span>
+                <Badge className="border-0 bg-[var(--happy-green-soft)] text-[0.62rem] text-emerald-700">{product.reviewTrust}</Badge>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {product.tags.slice(0, 3).map((tag) => (
+                  <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.62rem] font-bold text-[var(--happy-ink)]">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4 flex items-end justify-between gap-3">
+                <div>
+                  <p className="text-[0.68rem] font-bold text-[var(--happy-muted)]">Current price</p>
+                  <p className="font-numeric text-xl font-black text-[var(--happy-ink)]">{formatPrice(product.currentPrice)}</p>
+                </div>
+                <Badge className={cn("border-0 text-xs font-black", product.verdict === "BUY" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700")}>
+                  {product.verdict}
+                </Badge>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            className="mt-4 grid flex-1 place-items-center rounded-xl border border-dashed border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] text-center"
+            onClick={onActivate}
+          >
+            <span>
+              <Search className="mx-auto size-5 text-[var(--happy-orange)]" aria-hidden="true" />
+              <span className="mt-2 block text-xs font-bold text-[var(--happy-muted)]">Search and add a product</span>
+            </span>
+          </button>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
 
-        <h1 className="mt-8 font-heading text-[clamp(2.5rem,5vw,4.5rem)] font-bold leading-[1.1] tracking-tight text-[var(--happy-ink)]">
-          Compare products.<br />
-          <span className="text-[var(--happy-purple)]">Choose the better buy.</span>
-        </h1>
+function SearchResultCard({
+  result,
+  activeSlot,
+  onAdd,
+}: {
+  result: SearchResult;
+  activeSlot: CompareSlotId;
+  onAdd: (slot: CompareSlotId, product: Product) => void;
+}) {
+  const { product } = result;
 
-        <p className="mx-auto mt-6 max-w-2xl text-base font-medium leading-relaxed text-[var(--happy-muted)] sm:text-lg">
-          Our AI analyzes reviews, prices, features, and real-world performance so you can pick the right product with confidence.
-        </p>
+  return (
+    <div className="grid gap-3 rounded-xl border border-[var(--happy-line)] bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[var(--happy-card-shadow)] sm:grid-cols-[4.5rem_minmax(0,1fr)_auto]">
+      <ProductImage product={product} />
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <h3 className="text-sm font-black text-[var(--happy-ink)]">{product.name}</h3>
+          <Badge className="border-0 bg-purple-100 text-[0.62rem] font-black text-[var(--happy-purple)]">{result.matchLabel}</Badge>
+        </div>
+        <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">{product.subtitle}</p>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {product.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.6rem] font-bold text-[var(--happy-ink)]">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
+        <div className="text-right">
+          <p className="font-numeric text-sm font-black text-[var(--happy-ink)]">{formatPrice(product.currentPrice)}</p>
+          <p className="text-[0.65rem] font-bold text-emerald-700">{product.discountPercent}% off</p>
+        </div>
+        <div className="flex gap-1.5">
+          <Button size="sm" variant={activeSlot === "A" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "A" && "bg-[var(--happy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("A", product)}>
+            Add A
+          </Button>
+          <Button size="sm" variant={activeSlot === "B" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "B" && "bg-[var(--happy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("B", product)}>
+            Add B
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        <div className="mt-10 w-full max-w-[800px]">
-          <div className="relative flex items-center rounded-2xl border border-[var(--happy-line)] bg-white p-2 shadow-[var(--happy-float-shadow)]">
-            <Search className="absolute left-6 size-5 text-[var(--happy-muted)]" aria-hidden="true" />
-            <Input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search any product or paste a product link to compare"
-              className="h-14 rounded-xl border-transparent bg-transparent pl-14 pr-12 text-base font-medium shadow-none focus-visible:ring-0"
-              onKeyDown={(event) => {
-                if (event.key === "Enter") runCheck();
+function RecommendationCard({
+  recommendation,
+  productA,
+  productB,
+  onStart,
+  onSwap,
+}: {
+  recommendation: BuilderRecommendation;
+  productA: Product | null;
+  productB: Product | null;
+  onStart: () => void;
+  onSwap: () => void;
+}) {
+  const ready = Boolean(productA && productB);
+
+  return (
+    <Card className="h-full overflow-hidden rounded-2xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] shadow-[var(--happy-card-shadow)]">
+      <CardContent className="flex h-full flex-col p-5">
+        <div className="flex items-center gap-2 text-[0.72rem] font-black uppercase text-[var(--happy-ink)]">
+          <span className="grid size-7 place-items-center rounded-lg bg-white text-[var(--happy-purple)] shadow-sm">
+            <Sparkles className="size-4" aria-hidden="true" />
+          </span>
+          Smart preview
+        </div>
+        <h2 className="mt-4 text-xl font-black leading-tight text-[var(--happy-purple)]">{recommendation.title}</h2>
+        <p className="mt-3 text-sm font-semibold leading-6 text-[var(--happy-muted)]">{recommendation.body}</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {recommendation.badges.map((badge) => (
+            <span key={badge} className="rounded-full bg-white px-3 py-1 text-[0.68rem] font-black text-[var(--happy-purple)] shadow-sm">
+              {badge}
+            </span>
+          ))}
+        </div>
+        <div className="mt-auto grid gap-3 pt-5 sm:grid-cols-[auto_1fr] sm:items-end">
+          <div className="flex items-center gap-3">
+            <div
+              className="grid size-16 place-items-center rounded-full p-1.5"
+              style={{
+                background: `conic-gradient(#4b09a9 0 ${recommendation.confidence}%, #20bf68 ${recommendation.confidence}% 100%)`,
               }}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-4 text-[var(--happy-muted)] hover:text-[var(--happy-ink)]"
-              onClick={runCheck}
             >
-              <LinkIcon className="size-5" aria-hidden="true" />
+              <div className="grid size-full place-items-center rounded-full bg-white font-numeric text-base font-black text-[var(--happy-ink)]">
+                {recommendation.confidence ? `${recommendation.confidence}%` : "--"}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-black text-[var(--happy-ink)]">Confidence</p>
+              <p className="text-[0.7rem] font-semibold text-[var(--happy-muted)]">Price, review, and score signals</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap justify-start gap-2 sm:justify-end">
+            <Button variant="outline" className="h-9 gap-2 rounded-full bg-white text-xs font-black" onClick={onSwap} disabled={!ready}>
+              <Shuffle className="size-4" aria-hidden="true" />
+              Swap
+            </Button>
+            <Button className="h-9 rounded-full bg-[var(--happy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--happy-orange-dark)]" onClick={onStart} disabled={!ready}>
+              Start comparison
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Button>
           </div>
-          <p className="mt-4 text-sm font-medium text-[var(--happy-muted)]">
-            Examples: iPhone 15 vs Samsung S24, Sony WH-1000XM5 vs Bose QC Ultra, Dyson V15 vs Shark Stratos
-          </p>
         </div>
+      </CardContent>
+    </Card>
+  );
+}
 
-        <div className="mt-8 flex items-center gap-2 text-sm font-bold text-[var(--happy-muted)]">
-          <Lock className="size-4" aria-hidden="true" />
-          Free to compare &bull; No sign up required
-        </div>
+function TrustStrip() {
+  const items = [
+    { icon: ShieldCheck, title: "Review trust", body: "Scores flag sentiment and source coverage." },
+    { icon: Tag, title: "Deal context", body: "Price, list price, savings, and retailer signals." },
+    { icon: BarChart3, title: "Side-by-side", body: "Preview winner logic before opening the dashboard." },
+    { icon: Zap, title: "Fast decision flow", body: "Move from search intent to a full comparison quickly." },
+  ];
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6 lg:px-8">
+      <div className="grid gap-3 rounded-2xl border border-[var(--happy-line)] bg-white p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div key={item.title} className="flex gap-3 rounded-xl p-3 transition hover:bg-slate-50">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-orange-100 text-[var(--happy-orange)]">
+                <Icon className="size-5" aria-hidden="true" />
+              </span>
+              <span>
+                <span className="block text-sm font-black text-[var(--happy-ink)]">{item.title}</span>
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--happy-muted)]">{item.body}</span>
+              </span>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
 
-const features = [
-  {
-    icon: Scale,
-    title: "Side by side",
-    description: "Compare key features, prices, and ratings.",
-    color: "bg-purple-100 text-[var(--happy-purple)]",
-  },
-  {
-    icon: TrendingUp,
-    title: "AI analysis",
-    description: "Get unbiased AI scores and recommendations.",
-    color: "bg-emerald-100 text-emerald-600",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Real-time data",
-    description: "Live prices, availability, and offers from top retailers.",
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    icon: Tag,
-    title: "Find better deals",
-    description: "See which product gives you the best value.",
-    color: "bg-orange-100 text-orange-600",
-  },
-];
-
-function FeaturesSection() {
+function PresetComparisons({
+  onPreset,
+  onOpenDemo,
+}: {
+  onPreset: (productA: Product, productB: Product) => void;
+  onOpenDemo: () => void;
+}) {
   return (
-    <section className="scroll-reveal mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-8">
-      <Card className="rounded-2xl border border-[var(--happy-line)] bg-white shadow-sm">
-        <CardContent className="p-2 sm:p-4">
-          <div className="grid divide-y divide-[var(--happy-line)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <div key={feature.title} className="flex items-start gap-4 p-5">
-                  <div className={cn("grid size-12 shrink-0 place-items-center rounded-full", feature.color)}>
-                    <Icon className="size-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">{feature.title}</h3>
-                    <p className="mt-1 text-xs font-medium leading-5 text-[var(--happy-muted)]">{feature.description}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
-    </section>
-  );
-}
-
-const popularComparisons = [
-  {
-    titleA: "Sony\nWH-1000XM5",
-    titleB: "Bose\nQC Ultra",
-    imgA: "/compare/sony-wh-1000xm5-black.png",
-    imgB: "/compare/bose-qc-ultra-black.png",
-    href: "/compare/results",
-  },
-  {
-    titleA: "iPhone 15 Pro",
-    titleB: "Samsung\nS24 Ultra",
-    imgA: "/home/products/iphone-15-pro.png",
-    iconB: MonitorSmartphone,
-    href: "/compare/results",
-  },
-  {
-    titleA: "Dyson\nV15 Detect",
-    titleB: "Shark\nStratos",
-    iconA: Sparkles,
-    iconB: Sparkles,
-    href: "/compare/results",
-  },
-  {
-    titleA: "AirPods Pro 2",
-    titleB: "Sony\nWF-1000XM5",
-    imgA: "/home/products/airpods-pro-2.png",
-    imgB: "/home/products/sony-wf1000xm5.png",
-    href: "/compare/results",
-  },
-  {
-    titleA: "MacBook\nAir M3",
-    titleB: "Dell\nXPS 13",
-    iconA: MonitorPlay,
-    iconB: MonitorPlay,
-    href: "/compare/results",
-  },
-];
-
-function PopularComparisons() {
-  return (
-    <section className="scroll-reveal mx-auto mt-16 max-w-[1240px] px-4 pb-16 sm:px-6 lg:px-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-extrabold text-[var(--happy-ink)]">Popular comparisons</h2>
-        <NextLink href="/compare/results" className="flex items-center gap-1 text-sm font-bold text-[var(--happy-purple)] hover:text-violet-700">
-          View all <ArrowRight className="size-4" />
-        </NextLink>
+    <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
+      <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <p className="text-[0.72rem] font-black uppercase text-[var(--happy-orange)]">Popular presets</p>
+          <h2 className="mt-1 text-xl font-black text-[var(--happy-ink)]">Start from a proven comparison</h2>
+        </div>
+        <Button variant="outline" className="h-9 w-fit rounded-full text-xs font-black" onClick={onOpenDemo}>
+          Open Sony vs Bose demo
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Button>
       </div>
-
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-        {popularComparisons.map((comp, idx) => (
-          <NextLink key={idx} href={comp.href}>
-            <motion.div
-              className="group relative flex min-h-[14rem] flex-col justify-between rounded-2xl border border-[var(--happy-line)] bg-white p-5 shadow-sm"
-              whileHover={{ y: -4, boxShadow: "var(--happy-card-shadow)" }}
-              whileTap={{ scale: 0.98 }}
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {presetPairs.map((preset) => {
+          const productA = productById(preset.a);
+          const productB = productById(preset.b);
+          if (!productA || !productB) return null;
+          const recommendation = getRecommendation(productA, productB);
+          return (
+            <button
+              key={preset.title}
+              type="button"
+              className="rounded-2xl border border-[var(--happy-line)] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--happy-card-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--happy-orange)]"
+              onClick={() => onPreset(productA, productB)}
             >
-              <div className="relative flex items-center justify-between gap-2">
-                <div className="flex h-20 w-1/2 items-center justify-center">
-                  {comp.imgA ? (
-                    <Image src={comp.imgA} alt={comp.titleA.replace('\n', ' ')} width={70} height={70} className="object-contain" />
-                  ) : (
-                    <div className="grid size-16 place-items-center rounded-xl bg-slate-100 text-slate-400">
-                      {comp.iconA && <comp.iconA className="size-8" />}
-                    </div>
-                  )}
-                </div>
-                
-                <div className="absolute left-1/2 top-1/2 z-10 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-slate-100 text-[10px] font-black text-[var(--happy-purple)] shadow-sm">
-                  VS
-                </div>
-
-                <div className="flex h-20 w-1/2 items-center justify-center">
-                  {comp.imgB ? (
-                    <Image src={comp.imgB} alt={comp.titleB.replace('\n', ' ')} width={70} height={70} className="object-contain" />
-                  ) : (
-                    <div className="grid size-16 place-items-center rounded-xl bg-slate-100 text-slate-400">
-                      {comp.iconB && <comp.iconB className="size-8" />}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-6 flex justify-between gap-2 text-center text-xs font-bold text-[var(--happy-ink)]">
-                <div className="w-1/2 whitespace-pre-wrap">{comp.titleA}</div>
-                <div className="w-1/2 whitespace-pre-wrap">{comp.titleB}</div>
-              </div>
-            </motion.div>
-          </NextLink>
-        ))}
+              <span className="text-sm font-black text-[var(--happy-ink)]">{preset.title}</span>
+              <span className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+                <span className="flex justify-center"><ProductImage product={productA} /></span>
+                <span className="grid size-8 place-items-center rounded-full bg-[var(--happy-orange)] text-[0.65rem] font-black text-white shadow-sm">VS</span>
+                <span className="flex justify-center"><ProductImage product={productB} /></span>
+              </span>
+              <span className="mt-4 grid grid-cols-2 gap-2 text-center text-[0.7rem] font-black text-[var(--happy-ink)]">
+                <span className="truncate">{productA.name}</span>
+                <span className="truncate">{productB.name}</span>
+              </span>
+              <span className="mt-3 block rounded-lg bg-purple-100 px-3 py-2 text-[0.68rem] font-bold text-[var(--happy-purple)]">
+                {recommendation.winner?.name ?? "AI"} leads
+              </span>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
@@ -378,101 +563,236 @@ function PopularComparisons() {
 
 function Footer() {
   return (
-    <footer className="mx-auto mt-8 max-w-[1240px] px-4 pb-10 sm:px-6 lg:px-8">
-      <div className="grid gap-8 border-t border-[var(--happy-line)] pt-8 md:grid-cols-[1.2fr_repeat(4,0.8fr)_1fr]">
-        <div>
-          <Logo />
-          <p className="mt-5 max-w-56 text-sm font-medium leading-6 text-[var(--happy-muted)]">AI product insights to help you buy smarter and spend better.</p>
-          <div className="mt-5 flex gap-3">
-            {socialLinks.map((social) => (
-              <motion.a
-                key={social.label}
-                href="#"
-                aria-label={social.label}
-                className="grid size-8 place-items-center rounded-full border border-[var(--happy-line)] bg-white shadow-sm"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.96 }}
-              >
-                <Image src={social.src} alt="" width={16} height={16} className="size-4 object-contain" />
-              </motion.a>
-            ))}
-          </div>
-        </div>
-        {footerColumns.map((column) => (
-          <div key={column.title}>
-            <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">{column.title}</h3>
-            <ul className="mt-4 grid gap-3">
-              {column.links.map((link) => (
-                <li key={link}><a href="#" className="text-sm font-medium text-[var(--happy-muted)] hover:text-[var(--happy-orange)]">{link}</a></li>
-              ))}
-            </ul>
-          </div>
-        ))}
-        <div>
-          <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">Download</h3>
-          <p className="mt-4 text-sm font-medium text-[var(--happy-muted)]">Get our mobile app</p>
-          <div className="mt-4 grid gap-2">
-            <StoreButton src="/home/badges/app-store.svg" label="App Store" />
-            <StoreButton src="/home/badges/google-play.svg" label="Google Play" />
-          </div>
-        </div>
+    <footer className="mx-auto max-w-6xl px-4 pb-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col justify-between gap-4 border-t border-[var(--happy-line)] pt-6 text-xs font-semibold text-[var(--happy-muted)] sm:flex-row sm:items-center">
+        <Logo />
+        <p>AI product insights to help you buy smarter and spend better.</p>
       </div>
-      <p className="mt-8 text-center text-xs font-semibold text-[var(--happy-muted)]">&copy; 2026 IsItABuy. All rights reserved.</p>
     </footer>
   );
 }
 
-function StoreButton({ src, label }: { src: string; label: string }) {
-  return (
-    <motion.button type="button" className="relative h-10 w-36 overflow-hidden rounded-lg bg-black shadow-sm" whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-      <Image src={src} alt={label} fill sizes="144px" className="object-contain" />
-    </motion.button>
-  );
-}
-
 export default function CompareLanding() {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const [state, setState] = useState<BuilderState>({
+    productA: mockProducts[0],
+    productB: mockProducts[1],
+    query: "",
+    activeSlot: "A",
+  });
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    const motionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+  const recommendation = useMemo(() => getRecommendation(state.productA, state.productB), [state.productA, state.productB]);
+  const results = useMemo(
+    () =>
+      mockProducts
+        .map((product) => getSearchResult(product, state.query))
+        .filter((result) => !state.query.trim() || result.score > 0)
+        .sort((first, second) => second.score - first.score || first.product.currentPrice - second.product.currentPrice),
+    [state.query]
+  );
 
-    if (prefersReducedMotion || motionQuery.matches || !rootRef.current) {
+  const updateSlot = (slot: CompareSlotId, product: Product) => {
+    const duplicate = slot === "A" ? state.productB?.id === product.id : state.productA?.id === product.id;
+    if (duplicate) {
+      showCompareToast("Choose another product", `${product.name} is already selected in the other slot.`);
       return;
     }
 
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".scroll-reveal").forEach((element) => {
-        gsap.fromTo(
-          element,
-          { autoAlpha: 0, y: 42 },
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: element,
-              start: "top 86%",
-              once: true,
-            },
-          }
-        );
-      });
-    }, rootRef);
+    setState((current) => ({
+      ...current,
+      productA: slot === "A" ? product : current.productA,
+      productB: slot === "B" ? product : current.productB,
+      activeSlot: slot === "A" ? "B" : "A",
+    }));
+    showCompareToast("Product added", `${product.name} added as Product ${slot}.`);
+  };
 
-    return () => ctx.revert();
-  }, [prefersReducedMotion]);
+  const removeSlot = (slot: CompareSlotId) => {
+    setState((current) => ({
+      ...current,
+      productA: slot === "A" ? null : current.productA,
+      productB: slot === "B" ? null : current.productB,
+      activeSlot: slot,
+    }));
+  };
+
+  const submitSearch = () => {
+    const trimmedQuery = state.query.trim();
+    if (!trimmedQuery) {
+      showCompareToast("Search needs a product", "Try battery, comfort, ANC, value, or a headphone name.");
+      return;
+    }
+    showCompareToast("Smart matches updated", `Showing ranked products for "${trimmedQuery}".`);
+  };
+
+  const startComparison = () => {
+    if (!state.productA || !state.productB) {
+      showCompareToast("Choose two products", "Fill Product A and Product B before opening a full comparison.");
+      return;
+    }
+    window.location.href = getCompareHref(state.productA, state.productB);
+  };
+
+  const setPreset = (productA: Product, productB: Product) => {
+    setState((current) => ({ ...current, productA, productB, activeSlot: "A" }));
+    showCompareToast("Preset loaded", `${productA.name} vs ${productB.name} is ready.`);
+  };
 
   return (
-    <div ref={rootRef} className="min-h-screen bg-[var(--happy-page)] text-[var(--happy-ink)]">
+    <div className="relative min-h-screen overflow-hidden bg-[var(--happy-page)] text-[var(--happy-ink)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[image:var(--happy-hero-glow)]" aria-hidden="true" />
       <Header />
-      <motion.main variants={prefersReducedMotion ? undefined : pageVariants} initial={prefersReducedMotion ? false : "hidden"} animate="show">
-        <HeroSection />
-        <FeaturesSection />
-        <PopularComparisons />
-      </motion.main>
+      <main className="relative">
+        <section className="mx-auto grid max-w-6xl gap-5 px-4 pb-8 pt-4 sm:px-6 lg:px-8 lg:pb-10 lg:pt-6 xl:grid-cols-[minmax(0,1.18fr)_minmax(23rem,0.82fr)]">
+          <div className="grid gap-4">
+            <div className="rounded-[1.65rem] border border-[var(--happy-line)] bg-white/94 p-4 shadow-[var(--happy-card-shadow)] backdrop-blur sm:p-6">
+              <div className="mx-auto flex max-w-3xl flex-col items-center text-center xl:items-start xl:text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-sm">
+                  <Sparkles className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
+                  AI-Powered Compare Advisor
+                </div>
+                <h1 className="mt-4 max-w-[760px] font-heading text-[clamp(2rem,4vw,3.6rem)] font-bold leading-[1.03] tracking-normal text-[var(--happy-ink)]">
+                  Compare products before <span className="text-[var(--happy-orange)]">you buy.</span>
+                </h1>
+                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[var(--happy-muted)] sm:text-base">
+                  Pick two products, rank smart matches by intent, and preview the stronger buy before opening the full comparison.
+                </p>
+                <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-sm sm:text-sm">
+                  <span className="grid size-7 place-items-center rounded-lg bg-[var(--happy-orange)] text-white">
+                    <ShieldCheck className="size-3.5" aria-hidden="true" />
+                  </span>
+                  Independent scores. Affiliate links do not affect recommendations.
+                </div>
+                <div className="mt-5 w-full rounded-[1.35rem] border border-[var(--happy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)]">
+                  <div className="flex flex-col gap-2 lg:h-12 lg:flex-row lg:items-center">
+                    <div className="relative min-w-0 flex-1">
+                      <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--happy-ink)]" aria-hidden="true" />
+                      <Input
+                        aria-label="Search products to compare"
+                        value={state.query}
+                        onChange={(event) => setState((current) => ({ ...current, query: event.target.value }))}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") submitSearch();
+                        }}
+                        placeholder="Search headphones by comfort, battery, ANC, value..."
+                        className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--happy-muted)] focus-visible:ring-[var(--happy-orange)] lg:h-11 lg:text-sm"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      onClick={submitSearch}
+                      className="h-10 shrink-0 rounded-full bg-[var(--happy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--happy-orange-dark)] lg:h-11 lg:px-6"
+                    >
+                      Find matches
+                    </Button>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap justify-center gap-2 xl:justify-start">
+                  {["battery", "comfort", "ANC", "value"].map((term) => (
+                    <button
+                      key={term}
+                      type="button"
+                      className="rounded-full border border-[var(--happy-line)] bg-white/92 px-3 py-1.5 text-[0.72rem] font-black text-[var(--happy-ink)] shadow-sm transition hover:-translate-y-px hover:border-orange-200 hover:text-[var(--happy-orange)]"
+                      onClick={() => {
+                        setState((current) => ({ ...current, query: term }));
+                        showCompareToast("Smart matches updated", `Showing ranked products for "${term}".`);
+                      }}
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-2">
+              <ProductSlotCard
+                slot="A"
+                product={state.productA}
+                active={state.activeSlot === "A"}
+                onActivate={() => setState((current) => ({ ...current, activeSlot: "A" }))}
+                onRemove={() => removeSlot("A")}
+              />
+              <ProductSlotCard
+                slot="B"
+                product={state.productB}
+                active={state.activeSlot === "B"}
+                onActivate={() => setState((current) => ({ ...current, activeSlot: "B" }))}
+                onRemove={() => removeSlot("B")}
+              />
+            </div>
+
+            <Card className="rounded-2xl border border-[var(--happy-line)] bg-white shadow-sm">
+              <CardContent className="p-4">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="text-sm font-black text-[var(--happy-ink)]">Ranked product matches</h2>
+                    <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">Active slot: Product {state.activeSlot}. Add a result to either side.</p>
+                  </div>
+                  <Badge className="w-fit border-0 bg-orange-100 text-[0.68rem] font-black text-orange-700">
+                    {results.length} matches
+                  </Badge>
+                </div>
+                <div className="mt-4 grid max-h-[30rem] gap-3 overflow-y-auto pr-1">
+                  {results.length ? (
+                    results.map((result) => (
+                      <SearchResultCard key={result.product.id} result={result} activeSlot={state.activeSlot} onAdd={updateSlot} />
+                    ))
+                  ) : (
+                    <div className="rounded-xl border border-dashed border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] p-8 text-center">
+                      <p className="text-sm font-black text-[var(--happy-ink)]">No products found</p>
+                      <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">Try battery, comfort, ANC, or value.</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 xl:sticky xl:top-20 xl:self-start">
+            <RecommendationCard
+              recommendation={recommendation}
+              productA={state.productA}
+              productB={state.productB}
+              onStart={startComparison}
+              onSwap={() => setState((current) => ({ ...current, productA: current.productB, productB: current.productA }))}
+            />
+            <Card className="rounded-2xl border border-[var(--happy-line)] bg-white shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-sm font-black text-[var(--happy-ink)]">Comparison path</h2>
+                  <ChevronDown className="size-4 text-[var(--happy-muted)]" aria-hidden="true" />
+                </div>
+                <div className="mt-4 grid gap-3 text-xs font-semibold text-[var(--happy-muted)]">
+                  <div className="flex items-center justify-between">
+                    <span>Product A</span>
+                    <span className="max-w-48 truncate font-black text-[var(--happy-ink)]">{state.productA?.name ?? "Empty"}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Product B</span>
+                    <span className="max-w-48 truncate font-black text-[var(--happy-ink)]">{state.productB?.name ?? "Empty"}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Winner preview</span>
+                    <span className="max-w-48 truncate font-black text-[var(--happy-purple)]">{recommendation.winner?.name ?? "Waiting"}</span>
+                  </div>
+                </div>
+                <Button className="mt-5 h-10 w-full rounded-full bg-[var(--happy-orange)] text-sm font-bold text-white hover:bg-[var(--happy-orange-dark)]" onClick={startComparison}>
+                  Open full comparison
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <TrustStrip />
+        <PresetComparisons
+          onPreset={setPreset}
+          onOpenDemo={() => {
+            window.location.href = "/compare/sony-wh-1000xm5-vs-bose-quietcomfort-ultra";
+          }}
+        />
+      </main>
       <Footer />
     </div>
   );

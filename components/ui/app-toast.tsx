@@ -90,3 +90,10 @@ export function showPriceAlertToast() {
     icon: <Bell className="size-4 text-amber-600" aria-hidden="true" />,
   });
 }
+
+export function showCompareToast(title: string, description: string) {
+  return showToast(title, {
+    description,
+    icon: <Sparkles className="size-4 text-[#622395]" aria-hidden="true" />,
+  });
+}
