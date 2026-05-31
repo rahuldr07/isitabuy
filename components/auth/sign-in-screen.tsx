@@ -316,7 +316,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
             <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[image:var(--brand-gradient)] text-white shadow-soft">
               <ShoppingBagIcon aria-hidden="true" className="size-6" />
             </span>
-            <span className="truncate text-2xl font-bold tracking-normal text-[var(--happy-ink)]">IsItABuy</span>
+            <span className="truncate text-2xl font-bold tracking-normal text-[var(--isitabuy-ink)]">IsItABuy</span>
           </Link>
 
           <div className="flex items-center gap-3">

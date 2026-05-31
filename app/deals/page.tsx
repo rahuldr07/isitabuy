@@ -24,15 +24,16 @@ import {
 
 import DealsSearchForm from "@/components/deals/deals-search-form";
 import PriceRangeFilter from "@/components/deals/price-range-filter";
+import SavedDealButton from "@/components/deals/saved-deal-button";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard, BentoGrid } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
-  title: "Today's Best Deals - Happy",
-  description: "Hand-picked Happy deals with retailer filters and price checks.",
+  title: "Today's Best Deals - IsItABuy",
+  description: "Hand-picked IsItABuy deals with retailer filters and price checks.",
 };
 
 type DealBadge = "Historical Low" | "Price Drop" | "Limited Time" | "Buy One Get One" | "Promo Code";
@@ -58,6 +59,7 @@ type CategorySlug =
   | "automotive"
   | "office";
 type BrandSlug = string;
+type ColorSlug = "black" | "pink" | "red" | "nude" | "gold" | "brown" | "coral" | "clear";
 type BrandFilterGroupKey = CategorySlug | "all";
 
 interface DealCardData {
@@ -66,6 +68,7 @@ interface DealCardData {
   brand: BrandSlug;
   category: CategorySlug;
   dealType: DealTypeSlug;
+  color: ColorSlug;
   retailer: string;
   rating: string;
   reviews: string;
@@ -102,6 +105,17 @@ const navItems = [
   { label: "Automotive", href: "/deals?category=automotive", slug: "automotive", icon: SlidersHorizontal },
   { label: "Office", href: "/deals?category=office", slug: "office", icon: Laptop },
 ] satisfies Array<{ label: string; href: string; slug: CategorySlug | null; icon: LucideIcon }>;
+
+const colorFilters = [
+  { label: "Black", slug: "black", swatch: "bg-[#111827]" },
+  { label: "Pink", slug: "pink", swatch: "bg-[#f472b6]" },
+  { label: "Red", slug: "red", swatch: "bg-[#ef4444]" },
+  { label: "Nude", slug: "nude", swatch: "bg-[#d6a184]" },
+  { label: "Gold", slug: "gold", swatch: "bg-[#f5c542]" },
+  { label: "Brown", slug: "brown", swatch: "bg-[#7c4a32]" },
+  { label: "Coral", slug: "coral", swatch: "bg-[#ff7f50]" },
+  { label: "Clear", slug: "clear", swatch: "bg-white border border-slate-300" },
+] satisfies Array<{ label: string; slug: ColorSlug; swatch: string }>;
 
 const brandFiltersByCategory = {
   all: [
@@ -240,6 +254,7 @@ const validBrands = new Set<BrandSlug>(
     .flat()
     .map((brand) => brand.slug),
 );
+const validColors = new Set<ColorSlug>(colorFilters.map((color) => color.slug));
 
 const retailerChips = [
   { label: "All Retailers", logo: null, logoClass: "", slug: null },
@@ -1316,6 +1331,7 @@ function buildDeals(category: CategorySlug, seeds: DealSeed[]) {
       ...seed,
       badge: dealType.badge,
       category,
+      color: colorFilters[index % colorFilters.length].slug,
       dealType: dealType.dealType,
       discount: seed.discount ?? `${15 + ((index * 3) % 18)}% OFF`,
       rating: (4.4 + ((index + 1) % 5) / 10).toFixed(1),
@@ -1328,9 +1344,15 @@ function buildDeals(category: CategorySlug, seeds: DealSeed[]) {
   });
 }
 
+function enhanceProductImage(src: string) {
+  return src.replace("w=500", "w=900");
+}
+
 const deals: DealCardData[] = Object.entries(referenceProductSeeds).flatMap(([category, seeds]) =>
   buildDeals(category as CategorySlug, seeds),
 );
+
+const collapsedBrandFilterCount = 4;
 
 function productSlug(value: string) {
   return (
@@ -1421,6 +1443,19 @@ function normalizeBrands(brand?: string | string[]) {
   return normalized;
 }
 
+function normalizeColors(color?: string | string[]) {
+  const values = Array.isArray(color) ? color : color ? [color] : [];
+  const normalized: ColorSlug[] = [];
+
+  for (const value of values) {
+    if (validColors.has(value as ColorSlug) && !normalized.includes(value as ColorSlug)) {
+      normalized.push(value as ColorSlug);
+    }
+  }
+
+  return normalized;
+}
+
 function normalizeSearchQuery(query?: string | string[]) {
   const value = Array.isArray(query) ? query[0] : query;
   return value?.trim() ?? "";
@@ -1437,6 +1472,7 @@ function dealsHref(
   retailers: RetailerSlug[],
   brands: BrandSlug[] = [],
   query = "",
+  colors: ColorSlug[] = [],
 ) {
   const params = new URLSearchParams();
 
@@ -1444,6 +1480,7 @@ function dealsHref(
   dealTypes.forEach((dealType) => params.append("dealType", dealType));
   retailers.forEach((retailer) => params.append("retailer", retailer));
   brands.forEach((brand) => params.append("brand", brand));
+  colors.forEach((color) => params.append("color", color));
   if (query.trim()) params.set("q", query.trim());
 
   const queryString = params.toString();
@@ -1457,12 +1494,13 @@ function toggleDealTypeHref(
   activeBrands: BrandSlug[],
   dealType: DealTypeSlug,
   query = "",
+  activeColors: ColorSlug[] = [],
 ) {
   const nextDealTypes = activeDealTypes.includes(dealType)
     ? activeDealTypes.filter((activeDealType) => activeDealType !== dealType)
     : [...activeDealTypes, dealType];
 
-  return dealsHref(category, nextDealTypes, activeRetailers, activeBrands, query);
+  return dealsHref(category, nextDealTypes, activeRetailers, activeBrands, query, activeColors);
 }
 
 function toggleRetailerHref(
@@ -1472,12 +1510,13 @@ function toggleRetailerHref(
   activeBrands: BrandSlug[],
   retailer: RetailerSlug,
   query = "",
+  activeColors: ColorSlug[] = [],
 ) {
   const nextRetailers = activeRetailers.includes(retailer)
     ? activeRetailers.filter((activeRetailer) => activeRetailer !== retailer)
     : [...activeRetailers, retailer];
 
-  return dealsHref(category, activeDealTypes, nextRetailers, activeBrands, query);
+  return dealsHref(category, activeDealTypes, nextRetailers, activeBrands, query, activeColors);
 }
 
 function toggleBrandHref(
@@ -1487,19 +1526,36 @@ function toggleBrandHref(
   activeBrands: BrandSlug[],
   brand: BrandSlug,
   query = "",
+  activeColors: ColorSlug[] = [],
 ) {
   const nextBrands = activeBrands.includes(brand)
     ? activeBrands.filter((activeBrand) => activeBrand !== brand)
     : [...activeBrands, brand];
 
-  return dealsHref(category, activeDealTypes, activeRetailers, nextBrands, query);
+  return dealsHref(category, activeDealTypes, activeRetailers, nextBrands, query, activeColors);
+}
+
+function toggleColorHref(
+  category: CategorySlug | null,
+  activeDealTypes: DealTypeSlug[],
+  activeRetailers: RetailerSlug[],
+  activeBrands: BrandSlug[],
+  activeColors: ColorSlug[],
+  color: ColorSlug,
+  query = "",
+) {
+  const nextColors = activeColors.includes(color)
+    ? activeColors.filter((activeColor) => activeColor !== color)
+    : [...activeColors, color];
+
+  return dealsHref(category, activeDealTypes, activeRetailers, activeBrands, query, nextColors);
 }
 
 function badgeClass(badge: DealBadge) {
   if (badge === "Historical Low") return "bg-value text-white";
   if (badge === "Price Drop") return "bg-buy text-white";
   if (badge === "Buy One Get One") return "bg-wait text-white";
-  if (badge === "Promo Code") return "bg-[var(--happy-blue)] text-white";
+  if (badge === "Promo Code") return "bg-[var(--isitabuy-blue)] text-white";
   return "bg-accent text-white";
 }
 
@@ -1571,7 +1627,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
   const detailHref = productDetailHref(deal);
 
   return (
-    <Card className="gap-1 rounded-xl border border-border bg-white p-2.5 shadow-[0_10px_24px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_14px_30px_rgba(15,23,42,0.1)]">
+    <BentoCard className="flex flex-col gap-2 p-3">
       <div className="flex items-center justify-between">
         <Badge className={`h-[18px] rounded px-2 text-[9px] font-extrabold leading-none ${badgeClass(deal.badge)}`}>
           {deal.badge}
@@ -1581,14 +1637,17 @@ function DealCard({ deal }: { deal: DealCardData }) {
             {deal.timer}
           </span>
         ) : (
-          <button className="grid size-6 place-items-center rounded-full border border-border bg-white text-muted-foreground shadow-sm">
-            <Heart className="size-3.5" />
-          </button>
+          <SavedDealButton deal={deal} />
         )}
       </div>
 
-      <div className="grid h-[78px] place-items-center overflow-hidden rounded-lg bg-gradient-to-b from-white to-[#f8fafc]">
-        <img alt={deal.name} className="max-h-[72px] w-full object-contain mix-blend-multiply" src={deal.image} />
+      <div className="grid h-[118px] place-items-center overflow-hidden rounded-xl border border-[#eef2f7] bg-[#f8fafc]">
+        <img
+          alt={deal.name}
+          className="h-full w-full object-contain p-2 transition-transform duration-200 group-hover/bento:scale-[1.035]"
+          loading="lazy"
+          src={enhanceProductImage(deal.image)}
+        />
       </div>
 
       <div className="min-h-8">
@@ -1627,15 +1686,15 @@ function DealCard({ deal }: { deal: DealCardData }) {
         <span className="text-[9px] text-muted-foreground">AI Deal Score</span>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 border-t-2 border-[#1f7ae0] pt-2">
+      <div className="mt-auto grid grid-cols-2 gap-2 border-t-2 border-[#1f7ae0] pt-2">
         <Button
           asChild
           variant="outline"
-          className="h-8 rounded-lg border-border bg-white px-2 text-[11px] font-extrabold text-foreground transition-colors hover:border-[#1f7ae0] hover:bg-[#1f7ae0] hover:text-white"
+          className="h-8 rounded-lg border-[#71389f] bg-white px-2 text-[11px] font-extrabold text-[#581f86] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#71389f] hover:bg-[#71389f] hover:text-white hover:shadow-[0_10px_22px_rgba(113,56,159,0.28)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#71389f] focus-visible:bg-[#71389f] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(113,56,159,0.28)]"
         >
-          <Link href={detailHref}>View Deal</Link>
+          <Link href={detailHref}>AI Score</Link>
         </Button>
-        <Button className="h-8 rounded-lg bg-[#ffd200] px-2 text-[11px] font-extrabold text-foreground shadow-none hover:bg-[#ffc400]">
+        <Button className="h-8 rounded-lg border border-[#007a28] bg-white px-2 text-[11px] font-extrabold text-[#007a28] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#007a28] hover:bg-[#007a28] hover:text-white hover:shadow-[0_10px_22px_rgba(0,122,40,0.24)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#007a28] focus-visible:bg-[#007a28] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(0,122,40,0.24)]">
           Buy Now
         </Button>
       </div>
@@ -1644,7 +1703,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
         <User className="size-3" />
         Saved by {deal.savedBy}
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -1656,6 +1715,7 @@ export default async function DealsPage({
     dealType?: string | string[];
     retailer?: string | string[];
     brand?: string | string[];
+    color?: string | string[];
     q?: string | string[];
   }>;
 }) {
@@ -1671,6 +1731,20 @@ export default async function DealsPage({
   const activeCategoryBrandSlugs = new Set(activeBrandFilters.map((brand) => brand.slug));
   const activeBrands = normalizeBrands(params?.brand).filter((brand) =>
     activeCategoryBrandSlugs.has(brand),
+  );
+  const activeColors = activeCategory === "fashion" ? normalizeColors(params?.color) : [];
+  const activeColorSet = new Set(activeColors);
+  const visibleColorFilters = colorFilters.filter(
+    (color, index) => index < collapsedBrandFilterCount || activeColors.includes(color.slug),
+  );
+  const expandedColorFilters = colorFilters.filter(
+    (color) => !visibleColorFilters.some((visibleColor) => visibleColor.slug === color.slug),
+  );
+  const visibleBrandFilters = activeBrandFilters.filter(
+    (brand, index) => index < collapsedBrandFilterCount || activeBrands.includes(brand.slug),
+  );
+  const expandedBrandFilters = activeBrandFilters.filter(
+    (brand) => !visibleBrandFilters.some((visibleBrand) => visibleBrand.slug === brand.slug),
   );
   const activeBrandSet = new Set(activeBrands);
   const visibleDeals = activeCategory
@@ -1691,12 +1765,17 @@ export default async function DealsPage({
     activeBrandSet.size > 0
       ? filteredDeals.filter((deal) => activeBrandSet.has(deal.brand))
       : filteredDeals;
+  const colorFilteredDeals =
+    activeColorSet.size > 0
+      ? brandFilteredDeals.filter((deal) => activeColorSet.has(deal.color))
+      : brandFilteredDeals;
   const searchedDeals = normalizedActiveQuery
-    ? brandFilteredDeals.filter((deal) =>
+    ? colorFilteredDeals.filter((deal) =>
         [
           deal.name,
           deal.subtitle,
           deal.brand,
+          deal.color,
           deal.category,
           deal.retailer,
           deal.badge,
@@ -1705,26 +1784,26 @@ export default async function DealsPage({
           .toLowerCase()
           .includes(normalizedActiveQuery),
       )
-    : brandFilteredDeals;
+    : colorFilteredDeals;
 
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur">
         <div className="flex min-h-20 w-full items-center gap-5 px-5 sm:px-8">
-          <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="Happy home">
+          <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="IsItABuy home">
             <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#ffb21a] via-[#ff6b00] to-[#d84fd7] text-white shadow-sm">
               <ShoppingBag className="size-7" aria-hidden="true" />
             </span>
-            <span className="text-3xl font-extrabold tracking-tight text-[var(--happy-ink)]">Happy</span>
+            <span className="text-3xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
           </Link>
 
           <DealsSearchForm
-            actionPath={dealsHref(activeCategory, activeDealTypes, activeRetailers, activeBrands)}
+            actionPath={dealsHref(activeCategory, activeDealTypes, activeRetailers, activeBrands, "", activeColors)}
             defaultValue={activeQuery}
           />
 
           <Button
-            className="hidden h-12 rounded-lg bg-accent px-7 font-extrabold text-white hover:bg-[var(--happy-orange-dark)] md:inline-flex"
+            className="hidden h-12 rounded-lg bg-accent px-7 font-extrabold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex"
             form="deals-search-form"
             type="submit"
           >
@@ -1750,7 +1829,7 @@ export default async function DealsPage({
           </div>
         </div>
 
-        <nav className="grid h-14 w-full grid-cols-[repeat(11,minmax(0,1fr))] items-center overflow-x-auto border-t border-border px-5 text-sm font-extrabold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex h-14 w-full items-center gap-1 overflow-x-auto border-t border-border px-5 text-sm font-extrabold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => {
             const active = item.slug === activeCategory;
             const Icon = item.icon;
@@ -1758,7 +1837,7 @@ export default async function DealsPage({
             return (
               <Link
                 aria-current={active ? "page" : undefined}
-                className={`relative flex h-14 min-w-0 items-center justify-center gap-2 px-2 ${
+                className={`relative flex h-14 shrink-0 items-center justify-center gap-2 px-3 ${
                   active ? "text-accent" : "text-foreground"
                 }`}
                 href={dealsHref(item.slug, activeDealTypes, activeRetailers, [], activeQuery)}
@@ -1772,15 +1851,15 @@ export default async function DealsPage({
               </Link>
             );
           })}
-          <button className="flex h-14 min-w-0 items-center justify-center gap-1 px-2">
+          <button className="flex h-14 shrink-0 items-center justify-center gap-1 px-3">
             More <ChevronDown className="size-4" />
           </button>
         </nav>
       </header>
 
       <main className="w-full px-5 py-5 sm:px-8">
-        <div className="grid gap-6 lg:grid-cols-[270px_minmax(0,1fr)]">
-          <aside className="self-start rounded-xl border border-border bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.06)] lg:sticky lg:top-36">
+        <div className="grid gap-4 lg:grid-cols-[270px_minmax(0,1fr)]">
+          <aside className="hidden self-start rounded-xl border border-border bg-white p-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)] lg:sticky lg:top-36 lg:block">
             <div className="mb-4 flex items-center justify-between border-b border-border pb-4">
               <h2 className="text-xl font-extrabold tracking-tight">Filters</h2>
               <Link className="text-xs font-extrabold text-value" href="/deals">
@@ -1792,7 +1871,7 @@ export default async function DealsPage({
                 All Brands <ChevronDown className="size-4 rotate-180" />
               </h3>
               <div className="space-y-1.5">
-                {activeBrandFilters.map((brand) => {
+                {visibleBrandFilters.map((brand) => {
                   const active = activeBrandSet.has(brand.slug);
 
                   return (
@@ -1806,6 +1885,7 @@ export default async function DealsPage({
                         activeBrands,
                         brand.slug,
                         activeQuery,
+                        activeColors,
                       )}
                       key={brand.slug}
                     >
@@ -1818,8 +1898,126 @@ export default async function DealsPage({
                     </Link>
                   );
                 })}
+                {expandedBrandFilters.length > 0 ? (
+                  <details className="group">
+                    <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-extrabold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
+                      <span className="group-open:hidden">More brands</span>
+                      <span className="hidden group-open:inline">Show less</span>
+                      <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="mt-1.5 space-y-1.5">
+                      {expandedBrandFilters.map((brand) => {
+                        const active = activeBrandSet.has(brand.slug);
+
+                        return (
+                          <Link
+                            aria-current={active ? "true" : undefined}
+                            className="flex h-8 items-center gap-2 rounded-md px-1 text-xs font-semibold text-foreground hover:bg-muted"
+                            href={toggleBrandHref(
+                              activeCategory,
+                              activeDealTypes,
+                              activeRetailers,
+                              activeBrands,
+                              brand.slug,
+                              activeQuery,
+                              activeColors,
+                            )}
+                            key={brand.slug}
+                          >
+                            <Checkbox
+                              aria-label={brand.label}
+                              checked={active}
+                              className="border-slate-400 data-checked:border-value data-checked:bg-value data-checked:text-white"
+                            />
+                            <span className="min-w-0 flex-1 truncate">{brand.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </details>
+                ) : null}
               </div>
             </section>
+
+            {activeCategory === "fashion" ? (
+              <>
+                <Separator className="my-4" />
+                <section>
+                  <h3 className="mb-3 flex items-center justify-between text-xs font-extrabold text-foreground">
+                    Colour <ChevronDown className="size-4 rotate-180" />
+                  </h3>
+                  <div className="space-y-1.5">
+                    {visibleColorFilters.map((color) => {
+                      const active = activeColorSet.has(color.slug);
+
+                      return (
+                        <Link
+                          aria-current={active ? "true" : undefined}
+                          className="flex h-8 items-center gap-2 rounded-md px-1 text-xs font-semibold text-foreground hover:bg-muted"
+                          href={toggleColorHref(
+                            activeCategory,
+                            activeDealTypes,
+                            activeRetailers,
+                            activeBrands,
+                            activeColors,
+                            color.slug,
+                            activeQuery,
+                          )}
+                          key={color.slug}
+                        >
+                          <Checkbox
+                            aria-label={color.label}
+                            checked={active}
+                            className="border-slate-400 data-checked:border-value data-checked:bg-value data-checked:text-white"
+                          />
+                          <span className={`size-4 rounded-full ${color.swatch}`} />
+                          <span className="min-w-0 flex-1 truncate">{color.label}</span>
+                        </Link>
+                      );
+                    })}
+                    {expandedColorFilters.length > 0 ? (
+                      <details className="group">
+                        <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-extrabold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
+                          <span className="group-open:hidden">More colours</span>
+                          <span className="hidden group-open:inline">Show less</span>
+                          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                        </summary>
+                        <div className="mt-1.5 space-y-1.5">
+                          {expandedColorFilters.map((color) => {
+                            const active = activeColorSet.has(color.slug);
+
+                            return (
+                              <Link
+                                aria-current={active ? "true" : undefined}
+                                className="flex h-8 items-center gap-2 rounded-md px-1 text-xs font-semibold text-foreground hover:bg-muted"
+                                href={toggleColorHref(
+                                  activeCategory,
+                                  activeDealTypes,
+                                  activeRetailers,
+                                  activeBrands,
+                                  activeColors,
+                                  color.slug,
+                                  activeQuery,
+                                )}
+                                key={color.slug}
+                              >
+                                <Checkbox
+                                  aria-label={color.label}
+                                  checked={active}
+                                  className="border-slate-400 data-checked:border-value data-checked:bg-value data-checked:text-white"
+                                />
+                                <span className={`size-4 rounded-full ${color.swatch}`} />
+                                <span className="min-w-0 flex-1 truncate">{color.label}</span>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    ) : null}
+                  </div>
+                </section>
+              </>
+            ) : null}
 
             <Separator className="my-4" />
 
@@ -1849,6 +2047,7 @@ export default async function DealsPage({
                               activeRetailers,
                               activeBrands,
                               activeQuery,
+                              activeColors,
                             )
                           : toggleDealTypeHref(
                               activeCategory,
@@ -1857,6 +2056,7 @@ export default async function DealsPage({
                               activeBrands,
                               type.slug,
                               activeQuery,
+                              activeColors,
                             )
                       }
                       key={type.slug}
@@ -1904,7 +2104,7 @@ export default async function DealsPage({
             </div>
 
             <div className="mb-5 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-              <div className="grid min-w-0 flex-1 grid-cols-[repeat(7,minmax(0,1fr))] gap-3">
+              <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 [scrollbar-width:none] xl:grid xl:grid-cols-[repeat(7,minmax(0,1fr))] xl:overflow-visible xl:pb-0 [&::-webkit-scrollbar]:hidden">
                 {retailerChips.map((retailer) => {
                   const active =
                     retailer.slug === null
@@ -1913,14 +2113,14 @@ export default async function DealsPage({
                   return (
                     <Link
                       aria-current={active ? "true" : undefined}
-                      className={`inline-flex h-12 min-w-0 items-center justify-center gap-3 rounded-lg border bg-white px-5 text-sm font-extrabold shadow-sm transition-colors ${
+                      className={`inline-flex h-11 min-w-max shrink-0 items-center justify-center gap-2 rounded-lg border bg-white px-4 text-sm font-extrabold shadow-sm transition-colors xl:h-12 xl:min-w-0 xl:gap-3 xl:px-5 ${
                         active
                           ? "border-value text-value"
                           : "border-border text-foreground hover:border-value/40"
                       }`}
                       href={
                         retailer.slug === null
-                          ? dealsHref(activeCategory, activeDealTypes, [], activeBrands, activeQuery)
+                          ? dealsHref(activeCategory, activeDealTypes, [], activeBrands, activeQuery, activeColors)
                           : toggleRetailerHref(
                               activeCategory,
                               activeDealTypes,
@@ -1928,6 +2128,7 @@ export default async function DealsPage({
                               activeBrands,
                               retailer.slug,
                               activeQuery,
+                              activeColors,
                             )
                       }
                       key={retailer.label}
@@ -1953,19 +2154,13 @@ export default async function DealsPage({
               </div>
             </div>
 
-            <div
-              className="grid gap-3.5"
-              style={{
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(min(100%, max(190px, calc((100% - 2.625rem) / 4))), 1fr))",
-              }}
-            >
+            <BentoGrid className="gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {searchedDeals.map((deal) => (
                 <DealCard deal={deal} key={`${deal.name}-${deal.retailer}`} />
               ))}
-            </div>
+            </BentoGrid>
             {searchedDeals.length === 0 ? (
-              <div className="mt-5 rounded-xl border border-dashed border-border bg-white p-8 text-center shadow-sm">
+              <div className="mt-4 rounded-xl border border-dashed border-border bg-white p-6 text-center shadow-sm">
                 <h2 className="text-lg font-extrabold text-foreground">No matching deals found</h2>
                 <p className="mt-2 text-sm font-medium text-muted-foreground">
                   Try searching by product, brand, category, or retailer.
@@ -1973,7 +2168,7 @@ export default async function DealsPage({
               </div>
             ) : null}
 
-            <div className="mt-5 grid gap-4 rounded-2xl bg-[#f3edff] p-5 shadow-[0_12px_30px_rgba(109,40,217,0.08)] md:grid-cols-4">
+            <div className="mt-4 grid gap-3 rounded-2xl bg-[#f3edff] p-4 shadow-[0_12px_30px_rgba(109,40,217,0.08)] md:grid-cols-4">
               {[
                 { title: "Price history", body: "Track price trends and historical lows.", icon: Sparkles },
                 { title: "AI analysis", body: "Smart scoring and insights to find the best deals.", icon: Brain },

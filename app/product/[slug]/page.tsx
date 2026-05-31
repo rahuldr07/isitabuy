@@ -3,12 +3,10 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
+  ArrowLeft,
   BarChart3,
   Bell,
-  Bot,
   CheckCircle2,
-  ClipboardCheck,
-  Crown,
   DollarSign,
   ExternalLink,
   Heart,
@@ -28,9 +26,10 @@ import {
   XCircle,
 } from "lucide-react";
 
+import ProductMobileNav from "@/components/product/product-mobile-nav";
 import { Badge } from "@/components/ui/badge";
+import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 
@@ -72,12 +71,11 @@ const fallbackProduct: ProductData = {
 const sidebarItems = [
   { label: "Overview", icon: Home, key: "overview" },
   { label: "Price & History", icon: BarChart3, key: "price-history" },
-  { label: "Reviews AI", icon: MessageCircle },
-  { label: "Alternatives", icon: Sparkles },
-  { label: "YouTube Insights", icon: CirclePlay },
-  { label: "Track Price", icon: ClipboardCheck },
-  { label: "My Lists", icon: ListChecks },
-] satisfies Array<{ label: string; icon: LucideIcon; key?: "overview" | "price-history" }>;
+  { label: "Reviews AI", icon: MessageCircle, key: "reviews-ai" },
+  { label: "Alternatives", icon: Sparkles, key: "alternatives" },
+  { label: "YouTube Insights", icon: CirclePlay, key: "youtube-insights" },
+  { label: "My Lists", icon: ListChecks, key: "my-lists" },
+] satisfies Array<{ label: string; icon: LucideIcon; key?: "overview" | "price-history" | "reviews-ai" | "alternatives" | "youtube-insights" | "my-lists" }>;
 
 const pros = ["Outstanding noise cancellation", "Excellent sound quality", "Very comfortable"];
 const cons = ["Expensive", "Ear cups get warm", "Call quality could be better"];
@@ -151,9 +149,20 @@ function scoreBreakdown(product: ProductData) {
   ] as const;
 }
 
-function productHref(slug: string, product: ProductData, section: "overview" | "price-history") {
+function productHref(slug: string, product: ProductData, section: "overview" | "price-history" | "reviews-ai" | "alternatives" | "youtube-insights" | "my-lists") {
   return {
-    pathname: section === "overview" ? `/product/${slug}` : `/product/${slug}/price-history`,
+    pathname:
+      section === "overview"
+        ? `/product/${slug}`
+        : section === "price-history"
+          ? `/product/${slug}/price-history`
+          : section === "reviews-ai"
+            ? `/product/${slug}/reviews-ai`
+            : section === "alternatives"
+              ? `/product/${slug}/alternatives`
+              : section === "youtube-insights"
+                ? `/product/${slug}/youtube-insights`
+                : `/product/${slug}/my-lists`,
     query: {
       name: product.name,
       subtitle: product.subtitle,
@@ -171,7 +180,7 @@ function productHref(slug: string, product: ProductData, section: "overview" | "
 
 function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
-    <aside className="hidden min-h-screen w-[250px] shrink-0 border-r border-border bg-white px-4 py-5 lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-5 lg:flex lg:flex-col">
       <Link className="mb-6 flex items-center gap-3" href="/deals">
         <span className="grid size-11 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
           BW
@@ -179,6 +188,10 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         <span className="text-3xl font-extrabold tracking-tight text-[#0f172a]">
           BuyWise <span className="text-[#4f46e5]">AI</span>
         </span>
+      </Link>
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+        <ArrowLeft className="size-4" />
+        Back to Deals
       </Link>
 
       <nav className="flex flex-col gap-2">
@@ -201,21 +214,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
         })}
       </nav>
 
-      <div className="mt-auto flex flex-col gap-5">
-        <Card className="rounded-xl border-0 bg-[#f2efff] p-4">
-          <div className="flex items-center gap-3">
-            <Crown className="size-7 text-[#f5b400]" />
-            <div>
-              <p className="font-extrabold text-[#4f46e5]">Pro Plan</p>
-              <p className="text-xs font-medium text-muted-foreground">You&apos;re saving more with BuyWise AI</p>
-            </div>
-          </div>
-          <Button className="mt-4 h-9 w-full rounded-lg bg-[#4f46e5] text-xs font-extrabold text-white hover:bg-[#4338ca]">
-            Upgrade Now
-          </Button>
-        </Card>
-
-        <Card className="rounded-xl border border-border bg-white p-5">
+      <div className="mt-auto flex flex-col gap-4">
+        <BentoCard className="p-4">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Total Saved</p>
@@ -228,7 +228,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
             View all savings <ExternalLink className="size-4" />
           </a>
-        </Card>
+        </BentoCard>
       </div>
     </aside>
   );
@@ -236,12 +236,12 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
 
 function Topbar() {
   return (
-    <header className="sticky top-0 z-40 flex h-[72px] items-center gap-5 border-b border-border bg-white/95 px-4 backdrop-blur sm:px-6">
+    <header className="sticky top-0 z-40 flex h-[72px] items-center gap-4 border-b border-border bg-white/95 px-4 backdrop-blur sm:px-6">
       <div className="relative max-w-[560px] flex-1">
         <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
         <Input className="h-11 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search any product..." />
       </div>
-      <div className="ml-auto flex items-center gap-4 sm:gap-5">
+      <div className="ml-auto flex items-center gap-4 sm:gap-4">
         <button className="hidden items-center gap-2 text-sm font-semibold md:flex">
           <HelpCircle className="size-5" />
           How it works
@@ -277,19 +277,19 @@ function VerdictCard({
   subtitle: string;
 }) {
   return (
-    <div className={`rounded-xl border p-5 text-center ${color}`}>
-      <Icon className="mx-auto size-8" />
-      <p className="mt-3 text-base font-extrabold text-foreground">{label}</p>
-      <p className="text-sm font-medium text-muted-foreground">{subtitle}</p>
-      <p className="mt-5 text-2xl font-extrabold">{score}</p>
+    <div className={`grid min-h-[178px] grid-rows-[2rem_3.5rem_2.5rem_2rem] items-center rounded-xl border p-4 text-center ${color}`}>
+      <Icon className="mx-auto size-8 self-start" />
+      <p className="mx-auto flex max-w-28 items-center justify-center text-base font-extrabold leading-6 text-foreground">{label}</p>
+      <p className="mx-auto flex max-w-28 items-start justify-center text-sm font-medium leading-5 text-muted-foreground">{subtitle}</p>
+      <p className="text-2xl font-extrabold leading-none">{score}</p>
     </div>
   );
 }
 
 function ProductHeader({ product }: { product: ProductData }) {
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
-      <div className="flex flex-col gap-5 rounded-xl bg-white p-2 sm:flex-row">
+    <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <BentoCard className="flex flex-col gap-4 p-2 sm:flex-row">
         <div className="grid h-40 w-full shrink-0 place-items-center rounded-xl border border-border bg-white sm:w-40">
           <img
             alt={product.name}
@@ -321,7 +321,7 @@ function ProductHeader({ product }: { product: ProductData }) {
               </Button>
             </div>
           </div>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mt-4 flex flex-wrap gap-3">
             <RetailerBadge label={product.retailer} />
             <RetailerBadge label="BEST BUY" />
             <RetailerBadge label="Walmart" />
@@ -329,9 +329,9 @@ function ProductHeader({ product }: { product: ProductData }) {
             <RetailerBadge label="+3 more" />
           </div>
         </div>
-      </div>
+      </BentoCard>
 
-      <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+      <BentoCard className="p-4" variant="success">
         <p className="text-base font-semibold text-muted-foreground">Current Price</p>
         <div className="mt-2 flex items-center gap-3">
           <p className="text-3xl font-extrabold">{product.price}</p>
@@ -340,29 +340,29 @@ function ProductHeader({ product }: { product: ProductData }) {
         <p className="mt-2 text-sm font-medium text-muted-foreground">
           List Price: <span className="line-through">{product.oldPrice}</span>
         </p>
-        <Button className="mt-5 h-12 w-full rounded-lg bg-[#4f46e5] text-base font-extrabold text-white hover:bg-[#4338ca]">
+        <Button className="mt-4 h-12 w-full rounded-lg bg-[#4f46e5] text-base font-extrabold text-white hover:bg-[#4338ca]">
           View Best Price <ExternalLink className="size-4" />
         </Button>
-      </Card>
+      </BentoCard>
     </section>
   );
 }
 
 function AiScoreCard({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-buy/25 bg-white p-6 shadow-soft">
-      <div className="grid items-center gap-6 md:grid-cols-[150px_170px_minmax(0,1fr)]">
+    <BentoCard className="p-4" variant="success">
+      <div className="grid items-center gap-4 md:grid-cols-[150px_170px_minmax(0,1fr)]">
         <div>
           <h2 className="text-lg font-extrabold">AI Score</h2>
           <p className="mt-4 text-7xl font-extrabold text-buy">{product.score}</p>
           <p className="text-base font-extrabold">Out of 100</p>
-          <Badge className="mt-5 rounded-full bg-soft-buy px-4 py-2 text-sm font-extrabold text-buy">
+          <Badge className="mt-4 rounded-full bg-soft-buy px-4 py-2 text-sm font-extrabold text-buy">
             Excellent Choice
           </Badge>
         </div>
         <div className="relative grid size-40 place-items-center rounded-full border-[14px] border-buy bg-soft-buy">
-          <span className="grid size-20 place-items-center rounded-full bg-[#243b8f] text-white">
-            <Bot className="size-10" />
+          <span className="grid size-24 place-items-center rounded-full bg-white shadow-sm">
+            <BrainAiMark />
           </span>
         </div>
         <div>
@@ -379,13 +379,13 @@ function AiScoreCard({ product }: { product: ProductData }) {
           </div>
         </div>
       </div>
-    </Card>
+    </BentoCard>
   );
 }
 
 function PriceHistoryCard({ product }: { product: ProductData }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+    <BentoCard className="p-4">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-extrabold">
           Price History <Info className="inline size-4 text-muted-foreground" />
@@ -424,7 +424,7 @@ function PriceHistoryCard({ product }: { product: ProductData }) {
       <a className="mt-3 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
         View full price history <ExternalLink className="size-4" />
       </a>
-    </Card>
+    </BentoCard>
   );
 }
 
@@ -448,6 +448,47 @@ function YouTubeLogo() {
   );
 }
 
+function BrainAiMark() {
+  return (
+    <svg aria-hidden="true" className="size-16" viewBox="0 0 96 96">
+      <defs>
+        <linearGradient id="brain-ai-gradient" x1="14" x2="82" y1="82" y2="14" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#9bc5ff" />
+          <stop offset="0.52" stopColor="#4f7cff" />
+          <stop offset="1" stopColor="#1d4ed8" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M46 17c-8 0-14 6-15 14-8 1-14 8-14 16 0 6 3 11 8 14-1 9 6 16 15 16h6V17Z"
+        fill="url(#brain-ai-gradient)"
+      />
+      <path
+        d="M50 17c8 0 14 6 15 14 8 1 14 8 14 16 0 6-3 11-8 14 1 9-6 16-15 16h-6V17Z"
+        fill="url(#brain-ai-gradient)"
+      />
+      <path
+        d="M46 22v56M32 34c5 0 9 3 9 8M27 49c6 1 10 5 10 11M33 66c3-4 7-6 12-6M64 34c-5 0-9 3-9 8M69 49c-6 1-10 5-10 11M63 66c-3-4-7-6-12-6"
+        fill="none"
+        stroke="white"
+        strokeLinecap="round"
+        strokeWidth="4"
+      />
+      <path
+        d="M27 67H13M20 75H9M50 78v9M69 67h14M76 75h11"
+        fill="none"
+        stroke="#9bc5ff"
+        strokeLinecap="round"
+        strokeWidth="4"
+      />
+      <circle cx="13" cy="67" fill="#9bc5ff" r="4" />
+      <circle cx="9" cy="75" fill="#9bc5ff" r="4" />
+      <circle cx="50" cy="88" fill="#9bc5ff" r="4" />
+      <circle cx="83" cy="67" fill="#9bc5ff" r="4" />
+      <circle cx="87" cy="75" fill="#9bc5ff" r="4" />
+    </svg>
+  );
+}
+
 export default async function ProductAnalysisPage({
   params,
   searchParams,
@@ -462,32 +503,39 @@ export default async function ProductAnalysisPage({
   const waitScore = Math.max(1, product.score - 27);
   const avoidScore = Math.max(1, product.score - 61);
   const alternativeScore = Math.max(1, product.score - 13);
+  const mobileNavItems = sidebarItems.map(({ label, icon, key }) => ({
+    href: key ? productHref(slug, product, key) : "#",
+    icon,
+    label,
+    navKey: key ?? "overview",
+  }));
 
   return (
     <div className="flex min-h-screen bg-[#fbfcff] text-foreground">
       <Sidebar product={product} slug={slug} />
       <div className="min-w-0 flex-1">
         <Topbar />
-        <main className="grid gap-5 p-4 sm:p-5">
+        <ProductMobileNav activeKey="overview" className="top-[72px]" items={mobileNavItems} />
+        <main className="grid gap-4 p-4 sm:p-4">
           <ProductHeader product={product} />
 
-          <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(440px,0.9fr)]">
+          <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(440px,0.9fr)]">
             <AiScoreCard product={product} />
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+            <BentoCard className="p-4">
               <h2 className="text-lg font-extrabold">
                 Buy / Wait / Avoid <Info className="inline size-4 text-muted-foreground" />
               </h2>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
                 <VerdictCard color="border-buy bg-soft-buy/40 text-buy" icon={ShoppingCart} label="Buy Now" score={String(product.score)} subtitle="Strong buy" />
                 <VerdictCard color="border-wait bg-soft-wait/50 text-wait" icon={Hourglass} label="Wait" score={String(waitScore)} subtitle="Price may drop" />
                 <VerdictCard color="border-avoid bg-red-50 text-avoid" icon={XCircle} label="Avoid" score={String(avoidScore)} subtitle="Not recommended" />
                 <VerdictCard color="border-[#7b8bb9] bg-[#f8faff] text-[#4f46e5]" icon={Repeat2} label="Better Alternative" score={String(alternativeScore)} subtitle="See options" />
               </div>
-            </Card>
+            </BentoCard>
           </section>
 
-          <section className="grid gap-5 xl:grid-cols-[1fr_1fr_0.95fr]">
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+          <section className="grid gap-4 xl:grid-cols-[1fr_1fr_0.95fr]">
+            <BentoCard className="p-4">
               <h2 className="mb-5 text-lg font-extrabold">
                 Score Breakdown <Info className="inline size-4 text-muted-foreground" />
               </h2>
@@ -500,14 +548,14 @@ export default async function ProductAnalysisPage({
                   </div>
                 ))}
               </div>
-              <a className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+              <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
                 How we calculate scores <ExternalLink className="size-4" />
               </a>
-            </Card>
+            </BentoCard>
 
             <PriceHistoryCard product={product} />
 
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+            <BentoCard className="p-4">
               <h2 className="mb-4 text-lg font-extrabold">
                 Price Comparison <Info className="inline size-4 text-muted-foreground" />
               </h2>
@@ -523,15 +571,15 @@ export default async function ProductAnalysisPage({
               <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
                 View all sellers (7) <ExternalLink className="size-4" />
               </a>
-            </Card>
+            </BentoCard>
           </section>
 
-          <section className="grid gap-5 xl:grid-cols-[0.9fr_0.85fr_1.45fr]">
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+          <section className="grid gap-4 xl:grid-cols-[0.9fr_0.85fr_1.45fr]">
+            <BentoCard className="p-4">
               <h2 className="text-lg font-extrabold">
                 Review Sentiment <Info className="inline size-4 text-muted-foreground" />
               </h2>
-              <div className="mt-5 grid items-center gap-4 sm:grid-cols-[130px_1fr]">
+              <div className="mt-4 grid items-center gap-4 sm:grid-cols-[130px_1fr]">
                 <div className="size-28 rounded-full border-[18px] border-buy border-l-wait border-t-avoid" />
                 <div className="grid gap-3 text-sm font-semibold">
                   <SentimentLabel color="bg-buy" label="Positive" value="85% (10,942)" />
@@ -539,37 +587,37 @@ export default async function ProductAnalysisPage({
                   <SentimentLabel color="bg-avoid" label="Negative" value="5% (614)" />
                 </div>
               </div>
-            </Card>
+            </BentoCard>
 
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+            <BentoCard className="p-4">
               <h2 className="flex items-center gap-2 text-lg font-extrabold">
                 <YouTubeLogo /> YouTube Insights <Info className="size-4 text-muted-foreground" />
               </h2>
               <p className="mt-2 text-sm font-medium text-muted-foreground">Analyzed 24 trusted review videos</p>
-              <div className="mt-7 grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-sm font-semibold">Positive Mentions</p>
-                  <p className="mt-2 text-2xl font-extrabold text-buy">92%</p>
+              <div className="mt-7 grid grid-cols-3 items-start gap-3 text-center">
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Positive Mentions</p>
+                  <p className="text-2xl font-extrabold leading-none text-buy">92%</p>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold">Overall Rating</p>
-                  <p className="mt-2 text-2xl font-extrabold text-[#4f46e5]">4.6/5</p>
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Overall Rating</p>
+                  <p className="text-2xl font-extrabold leading-none text-[#4f46e5]">4.6/5</p>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold">Review Quality</p>
-                  <p className="mt-2 text-2xl font-extrabold text-[#7c3aed]">High</p>
+                <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
+                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Review Quality</p>
+                  <p className="text-2xl font-extrabold leading-none text-[#7c3aed]">High</p>
                 </div>
               </div>
               <a className="mt-7 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
                 View key takeaways <ExternalLink className="size-4" />
               </a>
-            </Card>
+            </BentoCard>
 
-            <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+            <BentoCard className="p-4">
               <h2 className="text-lg font-extrabold">
                 Top Pros & Cons <Info className="inline size-4 text-muted-foreground" />
               </h2>
-              <div className="mt-5 grid gap-6 sm:grid-cols-2">
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
                   <p className="mb-3 font-extrabold text-buy">What people love</p>
                   <div className="grid gap-3">
@@ -593,7 +641,7 @@ export default async function ProductAnalysisPage({
                   <p className="mt-4 text-sm font-semibold text-muted-foreground">+ 4 more</p>
                 </div>
               </div>
-            </Card>
+            </BentoCard>
           </section>
         </main>
       </div>

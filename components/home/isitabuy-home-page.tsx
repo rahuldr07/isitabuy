@@ -103,6 +103,7 @@ const navItems = [
   { label: "Compare", href: "/compare" },
   { label: "Deals", href: "/deals" },
   { label: "Retailers", href: "/#retailers" },
+  { label: "Receipts", href: "/receipts" },
 ];
 
 const retailers = [
@@ -114,11 +115,11 @@ const retailers = [
 ] as const;
 
 const steps = [
-  { icon: Link, title: "1. Enter Product", text: "Paste a link, search, scan, or upload.", tint: "bg-purple-100 text-[var(--happy-purple)]" },
+  { icon: Link, title: "1. Enter Product", text: "Paste a link, search, scan, or upload.", tint: "bg-purple-100 text-[var(--isitabuy-purple)]" },
   { icon: ClipboardCheck, title: "2. AI Analyzes", text: "We analyze reviews, prices, complaints, specs, and more.", tint: "bg-rose-100 text-rose-500" },
-  { icon: CircleDollarSign, title: "3. We Score It", text: "Our AI creates scores across 6 key factors.", tint: "bg-orange-100 text-[var(--happy-orange)]" },
+  { icon: CircleDollarSign, title: "3. We Score It", text: "Our AI creates scores across 6 key factors.", tint: "bg-orange-100 text-[var(--isitabuy-orange)]" },
   { icon: BadgeCheck, title: "4. Get Verdict", text: "See Buy, Wait, Avoid, or Better Alternative.", tint: "bg-sky-100 text-sky-600" },
-  { icon: Bell, title: "5. Track & Save", text: "Save, set price alerts, and track over time.", tint: "bg-green-100 text-[var(--happy-green)]" },
+  { icon: Bell, title: "5. Track & Save", text: "Save, set price alerts, and track over time.", tint: "bg-green-100 text-[var(--isitabuy-green)]" },
 ];
 
 const categories = [
@@ -129,7 +130,7 @@ const categories = [
   { icon: Gamepad2, label: "Gaming", tint: "bg-slate-100 text-slate-700" },
   { icon: Utensils, label: "Kitchen", tint: "bg-zinc-100 text-zinc-700" },
   { icon: Wrench, label: "Tools", tint: "bg-amber-100 text-amber-600" },
-  { icon: HeartPulse, label: "Health & Personal Care", tint: "bg-purple-100 text-[var(--happy-purple)]" },
+  { icon: HeartPulse, label: "Health & Personal Care", tint: "bg-purple-100 text-[var(--isitabuy-purple)]" },
 ];
 
 const trustItems = [
@@ -140,7 +141,7 @@ const trustItems = [
 ];
 
 const sources = [
-  { icon: Star, title: "Customer Reviews", text: "Amazon, Walmart, Best Buy, Target, eBay & more", tint: "bg-purple-100 text-[var(--happy-purple)]" },
+  { icon: Star, title: "Customer Reviews", text: "Amazon, Walmart, Best Buy, Target, eBay & more", tint: "bg-purple-100 text-[var(--isitabuy-purple)]" },
   { icon: ShieldCheck, title: "Safety & Compliance", text: "Recalls, safety databases & government sources", tint: "bg-violet-100 text-violet-600" },
   { icon: Lock, title: "Price Data", text: "Retailer APIs & historical price tracking", tint: "bg-orange-100 text-orange-600" },
   { icon: Camera, title: "YouTube Reviews", text: "Trusted reviewers & channels", tint: "bg-rose-100 text-rose-600" },
@@ -259,7 +260,7 @@ function Logo() {
       <span className="grid size-7 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-extrabold tracking-tight text-[var(--happy-ink)]">IsItABuy</span>
+      <span className="text-xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -268,16 +269,16 @@ function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
+    <header className="sticky top-0 z-[100] border-b border-[var(--isitabuy-line)] bg-white/88 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary">
         <Logo />
-        <div className="hidden items-center gap-8 text-xs font-bold text-[var(--happy-ink)] lg:flex">
+        <div className="hidden items-center gap-8 text-xs font-bold text-[var(--isitabuy-ink)] lg:flex">
           {navItems.map((item) => (
             <motion.a
               key={item.label}
               href={item.href}
               className="inline-flex items-center gap-1.5 whitespace-nowrap"
-              whileHover={{ y: -1, color: "var(--happy-orange)" }}
+              whileHover={{ y: -1, color: "var(--isitabuy-orange)" }}
               whileTap={{ scale: 0.98 }}
             >
               {item.label}
@@ -291,7 +292,7 @@ function Header() {
             </Button>
           </motion.div>
           <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.98 }}>
-            <Button asChild size="lg" className="h-8 rounded-full bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
+            <Button asChild size="lg" className="h-8 rounded-full bg-[var(--isitabuy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
               <NextLink href="/signin?mode=signup">Sign up</NextLink>
             </Button>
           </motion.div>
@@ -311,7 +312,7 @@ function Header() {
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="border-t border-[var(--happy-line)] bg-white px-4 py-4 md:hidden"
+            className="border-t border-[var(--isitabuy-line)] bg-white px-4 py-4 md:hidden"
             variants={panelVariants}
             initial="hidden"
             animate="show"
@@ -319,7 +320,7 @@ function Header() {
           >
             <div className="grid gap-3">
               {navItems.map((item) => (
-                <a key={item.label} href={item.href} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--happy-ink)]">
+                <a key={item.label} href={item.href} className="rounded-lg px-2 py-2 text-sm font-bold text-[var(--isitabuy-ink)]">
                   {item.label}
                 </a>
               ))}
@@ -327,7 +328,7 @@ function Header() {
                 <Button asChild variant="outline" className="h-10">
                   <NextLink href="/signin">Log in</NextLink>
                 </Button>
-                <Button asChild className="h-10 bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]">
+                <Button asChild className="h-10 bg-[var(--isitabuy-orange)] text-white hover:bg-[var(--isitabuy-orange-dark)]">
                   <NextLink href="/signin?mode=signup">Sign up</NextLink>
                 </Button>
               </div>
@@ -364,13 +365,13 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
           strokeLinecap="round"
           strokeDasharray={size === "lg" ? circumference : scaledCircumference}
           strokeDashoffset={size === "lg" ? offset : scaledOffset}
-          className="text-[var(--happy-green)]"
+          className="text-[var(--isitabuy-green)]"
           initial={{ strokeDashoffset: size === "lg" ? circumference : scaledCircumference }}
           animate={{ strokeDashoffset: size === "lg" ? offset : scaledOffset }}
           transition={{ duration: 0.9, ease: "easeOut" }}
         />
       </svg>
-      <span className={cn("font-numeric font-bold leading-none text-[var(--happy-green)]", size === "lg" ? "text-3xl" : "text-lg")}>{score}</span>
+      <span className={cn("font-numeric font-bold leading-none text-[var(--isitabuy-green)]", size === "lg" ? "text-3xl" : "text-lg")}>{score}</span>
     </div>
   );
 }
@@ -416,27 +417,27 @@ function HeroSection() {
         className="mx-auto flex flex-col items-center text-center"
       >
         <div
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-[var(--happy-card-shadow)] backdrop-blur lg:text-sm"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur lg:text-sm"
         >
-          <Sparkles className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
+          <Sparkles className="size-4 text-[var(--isitabuy-orange)]" aria-hidden="true" />
           AI-Powered Shopping Advisor
         </div>
 
-        <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-bold leading-[1.02] tracking-normal text-[var(--happy-ink)]">
-          <span className="whitespace-nowrap"><span className="text-[var(--happy-orange)]">Know</span> what to buy before</span>
+        <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-bold leading-[1.02] tracking-normal text-[var(--isitabuy-ink)]">
+          <span className="whitespace-nowrap"><span className="text-[var(--isitabuy-orange)]">Know</span> what to buy before</span>
           <span className="block">
-            you <span className="text-[var(--happy-orange)]">buy.</span>
+            you <span className="text-[var(--isitabuy-orange)]">buy.</span>
           </span>
         </h1>
 
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-[var(--happy-card-shadow)] backdrop-blur sm:text-base">
-          <span className="grid size-7 place-items-center rounded-lg bg-[var(--happy-orange)] text-white">
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur sm:text-base">
+          <span className="grid size-7 place-items-center rounded-lg bg-[var(--isitabuy-orange)] text-white">
             <ShieldCheck className="size-3.5" aria-hidden="true" />
           </span>
           100% Independent & Commission-Free Scores
         </div>
 
-        <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--happy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
+        <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--isitabuy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
           <div className="flex flex-col gap-2 lg:h-12 lg:flex-row lg:items-center">
             <div className="relative min-w-0 flex-1">
               <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-800" aria-hidden="true" />
@@ -444,19 +445,19 @@ function HeroSection() {
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Paste a product link, search by name, take a photo or upload an image."
-                className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--happy-muted)] focus-visible:ring-[var(--happy-orange)] lg:h-11 lg:text-sm"
+                className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--isitabuy-muted)] focus-visible:ring-[var(--isitabuy-orange)] lg:h-11 lg:text-sm"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runCheck();
                 }}
               />
             </div>
-            <div className="hidden h-7 w-px bg-[var(--happy-line)] lg:block" />
+            <div className="hidden h-7 w-px bg-[var(--isitabuy-line)] lg:block" />
             <div className="grid grid-cols-2 gap-2 lg:flex lg:items-center lg:gap-0">
               <MotionButton
                 type="button"
                 variant="ghost"
                 size="icon-lg"
-                className="h-9 w-full rounded-full text-[var(--happy-ink)] hover:bg-slate-50 lg:size-10"
+                className="h-9 w-full rounded-full text-[var(--isitabuy-ink)] hover:bg-slate-50 lg:size-10"
                 onClick={() => setActiveDialog("scan")}
                 aria-label="Take a product photo"
                 whileHover={{ y: -1 }}
@@ -464,12 +465,12 @@ function HeroSection() {
               >
                 <Camera className="size-4" aria-hidden="true" />
               </MotionButton>
-            <div className="hidden h-7 w-px bg-[var(--happy-line)] lg:block" />
+            <div className="hidden h-7 w-px bg-[var(--isitabuy-line)] lg:block" />
               <MotionButton
                 type="button"
                 variant="ghost"
                 size="icon-lg"
-                className="h-9 w-full rounded-full text-[var(--happy-ink)] hover:bg-slate-50 lg:size-10"
+                className="h-9 w-full rounded-full text-[var(--isitabuy-ink)] hover:bg-slate-50 lg:size-10"
                 onClick={() => setActiveDialog("upload")}
                 aria-label="Upload product image"
                 whileHover={{ y: -1 }}
@@ -481,7 +482,7 @@ function HeroSection() {
             <MotionButton
               type="button"
               onClick={runCheck}
-              className="h-10 shrink-0 rounded-full bg-[var(--happy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--happy-orange-dark)] lg:h-11 lg:px-6"
+              className="h-10 shrink-0 rounded-full bg-[var(--isitabuy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--isitabuy-orange-dark)] lg:h-11 lg:px-6"
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -500,15 +501,15 @@ function HeroSection() {
                 key={item.title}
                 className={cn(
                   "flex items-center gap-3 text-left",
-                  index > 0 && "lg:border-l lg:border-[var(--happy-line)] lg:pl-4",
+                  index > 0 && "lg:border-l lg:border-[var(--isitabuy-line)] lg:pl-4",
                 )}
               >
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[var(--happy-orange)] shadow-[var(--happy-card-shadow)] lg:size-11">
+                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[var(--isitabuy-orange)] shadow-[var(--isitabuy-card-shadow)] lg:size-11">
                   <Icon className="size-4" aria-hidden="true" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-xs font-bold leading-4 text-[var(--happy-ink)] lg:text-sm">{item.title}</span>
-                  <span className="mt-0.5 block text-xs font-medium leading-4 text-[var(--happy-muted)] lg:text-sm">{item.text}</span>
+                  <span className="block text-xs font-bold leading-4 text-[var(--isitabuy-ink)] lg:text-sm">{item.title}</span>
+                  <span className="mt-0.5 block text-xs font-medium leading-4 text-[var(--isitabuy-muted)] lg:text-sm">{item.text}</span>
                 </span>
               </article>
             );
@@ -546,13 +547,13 @@ function HeroToolDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="rounded-3xl border border-[var(--happy-line)] bg-white p-6 sm:max-w-lg">
+      <DialogContent className="rounded-3xl border border-[var(--isitabuy-line)] bg-white p-6 sm:max-w-lg">
         <DialogHeader>
-          <div className="mb-1 grid size-12 place-items-center rounded-2xl bg-purple-100 text-[var(--happy-purple)]">
+          <div className="mb-1 grid size-12 place-items-center rounded-2xl bg-purple-100 text-[var(--isitabuy-purple)]">
             {activeTool === "scan" ? <ScanBarcode className="size-6" aria-hidden="true" /> : <ImageIcon className="size-6" aria-hidden="true" />}
           </div>
-          <DialogTitle className="text-xl font-extrabold text-[var(--happy-ink)]">Scan or upload product</DialogTitle>
-          <DialogDescription className="text-sm font-medium leading-6 text-[var(--happy-muted)]">
+          <DialogTitle className="text-xl font-extrabold text-[var(--isitabuy-ink)]">Scan or upload product</DialogTitle>
+          <DialogDescription className="text-sm font-medium leading-6 text-[var(--isitabuy-muted)]">
             Use a barcode for exact product matching, or upload a clear product image when you do not have a link.
           </DialogDescription>
         </DialogHeader>
@@ -572,18 +573,18 @@ function HeroToolDialog({
             onClick={() => setTool("upload")}
           />
         </div>
-        <div className="grid min-h-36 place-items-center rounded-2xl border border-dashed border-[var(--happy-line)] bg-slate-50 p-6 text-center">
+        <div className="grid min-h-36 place-items-center rounded-2xl border border-dashed border-[var(--isitabuy-line)] bg-slate-50 p-6 text-center">
           {activeTool === "scan" ? (
             <div>
-              <ScanBarcode className="mx-auto size-9 text-[var(--happy-purple)]" aria-hidden="true" />
-              <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">Camera scanner preview</p>
-              <p className="mt-2 text-xs font-medium leading-5 text-[var(--happy-muted)]">Camera permissions and live barcode detection will appear here.</p>
+              <ScanBarcode className="mx-auto size-9 text-[var(--isitabuy-purple)]" aria-hidden="true" />
+              <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">Camera scanner preview</p>
+              <p className="mt-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">Camera permissions and live barcode detection will appear here.</p>
             </div>
           ) : (
             <div>
-              <ImageIcon className="mx-auto size-9 text-[var(--happy-purple)]" aria-hidden="true" />
-              <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">Drop image here or choose a file</p>
-              <p className="mt-2 text-xs font-medium leading-5 text-[var(--happy-muted)]">PNG, JPG, and WEBP product photos will be supported.</p>
+              <ImageIcon className="mx-auto size-9 text-[var(--isitabuy-purple)]" aria-hidden="true" />
+              <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">Drop image here or choose a file</p>
+              <p className="mt-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">PNG, JPG, and WEBP product photos will be supported.</p>
             </div>
           )}
         </div>
@@ -591,7 +592,7 @@ function HeroToolDialog({
           <DialogClose asChild>
             <Button variant="outline" className="rounded-full">Cancel</Button>
           </DialogClose>
-          <Button className="rounded-full bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]" onClick={() => showFeatureSoonToast(activeTool === "scan" ? "Barcode scanner" : "Image upload")}>
+          <Button className="rounded-full bg-[var(--isitabuy-orange)] text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => showFeatureSoonToast(activeTool === "scan" ? "Barcode scanner" : "Image upload")}>
             {activeTool === "scan" ? "Start scan" : "Choose image"}
           </Button>
         </DialogFooter>
@@ -618,13 +619,13 @@ function ToolOptionCard({
       type="button"
       className={cn(
         "rounded-2xl border p-4 text-left transition-colors",
-        active ? "border-[var(--happy-purple)] bg-purple-50" : "border-[var(--happy-line)] bg-white hover:bg-slate-50"
+        active ? "border-[var(--isitabuy-purple)] bg-purple-50" : "border-[var(--isitabuy-line)] bg-white hover:bg-slate-50"
       )}
       onClick={onClick}
     >
-      <Icon className="size-5 text-[var(--happy-purple)]" aria-hidden="true" />
-      <p className="mt-3 text-sm font-extrabold text-[var(--happy-ink)]">{title}</p>
-      <p className="mt-1 text-xs font-medium leading-5 text-[var(--happy-muted)]">{description}</p>
+      <Icon className="size-5 text-[var(--isitabuy-purple)]" aria-hidden="true" />
+      <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">{title}</p>
+      <p className="mt-1 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{description}</p>
     </button>
   );
 }
@@ -632,10 +633,10 @@ function ToolOptionCard({
 function RetailerStrip() {
   return (
     <section id="retailers" className="scroll-reveal mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
-      <Card className="rounded-xl border border-[var(--happy-line)] bg-white py-0 shadow-none">
+      <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-0">
-          <h2 className="px-4 pt-5 text-center text-lg font-extrabold text-[var(--happy-ink)]">We check millions of products from trusted retailers</h2>
-          <div className="mt-4 grid divide-y divide-[var(--happy-line)] border-t border-[var(--happy-line)] sm:grid-cols-5 sm:divide-x sm:divide-y-0">
+          <h2 className="px-4 pt-5 text-center text-lg font-extrabold text-[var(--isitabuy-ink)]">We check millions of products from trusted retailers</h2>
+          <div className="mt-4 grid divide-y divide-[var(--isitabuy-line)] border-t border-[var(--isitabuy-line)] sm:grid-cols-5 sm:divide-x sm:divide-y-0">
             {retailers.map((retailer) => (
               <motion.div key={retailer.name} className="grid h-24 place-items-center px-6" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
                 <Image src={retailer.src} alt={`${retailer.name} logo`} width={190} height={72} className="max-h-16 w-full object-contain" />
@@ -643,7 +644,7 @@ function RetailerStrip() {
             ))}
           </div>
           <div className="flex justify-center py-4">
-            <LinkText className="text-[var(--happy-purple)]" label="View all retailers" />
+            <LinkText className="text-[var(--isitabuy-purple)]" label="View all retailers" />
           </div>
         </CardContent>
       </Card>
@@ -797,7 +798,7 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--happy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+      <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--isitabuy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         <div className="flex flex-col gap-4 p-6">
           <div className="flex h-[120px] items-center justify-center overflow-hidden rounded-xl bg-gray-50">
             <Image src={product.imageSrc} alt={product.imageAlt} width={150} height={115} className="object-contain" />
@@ -862,7 +863,7 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
               </div>
             ))}
           </div>
-          <NextLink href="/compare" className="mt-auto inline-flex items-center gap-1 text-sm font-bold text-[var(--happy-purple)] hover:text-violet-700">
+          <NextLink href="/compare" className="mt-auto inline-flex items-center gap-1 text-sm font-bold text-[var(--isitabuy-purple)] hover:text-violet-700">
             View comparison
             <ArrowRightIcon className="size-3.5" />
           </NextLink>
@@ -875,9 +876,9 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
 function HowItWorks() {
   return (
     <section id="how-it-works" className="scroll-reveal mx-auto mt-2 max-w-6xl px-4 sm:px-6 lg:px-10">
-      <Card className="rounded-xl border border-[var(--happy-line)] bg-white py-0 shadow-none">
+      <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-5 py-5">
-          <h2 className="mb-6 text-center text-lg font-extrabold text-[var(--happy-ink)]">How it works</h2>
+          <h2 className="mb-6 text-center text-lg font-extrabold text-[var(--isitabuy-ink)]">How it works</h2>
           <div className="grid gap-6 md:grid-cols-5">
             {steps.map((step, index) => <StepItem key={step.title} step={step} showArrow={index < steps.length - 1} />)}
           </div>
@@ -896,8 +897,8 @@ function StepItem({ step, showArrow }: { step: IconText; showArrow: boolean }) {
         <Icon className="size-6" aria-hidden="true" />
       </span>
       {showArrow ? <span className="absolute right-[-15%] top-7 hidden w-[30%] border-t border-dashed border-slate-300 md:block" /> : null}
-      <h3 className="mt-4 text-sm font-extrabold text-[var(--happy-ink)]">{step.title}</h3>
-      <p className="mx-auto mt-2 max-w-36 text-xs font-medium leading-5 text-[var(--happy-muted)]">{step.text}</p>
+      <h3 className="mt-4 text-sm font-extrabold text-[var(--isitabuy-ink)]">{step.title}</h3>
+      <p className="mx-auto mt-2 max-w-36 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{step.text}</p>
     </article>
   );
 }
@@ -907,11 +908,11 @@ function CategoriesSection() {
 
   return (
     <section id="categories" className="scroll-reveal mx-auto mt-4 max-w-6xl px-4 sm:px-6 lg:px-10">
-      <Card className="rounded-xl border border-[var(--happy-line)] bg-white py-0 shadow-none">
+      <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-4 py-5">
-          <h2 className="mb-3 text-lg font-extrabold text-[var(--happy-ink)]">Popular categories</h2>
+          <h2 className="mb-3 text-lg font-extrabold text-[var(--isitabuy-ink)]">Popular categories</h2>
           {visibleCategories.length === 0 ? (
-            <div className="grid min-h-40 place-items-center rounded-xl bg-slate-50 text-sm font-bold text-[var(--happy-muted)]">No categories available.</div>
+            <div className="grid min-h-40 place-items-center rounded-xl bg-slate-50 text-sm font-bold text-[var(--isitabuy-muted)]">No categories available.</div>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8">
               {visibleCategories.map((category) => {
@@ -920,14 +921,14 @@ function CategoriesSection() {
                   <motion.button
                     key={category.label}
                     type="button"
-                    className="min-h-24 rounded-xl border border-[var(--happy-line)] bg-white p-4 text-center shadow-sm"
-                    whileHover={{ y: -3, boxShadow: "var(--happy-card-shadow)" }}
+                    className="min-h-24 rounded-xl border border-[var(--isitabuy-line)] bg-white p-4 text-center shadow-sm"
+                    whileHover={{ y: -3, boxShadow: "var(--isitabuy-card-shadow)" }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <span className={cn("mx-auto grid size-12 place-items-center rounded-2xl", category.tint)}>
                       <Icon className="size-6" aria-hidden="true" />
                     </span>
-                    <span className="mt-3 block truncate text-xs font-extrabold text-[var(--happy-ink)]">{category.label}</span>
+                    <span className="mt-3 block truncate text-xs font-extrabold text-[var(--isitabuy-ink)]">{category.label}</span>
                   </motion.button>
                 );
               })}
@@ -945,10 +946,10 @@ function TrustSection() {
     <section className="scroll-reveal mx-auto mt-8 grid max-w-6xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.05fr_1.45fr_0.82fr] lg:px-10">
       <InfoCard title="Why trust IsItABuy?" items={trustItems} />
       <InfoCard title="Our data sources" items={sources} columns />
-      <Card className="rounded-xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] py-0 shadow-none">
+      <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] py-0 shadow-none">
         <CardContent className="p-8">
-          <h2 className="text-xl font-extrabold text-[var(--happy-ink)]">Our commitment</h2>
-          <p className="mt-4 text-sm font-medium leading-7 text-[var(--happy-muted)]">Our AI scores and recommendations are not influenced by commission. We are here to help you make the best decision.</p>
+          <h2 className="text-xl font-extrabold text-[var(--isitabuy-ink)]">Our commitment</h2>
+          <p className="mt-4 text-sm font-medium leading-7 text-[var(--isitabuy-muted)]">Our AI scores and recommendations are not influenced by commission. We are here to help you make the best decision.</p>
           <LinkText className="mt-8" label="Learn more about how we score" />
         </CardContent>
       </Card>
@@ -958,20 +959,20 @@ function TrustSection() {
 
 function InfoCard({ title, items, columns = false }: { title: string; items: IconText[]; columns?: boolean }) {
   return (
-    <Card className="rounded-xl border border-[var(--happy-line)] bg-white py-0 shadow-none">
+    <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
       <CardContent className="p-6">
-        <h2 className="mb-5 text-xl font-extrabold text-[var(--happy-ink)]">{title}</h2>
+        <h2 className="mb-5 text-xl font-extrabold text-[var(--isitabuy-ink)]">{title}</h2>
         <div className={cn("grid gap-4", columns && "sm:grid-cols-2")}>
           {items.map((item) => {
             const Icon = item.icon;
             return (
               <div key={item.title} className="flex gap-3">
-                <span className={cn("grid size-8 shrink-0 place-items-center rounded-full", item.tint ?? "bg-white text-[var(--happy-ink)]")}>
+                <span className={cn("grid size-8 shrink-0 place-items-center rounded-full", item.tint ?? "bg-white text-[var(--isitabuy-ink)]")}>
                   <Icon className="size-4" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="truncate text-sm font-extrabold text-[var(--happy-ink)]">{item.title}</h3>
-                  <p className="mt-1 line-clamp-2 text-xs font-medium leading-5 text-[var(--happy-muted)]">{item.text}</p>
+                  <h3 className="truncate text-sm font-extrabold text-[var(--isitabuy-ink)]">{item.title}</h3>
+                  <p className="mt-1 line-clamp-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{item.text}</p>
                 </div>
               </div>
             );
@@ -985,9 +986,9 @@ function InfoCard({ title, items, columns = false }: { title: string; items: Ico
 function DisclosureStrip() {
   return (
     <section className="scroll-reveal mx-auto mt-6 max-w-6xl px-4 sm:px-6 lg:px-10">
-      <div className="flex flex-col gap-3 rounded-lg bg-[image:var(--happy-warm-strip)] px-5 py-4 text-sm font-semibold text-[var(--happy-muted)] sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-lg bg-[image:var(--isitabuy-warm-strip)] px-5 py-4 text-sm font-semibold text-[var(--isitabuy-muted)] sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
-          <Info className="size-5 shrink-0 text-[var(--happy-orange)]" aria-hidden="true" />
+          <Info className="size-5 shrink-0 text-[var(--isitabuy-orange)]" aria-hidden="true" />
           <p>We may earn a commission when you buy through some links on our site. Our AI scores and recommendations are not based on commission.</p>
         </div>
         <LinkText label="Learn more" className="shrink-0" />
@@ -999,17 +1000,17 @@ function DisclosureStrip() {
 function Footer() {
   return (
     <footer className="mx-auto mt-8 max-w-6xl px-4 pb-10 sm:px-6 lg:px-10">
-      <div className="grid gap-8 border-t border-[var(--happy-line)] pt-8 md:grid-cols-[1.2fr_repeat(4,0.8fr)_1fr]">
+      <div className="grid gap-8 border-t border-[var(--isitabuy-line)] pt-8 md:grid-cols-[1.2fr_repeat(4,0.8fr)_1fr]">
         <div>
           <Logo />
-          <p className="mt-5 max-w-56 text-sm font-medium leading-6 text-[var(--happy-muted)]">AI product insights to help you buy smarter and spend better.</p>
+          <p className="mt-5 max-w-56 text-sm font-medium leading-6 text-[var(--isitabuy-muted)]">AI product insights to help you buy smarter and spend better.</p>
           <div className="mt-5 flex gap-3">
             {socialLinks.map((social) => (
               <motion.a
                 key={social.label}
                 href="#"
                 aria-label={social.label}
-                className="grid size-8 place-items-center rounded-full border border-[var(--happy-line)] bg-white shadow-sm"
+                className="grid size-8 place-items-center rounded-full border border-[var(--isitabuy-line)] bg-white shadow-sm"
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.96 }}
               >
@@ -1020,24 +1021,24 @@ function Footer() {
         </div>
         {footerColumns.map((column) => (
           <div key={column.title}>
-            <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">{column.title}</h3>
+            <h3 className="text-sm font-extrabold text-[var(--isitabuy-ink)]">{column.title}</h3>
             <ul className="mt-4 grid gap-3">
               {column.links.map((link) => (
-                <li key={link}><a href={homeHref(link)} className="text-sm font-medium text-[var(--happy-muted)] hover:text-[var(--happy-orange)]">{link}</a></li>
+                <li key={link}><a href={homeHref(link)} className="text-sm font-medium text-[var(--isitabuy-muted)] hover:text-[var(--isitabuy-orange)]">{link}</a></li>
               ))}
             </ul>
           </div>
         ))}
         <div>
-          <h3 className="text-sm font-extrabold text-[var(--happy-ink)]">Download</h3>
-          <p className="mt-4 text-sm font-medium text-[var(--happy-muted)]">Get our mobile app</p>
+          <h3 className="text-sm font-extrabold text-[var(--isitabuy-ink)]">Download</h3>
+          <p className="mt-4 text-sm font-medium text-[var(--isitabuy-muted)]">Get our mobile app</p>
           <div className="mt-4 grid gap-2">
             <StoreButton src="/home/badges/app-store.svg" label="App Store" />
             <StoreButton src="/home/badges/google-play.svg" label="Google Play" />
           </div>
         </div>
       </div>
-      <p className="mt-8 text-center text-xs font-semibold text-[var(--happy-muted)]">&copy; 2024 IsItABuy. All rights reserved.</p>
+      <p className="mt-8 text-center text-xs font-semibold text-[var(--isitabuy-muted)]">&copy; 2024 IsItABuy. All rights reserved.</p>
     </footer>
   );
 }
@@ -1052,7 +1053,7 @@ function StoreButton({ src, label }: { src: string; label: string }) {
 
 function LinkText({ label, className }: { label: string; className?: string }) {
   return (
-    <motion.a href="#" className={cn("inline-flex items-center gap-2 text-sm font-extrabold text-[var(--happy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
+    <motion.a href="#" className={cn("inline-flex items-center gap-2 text-sm font-extrabold text-[var(--isitabuy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
       {label}
       <ArrowRight className="size-4" aria-hidden="true" />
     </motion.a>
@@ -1095,7 +1096,7 @@ export default function IsItABuyHomePage() {
   }, [prefersReducedMotion]);
 
   return (
-    <div ref={rootRef} className="min-h-screen bg-[var(--happy-page)] text-[var(--happy-ink)]">
+    <div ref={rootRef} className="min-h-screen bg-[var(--isitabuy-page)] text-[var(--isitabuy-ink)]">
       <Header />
       <motion.main variants={prefersReducedMotion ? undefined : pageVariants} initial={prefersReducedMotion ? false : "hidden"} animate="show">
         <HeroSection />
