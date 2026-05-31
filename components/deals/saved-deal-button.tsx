@@ -17,7 +17,7 @@ export interface SavedDeal {
   discount: string;
 }
 
-const savedDealsKey = "happy:saved-deals";
+const savedDealsKey = "isitabuy:saved-deals";
 
 function savedDealsSnapshot() {
   if (typeof window === "undefined") return "[]";
@@ -44,17 +44,17 @@ function subscribeToSavedDeals(onStoreChange: () => void) {
   }
 
   window.addEventListener("storage", handleStorage);
-  window.addEventListener("happy-saved-deals-change", handleSavedDealsChange);
+  window.addEventListener("isitabuy-saved-deals-change", handleSavedDealsChange);
 
   return () => {
     window.removeEventListener("storage", handleStorage);
-    window.removeEventListener("happy-saved-deals-change", handleSavedDealsChange);
+    window.removeEventListener("isitabuy-saved-deals-change", handleSavedDealsChange);
   };
 }
 
 function writeSavedDeals(deals: SavedDeal[]) {
   window.localStorage.setItem(savedDealsKey, JSON.stringify(deals));
-  window.dispatchEvent(new CustomEvent("happy-saved-deals-change"));
+  window.dispatchEvent(new CustomEvent("isitabuy-saved-deals-change"));
 }
 
 export default function SavedDealButton({ deal }: { deal: SavedDeal }) {

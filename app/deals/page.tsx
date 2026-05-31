@@ -32,8 +32,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
-  title: "Today's Best Deals - Happy",
-  description: "Hand-picked Happy deals with retailer filters and price checks.",
+  title: "Today's Best Deals - IsItABuy",
+  description: "Hand-picked IsItABuy deals with retailer filters and price checks.",
 };
 
 type DealBadge = "Historical Low" | "Price Drop" | "Limited Time" | "Buy One Get One" | "Promo Code";
@@ -1555,7 +1555,7 @@ function badgeClass(badge: DealBadge) {
   if (badge === "Historical Low") return "bg-value text-white";
   if (badge === "Price Drop") return "bg-buy text-white";
   if (badge === "Buy One Get One") return "bg-wait text-white";
-  if (badge === "Promo Code") return "bg-[var(--happy-blue)] text-white";
+  if (badge === "Promo Code") return "bg-[var(--isitabuy-blue)] text-white";
   return "bg-accent text-white";
 }
 
@@ -1790,11 +1790,11 @@ export default async function DealsPage({
     <div className="min-h-screen bg-[#f7f8fb] text-foreground">
       <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur">
         <div className="flex min-h-20 w-full items-center gap-5 px-5 sm:px-8">
-          <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="Happy home">
+          <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="IsItABuy home">
             <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#ffb21a] via-[#ff6b00] to-[#d84fd7] text-white shadow-sm">
               <ShoppingBag className="size-7" aria-hidden="true" />
             </span>
-            <span className="text-3xl font-extrabold tracking-tight text-[var(--happy-ink)]">Happy</span>
+            <span className="text-3xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
           </Link>
 
           <DealsSearchForm
@@ -1803,7 +1803,7 @@ export default async function DealsPage({
           />
 
           <Button
-            className="hidden h-12 rounded-lg bg-accent px-7 font-extrabold text-white hover:bg-[var(--happy-orange-dark)] md:inline-flex"
+            className="hidden h-12 rounded-lg bg-accent px-7 font-extrabold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex"
             form="deals-search-form"
             type="submit"
           >

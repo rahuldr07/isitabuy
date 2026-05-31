@@ -69,7 +69,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { Category, ComparisonState, Product, RetailerOffer, Verdict } from "@/types/compare";
 
-const savedStorageKey = "happy.savedComparison.sony-wh1000xm5-vs-bose-qc-ultra";
+const savedStorageKey = "isitabuy.savedComparison.sony-wh1000xm5-vs-bose-qc-ultra";
 const hasSavedRoute = false;
 const hasProfileRoute = false;
 
@@ -99,11 +99,11 @@ function formatPrice(value: number) {
 
 function Logo() {
   return (
-    <NextLink href="/" className="flex shrink-0 items-center gap-3" aria-label="Happy home">
+    <NextLink href="/" className="flex shrink-0 items-center gap-3" aria-label="IsItABuy home">
       <span className="grid size-8 place-items-center rounded-lg bg-[var(--compare-green)] text-white shadow-[var(--compare-logo-shadow)]">
         <ShoppingBag className="size-5" aria-hidden="true" />
       </span>
-      <span className="text-2xl font-black leading-none tracking-tight text-[var(--compare-green-dark)]">Happy</span>
+      <span className="text-2xl font-black leading-none tracking-tight text-[var(--compare-green-dark)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -396,7 +396,7 @@ function getRecommendation(productA: Product | null, productB: Product | null): 
   if (!productA && !productB) {
     return {
       title: "Add products to unlock an AI recommendation.",
-      body: "Happy needs at least two products to compare value, prices, reviews, specs, and retailer availability.",
+      body: "IsItABuy needs at least two products to compare value, prices, reviews, specs, and retailer availability.",
       confidence: 0,
       confidenceLabel: "Medium",
       sourceCount: aiRecommendation.sourceCount,
@@ -407,7 +407,7 @@ function getRecommendation(productA: Product | null, productB: Product | null): 
     const product = productA ?? productB;
     return {
       title: `Add another product to compare against ${product?.name ?? "this item"}.`,
-      body: "Once both slots are filled, Happy will explain which option is the stronger buy and why.",
+      body: "Once both slots are filled, IsItABuy will explain which option is the stronger buy and why.",
       confidence: 0,
       confidenceLabel: "Medium",
       sourceCount: aiRecommendation.sourceCount,
@@ -1360,9 +1360,9 @@ function LearnMoreDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-lg border-[var(--compare-line)] sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-black text-[var(--compare-ink)]">How Happy compares</DialogTitle>
+          <DialogTitle className="text-xl font-black text-[var(--compare-ink)]">How IsItABuy compares</DialogTitle>
           <DialogDescription className="text-sm font-semibold leading-6 text-[var(--compare-muted)]">
-            Happy compares products using price, review trust, value, specs, retailer availability, and AI analysis. Affiliate links do not affect scores. We may earn commission from some links, but that does not change the AI Buy Score or recommendation.
+            IsItABuy compares products using price, review trust, value, specs, retailer availability, and AI analysis. Affiliate links do not affect scores. We may earn commission from some links, but that does not change the AI Buy Score or recommendation.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -1440,7 +1440,7 @@ export default function ComparePageClient() {
     try {
       if (navigator.share) {
         await navigator.share({
-          title: "Happy product comparison",
+          title: "IsItABuy product comparison",
           text: "Compare Sony WH-1000XM5 vs Bose QuietComfort Ultra",
           url,
         });

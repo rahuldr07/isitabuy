@@ -31,8 +31,8 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
-  title: "Best Headphones Buying Guide - Happy",
-  description: "Happy buying guide for the best headphones with scores, comparisons, FAQs, and sources.",
+  title: "Best Headphones Buying Guide - IsItABuy",
+  description: "IsItABuy buying guide for the best headphones with scores, comparisons, FAQs, and sources.",
 };
 
 const navItems = [
@@ -98,14 +98,14 @@ const headphones = [
   },
   {
     tag: "Best Premium",
-    tagClass: "bg-[var(--happy-blue)] text-white",
+    tagClass: "bg-[var(--isitabuy-blue)] text-white",
     name: "Bose QuietComfort Ultra",
     image: "https://images.pexels.com/photos/3394666/pexels-photo-3394666.jpeg?auto=compress&cs=tinysrgb&w=500",
     price: "$429.00",
     oldPrice: "$499.00",
     discount: "14% OFF",
     score: 94,
-    scoreClass: "text-[var(--happy-blue)] border-[var(--happy-blue)]",
+    scoreClass: "text-[var(--isitabuy-blue)] border-[var(--isitabuy-blue)]",
     verdict: "BUY",
     verdictClass: "bg-soft-buy text-buy",
     bestFor: "Premium Experience",
@@ -182,11 +182,11 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur">
       <div className="flex min-h-16 w-full items-center gap-5 px-5 sm:px-8">
-        <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="Happy home">
-          <span className="grid size-10 place-items-center rounded-xl bg-[var(--happy-green)] text-white shadow-sm">
+        <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="IsItABuy home">
+          <span className="grid size-10 place-items-center rounded-xl bg-[var(--isitabuy-green)] text-white shadow-sm">
             <ShoppingBag className="size-5" aria-hidden="true" />
           </span>
-          <span className="text-2xl font-extrabold tracking-tight text-[var(--happy-green)]">Happy</span>
+          <span className="text-2xl font-extrabold tracking-tight text-[var(--isitabuy-green)]">IsItABuy</span>
         </Link>
 
         <div className="relative mx-auto hidden max-w-[760px] flex-1 md:block">
@@ -197,7 +197,7 @@ function Header() {
           />
         </div>
 
-        <Button className="hidden h-10 rounded-lg bg-accent px-8 font-extrabold text-white hover:bg-[var(--happy-orange-dark)] md:inline-flex">
+        <Button className="hidden h-10 rounded-lg bg-accent px-8 font-extrabold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex">
           Search
         </Button>
 

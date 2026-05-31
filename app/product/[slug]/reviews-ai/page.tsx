@@ -119,7 +119,7 @@ const snippets = [
   {
     source: "Best Buy",
     tone: "mixed",
-    text: "Great sound and ANC, but the ear cups get a bit warm after a few hours. Still overall very happy with the purchase.",
+    text: "Great sound and ANC, but the ear cups get a bit warm after a few hours. Still overall very isitabuy with the purchase.",
     time: "1 week ago",
   },
   {

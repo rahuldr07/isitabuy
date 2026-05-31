@@ -46,7 +46,7 @@ interface ProductData {
   discount: string;
 }
 
-const savedDealsKey = "happy:saved-deals";
+const savedDealsKey = "isitabuy:saved-deals";
 
 const sidebarItems = [
   { label: "Overview", icon: Home, key: "overview" },
@@ -81,11 +81,11 @@ function subscribeToSavedDeals(onStoreChange: () => void) {
     if (event.key === savedDealsKey) onStoreChange();
   }
 
-  window.addEventListener("happy-saved-deals-change", handleSavedDealsChange);
+  window.addEventListener("isitabuy-saved-deals-change", handleSavedDealsChange);
   window.addEventListener("storage", handleStorage);
 
   return () => {
-    window.removeEventListener("happy-saved-deals-change", handleSavedDealsChange);
+    window.removeEventListener("isitabuy-saved-deals-change", handleSavedDealsChange);
     window.removeEventListener("storage", handleStorage);
   };
 }

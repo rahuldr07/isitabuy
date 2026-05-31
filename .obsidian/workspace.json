@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "e4cc513dc7c852f2",
+        "id": "2ced9d0ca79ad91c",
         "type": "tabs",
         "children": [
           {
-            "id": "4c8b9b13a155878a",
+            "id": "83185a38d403d268",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "MOCs/03 Frontend Architecture MOC.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "03 Frontend Architecture MOC"
             }
           }
         ]
@@ -176,8 +180,14 @@
       "bases:Create new base": false
     }
   },
-  "active": "4c8b9b13a155878a",
+  "active": "83185a38d403d268",
   "lastOpenFiles": [
+    "MOCs/02 App Routes MOC.md",
+    "MOCs/01 Product Strategy MOC.md",
+    "MOCs/00 IsItABuy MOC.md",
+    "MOCs/04 UI System MOC.md",
+    "MOCs/03 Frontend Architecture MOC.md",
+    "node_modules/ms/license.md",
     "app/components/VerdictSection.tsx",
     "node_modules/tailwind-merge/dist/bundle-mjs.mjs.map",
     "node_modules/lucide-react/package.json",
@@ -186,18 +196,12 @@
     "node_modules/eslint-plugin-react/README.md",
     "MOCs/06 Vibe Coding Workflow MOC.md",
     "MOCs/05 Data and AI Roadmap MOC.md",
-    "MOCs/04 UI System MOC.md",
-    "MOCs/02 App Routes MOC.md",
-    "MOCs/03 Frontend Architecture MOC.md",
-    "MOCs/01 Product Strategy MOC.md",
-    "MOCs/00 IsItABuy MOC.md",
     "MOCs",
     "node_modules/gsap/package.json",
     "node_modules/framer-motion/package.json",
     "node_modules/@types/validate-npm-package-name/index.d.ts",
     "node_modules/@types/statuses/index.d.ts",
     "node_modules/@types/validate-npm-package-name/package.json",
-    "node_modules/@types/statuses/package.json",
     "node_modules/@types/set-cookie-parser/README.md",
     "node_modules/cors/README.md",
     "Untitled.canvas",

@@ -56,6 +56,7 @@ const navItems = [
   { label: "Compare", href: "/compare" },
   { label: "Deals", href: "/deals" },
   { label: "Retailers", href: "/#retailers" },
+  { label: "Receipts", href: "/receipts" },
 ];
 
 const presetPairs = [
@@ -214,7 +215,7 @@ function Logo() {
       <span className="grid size-7 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-extrabold tracking-tight text-[var(--happy-ink)]">IsItABuy</span>
+      <span className="text-xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -223,12 +224,12 @@ function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--happy-line)] bg-white/88 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-[var(--isitabuy-line)] bg-white/88 backdrop-blur-xl">
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary">
         <Logo />
-        <div className="hidden items-center gap-8 text-xs font-bold text-[var(--happy-ink)] lg:flex">
+        <div className="hidden items-center gap-8 text-xs font-bold text-[var(--isitabuy-ink)] lg:flex">
           {navItems.map((item) => (
-            <NextLink key={item.label} href={item.href} className="inline-flex items-center gap-1.5 whitespace-nowrap transition hover:-translate-y-px hover:text-[var(--happy-orange)]">
+            <NextLink key={item.label} href={item.href} className="inline-flex items-center gap-1.5 whitespace-nowrap transition hover:-translate-y-px hover:text-[var(--isitabuy-orange)]">
               {item.label}
             </NextLink>
           ))}
@@ -237,7 +238,7 @@ function Header() {
           <Button asChild variant="outline" size="lg" className="h-8 rounded-full px-5 text-xs font-bold">
             <NextLink href="/signin">Log in</NextLink>
           </Button>
-          <Button asChild size="lg" className="h-8 rounded-full bg-[var(--happy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--happy-orange-dark)]">
+          <Button asChild size="lg" className="h-8 rounded-full bg-[var(--isitabuy-orange)] px-5 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
             <NextLink href="/signin?mode=signup">Sign up</NextLink>
           </Button>
         </div>
@@ -246,9 +247,9 @@ function Header() {
         </Button>
       </nav>
       {open ? (
-        <div className="grid gap-2 border-t border-[var(--happy-line)] bg-white px-4 py-4 md:hidden">
+        <div className="grid gap-2 border-t border-[var(--isitabuy-line)] bg-white px-4 py-4 md:hidden">
           {navItems.map((item) => (
-            <NextLink key={item.label} href={item.href} className="rounded-lg px-3 py-2 text-sm font-bold text-[var(--happy-ink)] hover:bg-slate-50">
+            <NextLink key={item.label} href={item.href} className="rounded-lg px-3 py-2 text-sm font-bold text-[var(--isitabuy-ink)] hover:bg-slate-50">
               {item.label}
             </NextLink>
           ))}
@@ -256,7 +257,7 @@ function Header() {
             <Button asChild variant="outline" className="h-10">
               <NextLink href="/signin">Log in</NextLink>
             </Button>
-            <Button asChild className="h-10 bg-[var(--happy-orange)] text-white hover:bg-[var(--happy-orange-dark)]">
+            <Button asChild className="h-10 bg-[var(--isitabuy-orange)] text-white hover:bg-[var(--isitabuy-orange-dark)]">
               <NextLink href="/signin?mode=signup">Sign up</NextLink>
             </Button>
           </div>
@@ -298,15 +299,15 @@ function ProductSlotCard({
   return (
     <Card
       className={cn(
-        "min-h-[15rem] rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[var(--happy-card-shadow)]",
-        active ? "border-[var(--happy-orange)] ring-4 ring-orange-100/70" : "border-[var(--happy-line)]"
+        "min-h-[15rem] rounded-2xl border bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[var(--isitabuy-card-shadow)]",
+        active ? "border-[var(--isitabuy-orange)] ring-4 ring-orange-100/70" : "border-[var(--isitabuy-line)]"
       )}
     >
       <CardContent className="flex h-full flex-col p-4">
         <div className="flex items-center justify-between gap-3">
           <button type="button" className="text-left" onClick={onActivate}>
-            <span className="text-[0.7rem] font-black uppercase text-[var(--happy-orange)]">Product {slot}</span>
-            <span className="mt-1 block text-sm font-black text-[var(--happy-ink)]">{product ? product.name : "Choose a product"}</span>
+            <span className="text-[0.7rem] font-black uppercase text-[var(--isitabuy-orange)]">Product {slot}</span>
+            <span className="mt-1 block text-sm font-black text-[var(--isitabuy-ink)]">{product ? product.name : "Choose a product"}</span>
           </button>
           {product ? (
             <Button variant="ghost" size="icon-sm" aria-label={`Remove Product ${slot}`} onClick={onRemove}>
@@ -322,26 +323,26 @@ function ProductSlotCard({
           <div className="mt-4 grid flex-1 gap-4 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
             <ProductImage product={product} />
             <div className="min-w-0">
-              <p className="text-xs font-semibold leading-5 text-[var(--happy-muted)]">{product.subtitle}</p>
+              <p className="text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">{product.subtitle}</p>
               <div className="mt-2 flex flex-wrap items-center gap-2 text-[0.7rem] font-bold">
-                <span className="inline-flex items-center gap-1 text-[var(--happy-orange)]">
+                <span className="inline-flex items-center gap-1 text-[var(--isitabuy-orange)]">
                   <Star className="size-3.5 fill-current" aria-hidden="true" />
                   {product.rating.toFixed(1)}
                 </span>
-                <span className="text-[var(--happy-muted)]">({integer.format(product.reviews)})</span>
-                <Badge className="border-0 bg-[var(--happy-green-soft)] text-[0.62rem] text-emerald-700">{product.reviewTrust}</Badge>
+                <span className="text-[var(--isitabuy-muted)]">({integer.format(product.reviews)})</span>
+                <Badge className="border-0 bg-[var(--isitabuy-green-soft)] text-[0.62rem] text-emerald-700">{product.reviewTrust}</Badge>
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {product.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.62rem] font-bold text-[var(--happy-ink)]">
+                  <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.62rem] font-bold text-[var(--isitabuy-ink)]">
                     {tag}
                   </span>
                 ))}
               </div>
               <div className="mt-4 flex items-end justify-between gap-3">
                 <div>
-                  <p className="text-[0.68rem] font-bold text-[var(--happy-muted)]">Current price</p>
-                  <p className="font-numeric text-xl font-black text-[var(--happy-ink)]">{formatPrice(product.currentPrice)}</p>
+                  <p className="text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">Current price</p>
+                  <p className="font-numeric text-xl font-black text-[var(--isitabuy-ink)]">{formatPrice(product.currentPrice)}</p>
                 </div>
                 <Badge className={cn("border-0 text-xs font-black", product.verdict === "BUY" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700")}>
                   {product.verdict}
@@ -352,12 +353,12 @@ function ProductSlotCard({
         ) : (
           <button
             type="button"
-            className="mt-4 grid flex-1 place-items-center rounded-xl border border-dashed border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] text-center"
+            className="mt-4 grid flex-1 place-items-center rounded-xl border border-dashed border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] text-center"
             onClick={onActivate}
           >
             <span>
-              <Search className="mx-auto size-5 text-[var(--happy-orange)]" aria-hidden="true" />
-              <span className="mt-2 block text-xs font-bold text-[var(--happy-muted)]">Search and add a product</span>
+              <Search className="mx-auto size-5 text-[var(--isitabuy-orange)]" aria-hidden="true" />
+              <span className="mt-2 block text-xs font-bold text-[var(--isitabuy-muted)]">Search and add a product</span>
             </span>
           </button>
         )}
@@ -378,17 +379,17 @@ function SearchResultCard({
   const { product } = result;
 
   return (
-    <div className="grid gap-3 rounded-xl border border-[var(--happy-line)] bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[var(--happy-card-shadow)] sm:grid-cols-[4.5rem_minmax(0,1fr)_auto]">
+    <div className="grid gap-3 rounded-xl border border-[var(--isitabuy-line)] bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-[var(--isitabuy-card-shadow)] sm:grid-cols-[4.5rem_minmax(0,1fr)_auto]">
       <ProductImage product={product} />
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-sm font-black text-[var(--happy-ink)]">{product.name}</h3>
-          <Badge className="border-0 bg-purple-100 text-[0.62rem] font-black text-[var(--happy-purple)]">{result.matchLabel}</Badge>
+          <h3 className="text-sm font-black text-[var(--isitabuy-ink)]">{product.name}</h3>
+          <Badge className="border-0 bg-purple-100 text-[0.62rem] font-black text-[var(--isitabuy-purple)]">{result.matchLabel}</Badge>
         </div>
-        <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">{product.subtitle}</p>
+        <p className="mt-1 text-xs font-semibold text-[var(--isitabuy-muted)]">{product.subtitle}</p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {product.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.6rem] font-bold text-[var(--happy-ink)]">
+            <span key={tag} className="rounded-md bg-slate-100 px-2 py-1 text-[0.6rem] font-bold text-[var(--isitabuy-ink)]">
               {tag}
             </span>
           ))}
@@ -396,14 +397,14 @@ function SearchResultCard({
       </div>
       <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
         <div className="text-right">
-          <p className="font-numeric text-sm font-black text-[var(--happy-ink)]">{formatPrice(product.currentPrice)}</p>
+          <p className="font-numeric text-sm font-black text-[var(--isitabuy-ink)]">{formatPrice(product.currentPrice)}</p>
           <p className="text-[0.65rem] font-bold text-emerald-700">{product.discountPercent}% off</p>
         </div>
         <div className="flex gap-1.5">
-          <Button size="sm" variant={activeSlot === "A" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "A" && "bg-[var(--happy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("A", product)}>
+          <Button size="sm" variant={activeSlot === "A" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "A" && "bg-[var(--isitabuy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("A", product)}>
             Add A
           </Button>
-          <Button size="sm" variant={activeSlot === "B" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "B" && "bg-[var(--happy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("B", product)}>
+          <Button size="sm" variant={activeSlot === "B" ? "default" : "outline"} className={cn("h-8 rounded-full px-3 text-xs font-black", activeSlot === "B" && "bg-[var(--isitabuy-purple)] text-white hover:bg-violet-700")} onClick={() => onAdd("B", product)}>
             Add B
           </Button>
         </div>
@@ -428,19 +429,19 @@ function RecommendationCard({
   const ready = Boolean(productA && productB);
 
   return (
-    <Card className="h-full overflow-hidden rounded-2xl border border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] shadow-[var(--happy-card-shadow)]">
+    <Card className="h-full overflow-hidden rounded-2xl border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] shadow-[var(--isitabuy-card-shadow)]">
       <CardContent className="flex h-full flex-col p-5">
-        <div className="flex items-center gap-2 text-[0.72rem] font-black uppercase text-[var(--happy-ink)]">
-          <span className="grid size-7 place-items-center rounded-lg bg-white text-[var(--happy-purple)] shadow-sm">
+        <div className="flex items-center gap-2 text-[0.72rem] font-black uppercase text-[var(--isitabuy-ink)]">
+          <span className="grid size-7 place-items-center rounded-lg bg-white text-[var(--isitabuy-purple)] shadow-sm">
             <Sparkles className="size-4" aria-hidden="true" />
           </span>
           Smart preview
         </div>
-        <h2 className="mt-4 text-xl font-black leading-tight text-[var(--happy-purple)]">{recommendation.title}</h2>
-        <p className="mt-3 text-sm font-semibold leading-6 text-[var(--happy-muted)]">{recommendation.body}</p>
+        <h2 className="mt-4 text-xl font-black leading-tight text-[var(--isitabuy-purple)]">{recommendation.title}</h2>
+        <p className="mt-3 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{recommendation.body}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {recommendation.badges.map((badge) => (
-            <span key={badge} className="rounded-full bg-white px-3 py-1 text-[0.68rem] font-black text-[var(--happy-purple)] shadow-sm">
+            <span key={badge} className="rounded-full bg-white px-3 py-1 text-[0.68rem] font-black text-[var(--isitabuy-purple)] shadow-sm">
               {badge}
             </span>
           ))}
@@ -453,13 +454,13 @@ function RecommendationCard({
                 background: `conic-gradient(#4b09a9 0 ${recommendation.confidence}%, #20bf68 ${recommendation.confidence}% 100%)`,
               }}
             >
-              <div className="grid size-full place-items-center rounded-full bg-white font-numeric text-base font-black text-[var(--happy-ink)]">
+              <div className="grid size-full place-items-center rounded-full bg-white font-numeric text-base font-black text-[var(--isitabuy-ink)]">
                 {recommendation.confidence ? `${recommendation.confidence}%` : "--"}
               </div>
             </div>
             <div>
-              <p className="text-xs font-black text-[var(--happy-ink)]">Confidence</p>
-              <p className="text-[0.7rem] font-semibold text-[var(--happy-muted)]">Price, review, and score signals</p>
+              <p className="text-xs font-black text-[var(--isitabuy-ink)]">Confidence</p>
+              <p className="text-[0.7rem] font-semibold text-[var(--isitabuy-muted)]">Price, review, and score signals</p>
             </div>
           </div>
           <div className="flex flex-wrap justify-start gap-2 sm:justify-end">
@@ -467,7 +468,7 @@ function RecommendationCard({
               <Shuffle className="size-4" aria-hidden="true" />
               Swap
             </Button>
-            <Button className="h-9 rounded-full bg-[var(--happy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--happy-orange-dark)]" onClick={onStart} disabled={!ready}>
+            <Button className="h-9 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onStart} disabled={!ready}>
               Start comparison
               <ArrowRight className="size-4" aria-hidden="true" />
             </Button>
@@ -488,17 +489,17 @@ function TrustStrip() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 pb-8 sm:px-6 lg:px-8">
-      <div className="grid gap-3 rounded-2xl border border-[var(--happy-line)] bg-white p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item) => {
           const Icon = item.icon;
           return (
             <div key={item.title} className="flex gap-3 rounded-xl p-3 transition hover:bg-slate-50">
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-orange-100 text-[var(--happy-orange)]">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-orange-100 text-[var(--isitabuy-orange)]">
                 <Icon className="size-5" aria-hidden="true" />
               </span>
               <span>
-                <span className="block text-sm font-black text-[var(--happy-ink)]">{item.title}</span>
-                <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--happy-muted)]">{item.body}</span>
+                <span className="block text-sm font-black text-[var(--isitabuy-ink)]">{item.title}</span>
+                <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">{item.body}</span>
               </span>
             </div>
           );
@@ -519,8 +520,8 @@ function PresetComparisons({
     <section className="mx-auto max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
       <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
-          <p className="text-[0.72rem] font-black uppercase text-[var(--happy-orange)]">Popular presets</p>
-          <h2 className="mt-1 text-xl font-black text-[var(--happy-ink)]">Start from a proven comparison</h2>
+          <p className="text-[0.72rem] font-black uppercase text-[var(--isitabuy-orange)]">Popular presets</p>
+          <h2 className="mt-1 text-xl font-black text-[var(--isitabuy-ink)]">Start from a proven comparison</h2>
         </div>
         <Button variant="outline" className="h-9 w-fit rounded-full text-xs font-black" onClick={onOpenDemo}>
           Open Sony vs Bose demo
@@ -537,20 +538,20 @@ function PresetComparisons({
             <button
               key={preset.title}
               type="button"
-              className="rounded-2xl border border-[var(--happy-line)] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--happy-card-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--happy-orange)]"
+              className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--isitabuy-card-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
               onClick={() => onPreset(productA, productB)}
             >
-              <span className="text-sm font-black text-[var(--happy-ink)]">{preset.title}</span>
+              <span className="text-sm font-black text-[var(--isitabuy-ink)]">{preset.title}</span>
               <span className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
                 <span className="flex justify-center"><ProductImage product={productA} /></span>
-                <span className="grid size-8 place-items-center rounded-full bg-[var(--happy-orange)] text-[0.65rem] font-black text-white shadow-sm">VS</span>
+                <span className="grid size-8 place-items-center rounded-full bg-[var(--isitabuy-orange)] text-[0.65rem] font-black text-white shadow-sm">VS</span>
                 <span className="flex justify-center"><ProductImage product={productB} /></span>
               </span>
-              <span className="mt-4 grid grid-cols-2 gap-2 text-center text-[0.7rem] font-black text-[var(--happy-ink)]">
+              <span className="mt-4 grid grid-cols-2 gap-2 text-center text-[0.7rem] font-black text-[var(--isitabuy-ink)]">
                 <span className="truncate">{productA.name}</span>
                 <span className="truncate">{productB.name}</span>
               </span>
-              <span className="mt-3 block rounded-lg bg-purple-100 px-3 py-2 text-[0.68rem] font-bold text-[var(--happy-purple)]">
+              <span className="mt-3 block rounded-lg bg-purple-100 px-3 py-2 text-[0.68rem] font-bold text-[var(--isitabuy-purple)]">
                 {recommendation.winner?.name ?? "AI"} leads
               </span>
             </button>
@@ -564,7 +565,7 @@ function PresetComparisons({
 function Footer() {
   return (
     <footer className="mx-auto max-w-6xl px-4 pb-8 sm:px-6 lg:px-8">
-      <div className="flex flex-col justify-between gap-4 border-t border-[var(--happy-line)] pt-6 text-xs font-semibold text-[var(--happy-muted)] sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-4 border-t border-[var(--isitabuy-line)] pt-6 text-xs font-semibold text-[var(--isitabuy-muted)] sm:flex-row sm:items-center">
         <Logo />
         <p>AI product insights to help you buy smarter and spend better.</p>
       </div>
@@ -638,34 +639,34 @@ export default function CompareLanding() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[var(--happy-page)] text-[var(--happy-ink)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[image:var(--happy-hero-glow)]" aria-hidden="true" />
+    <div className="relative min-h-screen overflow-hidden bg-[var(--isitabuy-page)] text-[var(--isitabuy-ink)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[image:var(--isitabuy-hero-glow)]" aria-hidden="true" />
       <Header />
       <main className="relative">
         <section className="mx-auto grid max-w-6xl gap-5 px-4 pb-8 pt-4 sm:px-6 lg:px-8 lg:pb-10 lg:pt-6 xl:grid-cols-[minmax(0,1.18fr)_minmax(23rem,0.82fr)]">
           <div className="grid gap-4">
-            <div className="rounded-[1.65rem] border border-[var(--happy-line)] bg-white/94 p-4 shadow-[var(--happy-card-shadow)] backdrop-blur sm:p-6">
+            <div className="rounded-[1.65rem] border border-[var(--isitabuy-line)] bg-white/94 p-4 shadow-[var(--isitabuy-card-shadow)] backdrop-blur sm:p-6">
               <div className="mx-auto flex max-w-3xl flex-col items-center text-center xl:items-start xl:text-left">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-sm">
-                  <Sparkles className="size-4 text-[var(--happy-orange)]" aria-hidden="true" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-sm">
+                  <Sparkles className="size-4 text-[var(--isitabuy-orange)]" aria-hidden="true" />
                   AI-Powered Compare Advisor
                 </div>
-                <h1 className="mt-4 max-w-[760px] font-heading text-[clamp(2rem,4vw,3.6rem)] font-bold leading-[1.03] tracking-normal text-[var(--happy-ink)]">
-                  Compare products before <span className="text-[var(--happy-orange)]">you buy.</span>
+                <h1 className="mt-4 max-w-[760px] font-heading text-[clamp(2rem,4vw,3.6rem)] font-bold leading-[1.03] tracking-normal text-[var(--isitabuy-ink)]">
+                  Compare products before <span className="text-[var(--isitabuy-orange)]">you buy.</span>
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[var(--happy-muted)] sm:text-base">
+                <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[var(--isitabuy-muted)] sm:text-base">
                   Pick two products, rank smart matches by intent, and preview the stronger buy before opening the full comparison.
                 </p>
-                <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--happy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--happy-ink)] shadow-sm sm:text-sm">
-                  <span className="grid size-7 place-items-center rounded-lg bg-[var(--happy-orange)] text-white">
+                <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-sm sm:text-sm">
+                  <span className="grid size-7 place-items-center rounded-lg bg-[var(--isitabuy-orange)] text-white">
                     <ShieldCheck className="size-3.5" aria-hidden="true" />
                   </span>
                   Independent scores. Affiliate links do not affect recommendations.
                 </div>
-                <div className="mt-5 w-full rounded-[1.35rem] border border-[var(--happy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)]">
+                <div className="mt-5 w-full rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)]">
                   <div className="flex flex-col gap-2 lg:h-12 lg:flex-row lg:items-center">
                     <div className="relative min-w-0 flex-1">
-                      <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--happy-ink)]" aria-hidden="true" />
+                      <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[var(--isitabuy-ink)]" aria-hidden="true" />
                       <Input
                         aria-label="Search products to compare"
                         value={state.query}
@@ -674,13 +675,13 @@ export default function CompareLanding() {
                           if (event.key === "Enter") submitSearch();
                         }}
                         placeholder="Search headphones by comfort, battery, ANC, value..."
-                        className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--happy-muted)] focus-visible:ring-[var(--happy-orange)] lg:h-11 lg:text-sm"
+                        className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--isitabuy-muted)] focus-visible:ring-[var(--isitabuy-orange)] lg:h-11 lg:text-sm"
                       />
                     </div>
                     <Button
                       type="button"
                       onClick={submitSearch}
-                      className="h-10 shrink-0 rounded-full bg-[var(--happy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--happy-orange-dark)] lg:h-11 lg:px-6"
+                      className="h-10 shrink-0 rounded-full bg-[var(--isitabuy-orange)] px-5 text-sm font-semibold text-white hover:bg-[var(--isitabuy-orange-dark)] lg:h-11 lg:px-6"
                     >
                       Find matches
                     </Button>
@@ -691,7 +692,7 @@ export default function CompareLanding() {
                     <button
                       key={term}
                       type="button"
-                      className="rounded-full border border-[var(--happy-line)] bg-white/92 px-3 py-1.5 text-[0.72rem] font-black text-[var(--happy-ink)] shadow-sm transition hover:-translate-y-px hover:border-orange-200 hover:text-[var(--happy-orange)]"
+                      className="rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-3 py-1.5 text-[0.72rem] font-black text-[var(--isitabuy-ink)] shadow-sm transition hover:-translate-y-px hover:border-orange-200 hover:text-[var(--isitabuy-orange)]"
                       onClick={() => {
                         setState((current) => ({ ...current, query: term }));
                         showCompareToast("Smart matches updated", `Showing ranked products for "${term}".`);
@@ -721,12 +722,12 @@ export default function CompareLanding() {
               />
             </div>
 
-            <Card className="rounded-2xl border border-[var(--happy-line)] bg-white shadow-sm">
+            <Card className="rounded-2xl border border-[var(--isitabuy-line)] bg-white shadow-sm">
               <CardContent className="p-4">
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <h2 className="text-sm font-black text-[var(--happy-ink)]">Ranked product matches</h2>
-                    <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">Active slot: Product {state.activeSlot}. Add a result to either side.</p>
+                    <h2 className="text-sm font-black text-[var(--isitabuy-ink)]">Ranked product matches</h2>
+                    <p className="mt-1 text-xs font-semibold text-[var(--isitabuy-muted)]">Active slot: Product {state.activeSlot}. Add a result to either side.</p>
                   </div>
                   <Badge className="w-fit border-0 bg-orange-100 text-[0.68rem] font-black text-orange-700">
                     {results.length} matches
@@ -738,9 +739,9 @@ export default function CompareLanding() {
                       <SearchResultCard key={result.product.id} result={result} activeSlot={state.activeSlot} onAdd={updateSlot} />
                     ))
                   ) : (
-                    <div className="rounded-xl border border-dashed border-[var(--happy-line)] bg-[image:var(--happy-violet-panel)] p-8 text-center">
-                      <p className="text-sm font-black text-[var(--happy-ink)]">No products found</p>
-                      <p className="mt-1 text-xs font-semibold text-[var(--happy-muted)]">Try battery, comfort, ANC, or value.</p>
+                    <div className="rounded-xl border border-dashed border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] p-8 text-center">
+                      <p className="text-sm font-black text-[var(--isitabuy-ink)]">No products found</p>
+                      <p className="mt-1 text-xs font-semibold text-[var(--isitabuy-muted)]">Try battery, comfort, ANC, or value.</p>
                     </div>
                   )}
                 </div>
@@ -756,27 +757,27 @@ export default function CompareLanding() {
               onStart={startComparison}
               onSwap={() => setState((current) => ({ ...current, productA: current.productB, productB: current.productA }))}
             />
-            <Card className="rounded-2xl border border-[var(--happy-line)] bg-white shadow-sm">
+            <Card className="rounded-2xl border border-[var(--isitabuy-line)] bg-white shadow-sm">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-black text-[var(--happy-ink)]">Comparison path</h2>
-                  <ChevronDown className="size-4 text-[var(--happy-muted)]" aria-hidden="true" />
+                  <h2 className="text-sm font-black text-[var(--isitabuy-ink)]">Comparison path</h2>
+                  <ChevronDown className="size-4 text-[var(--isitabuy-muted)]" aria-hidden="true" />
                 </div>
-                <div className="mt-4 grid gap-3 text-xs font-semibold text-[var(--happy-muted)]">
+                <div className="mt-4 grid gap-3 text-xs font-semibold text-[var(--isitabuy-muted)]">
                   <div className="flex items-center justify-between">
                     <span>Product A</span>
-                    <span className="max-w-48 truncate font-black text-[var(--happy-ink)]">{state.productA?.name ?? "Empty"}</span>
+                    <span className="max-w-48 truncate font-black text-[var(--isitabuy-ink)]">{state.productA?.name ?? "Empty"}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Product B</span>
-                    <span className="max-w-48 truncate font-black text-[var(--happy-ink)]">{state.productB?.name ?? "Empty"}</span>
+                    <span className="max-w-48 truncate font-black text-[var(--isitabuy-ink)]">{state.productB?.name ?? "Empty"}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Winner preview</span>
-                    <span className="max-w-48 truncate font-black text-[var(--happy-purple)]">{recommendation.winner?.name ?? "Waiting"}</span>
+                    <span className="max-w-48 truncate font-black text-[var(--isitabuy-purple)]">{recommendation.winner?.name ?? "Waiting"}</span>
                   </div>
                 </div>
-                <Button className="mt-5 h-10 w-full rounded-full bg-[var(--happy-orange)] text-sm font-bold text-white hover:bg-[var(--happy-orange-dark)]" onClick={startComparison}>
+                <Button className="mt-5 h-10 w-full rounded-full bg-[var(--isitabuy-orange)] text-sm font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={startComparison}>
                   Open full comparison
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>

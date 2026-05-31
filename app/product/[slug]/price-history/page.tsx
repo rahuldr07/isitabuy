@@ -28,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const metadata = {
-  title: "Price History - Happy",
+  title: "Price History - IsItABuy",
   description: "Product-specific price history, predictions, and retailer comparison.",
 };
 
