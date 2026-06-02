@@ -1564,9 +1564,9 @@ function RetailerLogo({ compact = false, retailer }: { compact?: boolean; retail
 
   if (retailer === "Amazon") {
     return (
-      <span className={`relative grid ${sizeClass} place-items-center font-serif font-extrabold text-foreground`}>
+      <span className={`relative grid ${sizeClass} place-items-center font-serif font-bold text-foreground`}>
         a
-        <span className="absolute bottom-0 h-0.5 w-3 rounded-full bg-[#ff9900]" />
+        <span className="absolute bottom-0 h-0.5 w-3 rounded-full bg-[#f59e0b]" />
       </span>
     );
   }
@@ -1581,7 +1581,7 @@ function RetailerLogo({ compact = false, retailer }: { compact?: boolean; retail
 
   if (retailer === "Best Buy") {
     return (
-      <span className={`grid ${sizeClass} place-items-center rounded-md bg-[#0046be] font-extrabold text-white`}>
+      <span className={`grid ${sizeClass} place-items-center rounded-md bg-[#0046be] font-bold text-white`}>
         B
       </span>
     );
@@ -1599,7 +1599,7 @@ function RetailerLogo({ compact = false, retailer }: { compact?: boolean; retail
 
   if (retailer === "eBay") {
     return (
-      <span className={`flex ${compact ? "h-4 w-7 text-[9px]" : "h-7 w-10 text-sm"} items-center justify-center font-extrabold tracking-tight`}>
+      <span className={`flex ${compact ? "h-4 w-7 text-[9px]" : "h-7 w-10 text-sm"} items-center justify-center font-bold tracking-tight`}>
         <span className="text-[#e53238]">e</span>
         <span className="text-[#0064d2]">b</span>
         <span className="text-[#f5af02]">a</span>
@@ -1610,14 +1610,14 @@ function RetailerLogo({ compact = false, retailer }: { compact?: boolean; retail
 
   if (retailer === "Home Depot") {
     return (
-      <span className={`grid ${sizeClass} place-items-center rounded-md bg-[#f96302] font-black text-white`}>
+      <span className={`grid ${sizeClass} place-items-center rounded-md bg-[#f96302] font-bold text-white`}>
         HD
       </span>
     );
   }
 
   return (
-    <span className={`grid ${sizeClass} place-items-center rounded-md bg-muted font-extrabold text-foreground`}>
+    <span className={`grid ${sizeClass} place-items-center rounded-md bg-muted font-bold text-foreground`}>
       {retailer.charAt(0)}
     </span>
   );
@@ -1629,7 +1629,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
   return (
     <BentoCard className="flex flex-col gap-2 p-3">
       <div className="flex items-center justify-between">
-        <Badge className={`h-[18px] rounded px-2 text-[9px] font-extrabold leading-none ${badgeClass(deal.badge)}`}>
+        <Badge className={`h-[18px] rounded px-2 text-[9px] font-bold leading-none ${badgeClass(deal.badge)}`}>
           {deal.badge}
         </Badge>
         {deal.timer ? (
@@ -1651,7 +1651,7 @@ function DealCard({ deal }: { deal: DealCardData }) {
       </div>
 
       <div className="min-h-8">
-        <h3 className="line-clamp-1 text-[13px] font-extrabold leading-tight text-foreground">{deal.name}</h3>
+        <h3 className="line-clamp-1 text-[13px] font-bold leading-tight text-foreground">{deal.name}</h3>
         <p className="line-clamp-1 text-[11px] font-medium leading-tight text-muted-foreground">{deal.subtitle}</p>
       </div>
 
@@ -1669,18 +1669,18 @@ function DealCard({ deal }: { deal: DealCardData }) {
 
       <div className="flex items-end justify-between gap-2">
         <div>
-          <div className="text-[15px] font-extrabold leading-none text-foreground">{deal.price}</div>
+          <div className="text-[15px] font-bold leading-none text-foreground">{deal.price}</div>
           <div className="mt-1 text-[10px] leading-none text-muted-foreground">
             List price <span className="line-through">{deal.oldPrice}</span>
           </div>
         </div>
-        <div className="grid size-8 place-items-center rounded-full border-2 border-buy bg-white text-[11px] font-extrabold text-buy shadow-[0_6px_16px_rgba(22,163,74,0.14)]">
+        <div className="grid size-8 place-items-center rounded-full border-2 border-buy bg-white text-[11px] font-bold text-buy shadow-[0_6px_16px_rgba(22,163,74,0.14)]">
           {deal.score}
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        <Badge className="h-5 rounded bg-soft-buy px-2 text-[9px] font-extrabold text-buy">
+        <Badge className="h-5 rounded bg-soft-buy px-2 text-[9px] font-bold text-buy">
           {deal.discount}
         </Badge>
         <span className="text-[9px] text-muted-foreground">AI Deal Score</span>
@@ -1690,11 +1690,11 @@ function DealCard({ deal }: { deal: DealCardData }) {
         <Button
           asChild
           variant="outline"
-          className="h-8 rounded-lg border-[#71389f] bg-white px-2 text-[11px] font-extrabold text-[#581f86] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#71389f] hover:bg-[#71389f] hover:text-white hover:shadow-[0_10px_22px_rgba(113,56,159,0.28)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#71389f] focus-visible:bg-[#71389f] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(113,56,159,0.28)]"
+          className="h-8 rounded-lg border-[#71389f] bg-white px-2 text-[11px] font-bold text-[#581f86] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#71389f] hover:bg-[#71389f] hover:text-white hover:shadow-[0_10px_22px_rgba(113,56,159,0.28)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#71389f] focus-visible:bg-[#71389f] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(113,56,159,0.28)]"
         >
           <Link href={detailHref}>AI Score</Link>
         </Button>
-        <Button className="h-8 rounded-lg border border-[#007a28] bg-white px-2 text-[11px] font-extrabold text-[#007a28] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#007a28] hover:bg-[#007a28] hover:text-white hover:shadow-[0_10px_22px_rgba(0,122,40,0.24)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#007a28] focus-visible:bg-[#007a28] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(0,122,40,0.24)]">
+        <Button className="h-8 rounded-lg border border-[#007a28] bg-white px-2 text-[11px] font-bold text-[#007a28] shadow-none transition-all duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.04] hover:border-[#007a28] hover:bg-[#007a28] hover:text-white hover:shadow-[0_10px_22px_rgba(0,122,40,0.24)] active:translate-y-0 active:scale-[0.98] focus-visible:-translate-y-0.5 focus-visible:scale-[1.04] focus-visible:border-[#007a28] focus-visible:bg-[#007a28] focus-visible:text-white focus-visible:shadow-[0_10px_22px_rgba(0,122,40,0.24)]">
           Buy Now
         </Button>
       </div>
@@ -1794,7 +1794,7 @@ export default async function DealsPage({
             <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#ffb21a] via-[#ff6b00] to-[#d84fd7] text-white shadow-sm">
               <ShoppingBag className="size-7" aria-hidden="true" />
             </span>
-            <span className="text-3xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+            <span className="text-3xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
           </Link>
 
           <DealsSearchForm
@@ -1803,7 +1803,7 @@ export default async function DealsPage({
           />
 
           <Button
-            className="hidden h-12 rounded-lg bg-accent px-7 font-extrabold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex"
+            className="hidden h-12 rounded-lg bg-accent px-7 font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex"
             form="deals-search-form"
             type="submit"
           >
@@ -1829,7 +1829,7 @@ export default async function DealsPage({
           </div>
         </div>
 
-        <nav className="flex h-14 w-full items-center gap-1 overflow-x-auto border-t border-border px-5 text-sm font-extrabold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex h-14 w-full items-center gap-1 overflow-x-auto border-t border-border px-5 text-sm font-bold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => {
             const active = item.slug === activeCategory;
             const Icon = item.icon;
@@ -1861,13 +1861,13 @@ export default async function DealsPage({
         <div className="grid gap-4 lg:grid-cols-[270px_minmax(0,1fr)]">
           <aside className="hidden self-start rounded-xl border border-border bg-white p-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)] lg:sticky lg:top-36 lg:block">
             <div className="mb-4 flex items-center justify-between border-b border-border pb-4">
-              <h2 className="text-xl font-extrabold tracking-tight">Filters</h2>
-              <Link className="text-xs font-extrabold text-value" href="/deals">
+              <h2 className="text-xl font-bold tracking-tight">Filters</h2>
+              <Link className="text-xs font-bold text-value" href="/deals">
                 Reset all
               </Link>
             </div>
             <section>
-              <h3 className="mb-3 flex items-center justify-between text-xs font-extrabold text-foreground">
+              <h3 className="mb-3 flex items-center justify-between text-xs font-bold text-foreground">
                 All Brands <ChevronDown className="size-4 rotate-180" />
               </h3>
               <div className="space-y-1.5">
@@ -1900,7 +1900,7 @@ export default async function DealsPage({
                 })}
                 {expandedBrandFilters.length > 0 ? (
                   <details className="group">
-                    <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-extrabold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
+                    <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-bold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
                       <span className="group-open:hidden">More brands</span>
                       <span className="hidden group-open:inline">Show less</span>
                       <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
@@ -1943,7 +1943,7 @@ export default async function DealsPage({
               <>
                 <Separator className="my-4" />
                 <section>
-                  <h3 className="mb-3 flex items-center justify-between text-xs font-extrabold text-foreground">
+                  <h3 className="mb-3 flex items-center justify-between text-xs font-bold text-foreground">
                     Colour <ChevronDown className="size-4 rotate-180" />
                   </h3>
                   <div className="space-y-1.5">
@@ -1977,7 +1977,7 @@ export default async function DealsPage({
                     })}
                     {expandedColorFilters.length > 0 ? (
                       <details className="group">
-                        <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-extrabold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
+                        <summary className="flex h-9 cursor-pointer list-none items-center justify-center gap-1 rounded-md border border-dashed border-border text-xs font-bold text-value hover:bg-muted [&::-webkit-details-marker]:hidden">
                           <span className="group-open:hidden">More colours</span>
                           <span className="hidden group-open:inline">Show less</span>
                           <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
@@ -2026,7 +2026,7 @@ export default async function DealsPage({
             <Separator className="my-4" />
 
             <section>
-              <h3 className="mb-3 text-xs font-extrabold text-foreground">Deal Type (i)</h3>
+              <h3 className="mb-3 text-xs font-bold text-foreground">Deal Type (i)</h3>
               <div className="space-y-2">
                 {dealTypes.map((type) => {
                   const active = activeDealTypeSet.has(type.slug);
@@ -2078,7 +2078,7 @@ export default async function DealsPage({
             <Button
               asChild
               variant="outline"
-              className="mt-5 h-10 w-full border-value/40 text-xs font-extrabold text-value"
+              className="mt-5 h-10 w-full border-value/40 text-xs font-bold text-value"
             >
               <Link href="/deals">Clear all filters</Link>
             </Button>
@@ -2087,7 +2087,7 @@ export default async function DealsPage({
           <section className="min-w-0">
             <div className="mb-4 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                <h1 className="flex items-center gap-2 text-3xl font-extrabold tracking-tight">
+                <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight">
                   Today&apos;s Best Deals <Sparkles className="size-5 text-accent" />
                 </h1>
                 <p className="mt-1 text-sm font-medium text-muted-foreground">
@@ -2096,7 +2096,7 @@ export default async function DealsPage({
               </div>
               <Button
                 variant="outline"
-                className="h-10 border-value/50 text-xs font-extrabold text-value transition-colors hover:bg-soft-value active:bg-value active:text-white focus-visible:bg-value focus-visible:text-white"
+                className="h-10 border-value/50 text-xs font-bold text-value transition-colors hover:bg-soft-value active:bg-value active:text-white focus-visible:bg-value focus-visible:text-white"
               >
                 <Bell className="size-4" />
                 Get deal alerts
@@ -2113,7 +2113,7 @@ export default async function DealsPage({
                   return (
                     <Link
                       aria-current={active ? "true" : undefined}
-                      className={`inline-flex h-11 min-w-max shrink-0 items-center justify-center gap-2 rounded-lg border bg-white px-4 text-sm font-extrabold shadow-sm transition-colors xl:h-12 xl:min-w-0 xl:gap-3 xl:px-5 ${
+                      className={`inline-flex h-11 min-w-max shrink-0 items-center justify-center gap-2 rounded-lg border bg-white px-4 text-sm font-bold shadow-sm transition-colors xl:h-12 xl:min-w-0 xl:gap-3 xl:px-5 ${
                         active
                           ? "border-value text-value"
                           : "border-border text-foreground hover:border-value/40"
@@ -2147,7 +2147,7 @@ export default async function DealsPage({
                 <span className="border-r border-border px-4 font-semibold text-muted-foreground">
                   Sort by:
                 </span>
-                <button className="flex h-full min-w-32 items-center justify-between gap-4 px-4 font-extrabold text-foreground">
+                <button className="flex h-full min-w-32 items-center justify-between gap-4 px-4 font-bold text-foreground">
                   Best Deal
                   <ChevronDown className="size-4" />
                 </button>
@@ -2161,7 +2161,7 @@ export default async function DealsPage({
             </BentoGrid>
             {searchedDeals.length === 0 ? (
               <div className="mt-4 rounded-xl border border-dashed border-border bg-white p-6 text-center shadow-sm">
-                <h2 className="text-lg font-extrabold text-foreground">No matching deals found</h2>
+                <h2 className="text-lg font-bold text-foreground">No matching deals found</h2>
                 <p className="mt-2 text-sm font-medium text-muted-foreground">
                   Try searching by product, brand, category, or retailer.
                 </p>
@@ -2184,7 +2184,7 @@ export default async function DealsPage({
                     <Icon className="size-5" />
                   </span>
                   <div>
-                    <p className="text-sm font-extrabold text-foreground">{title}</p>
+                    <p className="text-sm font-bold text-foreground">{title}</p>
                     <p className="mt-1 font-medium text-muted-foreground">{body}</p>
                   </div>
                 </div>

@@ -687,15 +687,15 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-6 lg:flex lg:flex-col">
       <Link className="mb-9 flex items-center gap-4" href="/deals">
-        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
+        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-value to-brand-navy text-sm font-bold text-white shadow-sm">
           BW
         </span>
-        <span className="text-3xl font-extrabold leading-none tracking-tight">
+        <span className="text-3xl font-bold leading-none tracking-tight">
           BuyWise<br />
-          <span className="text-[#4f46e5]">AI</span>
+          <span className="text-value">AI</span>
         </span>
       </Link>
-      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-bold text-value hover:bg-soft-value" href="/deals">
         <ArrowLeft className="size-4" />
         Back to Deals
       </Link>
@@ -708,7 +708,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           return (
             <Link
               className={`flex h-13 items-center gap-4 rounded-xl px-4 text-sm font-semibold ${
-                active ? "bg-[#f0ecff] text-[#4f46e5]" : "text-foreground hover:bg-muted"
+                active ? "bg-soft-value text-value" : "text-foreground hover:bg-muted"
               }`}
               href={href}
               key={label}
@@ -726,8 +726,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
             <User className="size-5" />
           </span>
           <div>
-            <p className="text-sm font-extrabold">Alex Thompson</p>
-            <Badge className="mt-1 bg-[#f0ecff] text-[#4f46e5]">Pro</Badge>
+            <p className="text-sm font-bold">Alex Thompson</p>
+            <Badge className="mt-1 bg-soft-value text-value">Pro</Badge>
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
@@ -740,7 +740,7 @@ function ProductSelector({ product }: { product: ProductData }) {
   return (
     <BentoCard className="flex h-16 items-center gap-4 px-5">
       <img alt={product.name} className="size-12 object-contain mix-blend-multiply" src={product.image} />
-      <span className="min-w-0 flex-1 truncate text-lg font-extrabold">{product.name}</span>
+      <span className="min-w-0 flex-1 truncate text-lg font-bold">{product.name}</span>
       <ChevronDown className="size-4 text-muted-foreground" />
     </BentoCard>
   );
@@ -751,7 +751,7 @@ function FilterBox({ label, value }: { label: string; value: string }) {
     <BentoCard className="flex h-16 items-center justify-between px-5">
       <div>
         <p className="text-xs font-semibold text-muted-foreground">{label}</p>
-        <p className="mt-1 text-sm font-extrabold">{value}</p>
+        <p className="mt-1 text-sm font-bold">{value}</p>
       </div>
       <ChevronDown className="size-4 text-muted-foreground" />
     </BentoCard>
@@ -761,8 +761,8 @@ function FilterBox({ label, value }: { label: string; value: string }) {
 function HighlightCard({ product, title, icon: Icon }: { product: AlternativeProduct; title: string; icon: LucideIcon }) {
   return (
     <BentoCard className="min-h-[190px] p-4">
-      <p className="flex min-h-7 items-center gap-2 text-sm font-extrabold">
-        <span className="grid size-7 place-items-center rounded-full bg-[#f0ecff] text-[#4f46e5]">
+      <p className="flex min-h-7 items-center gap-2 text-sm font-bold">
+        <span className="grid size-7 place-items-center rounded-full bg-soft-value text-value">
           <Icon className="size-4" />
         </span>
         {title}
@@ -772,12 +772,12 @@ function HighlightCard({ product, title, icon: Icon }: { product: AlternativePro
           <img alt={product.name} className="max-h-20 max-w-20 object-contain mix-blend-multiply" src={product.image} />
         </div>
         <div className="grid min-h-[112px] min-w-0 content-center">
-          <h3 className="line-clamp-2 text-base font-extrabold leading-snug">{product.name}</h3>
-          <p className="mt-3 text-sm font-extrabold text-muted-foreground">AI Match</p>
-          <p className="text-3xl font-extrabold leading-none text-[#4f46e5]">
+          <h3 className="line-clamp-2 text-base font-bold leading-snug">{product.name}</h3>
+          <p className="mt-3 text-sm font-bold text-muted-foreground">AI Match</p>
+          <p className="text-3xl font-bold leading-none text-value">
             {product.score}<span className="text-base text-muted-foreground">/100</span>
           </p>
-          <p className="mt-2 truncate font-extrabold leading-none text-buy">{title.includes("Overall") ? "Save $49" : product.price}</p>
+          <p className="mt-2 truncate font-bold leading-none text-buy">{title.includes("Overall") ? "Save $49" : product.price}</p>
         </div>
       </div>
     </BentoCard>
@@ -789,22 +789,22 @@ function AlternativeCard({ item }: { item: AlternativeProduct }) {
     <BentoCard className="p-4">
       <div className="grid grid-cols-[90px_1fr] gap-4">
         <div className="relative">
-          <span className="absolute left-0 top-0 grid size-7 place-items-center rounded-full bg-[#4f46e5] text-xs font-extrabold text-white">
+          <span className="absolute left-0 top-0 grid size-7 place-items-center rounded-full bg-value text-xs font-bold text-white">
             {item.rank}
           </span>
           <img alt={item.name} className="mt-4 size-24 object-contain mix-blend-multiply" src={item.image} />
         </div>
         <div>
-          <h3 className="font-extrabold">{item.name}</h3>
-          <p className="mt-1 text-sm font-extrabold">
+          <h3 className="font-bold">{item.name}</h3>
+          <p className="mt-1 text-sm font-bold">
             {item.price} {item.oldPrice ? <span className="ml-1 font-semibold text-muted-foreground line-through">{item.oldPrice}</span> : null}
           </p>
           <p className="mt-1 text-sm font-semibold text-muted-foreground">
-            AI Match <span className="font-extrabold text-[#4f46e5]">{item.score}/100</span>
+            AI Match <span className="font-bold text-value">{item.score}/100</span>
           </p>
           <p className="mt-2 text-sm font-medium leading-5 text-muted-foreground">{item.description}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <Button variant="outline" className="h-8 rounded-md border-[#d8d5ff] px-5 text-xs font-extrabold text-[#4f46e5]">
+            <Button variant="outline" className="h-8 rounded-md border-value/30 px-5 text-xs font-bold text-value">
               Compare
             </Button>
             {item.tags.map((tag) => (
@@ -819,17 +819,17 @@ function AlternativeCard({ item }: { item: AlternativeProduct }) {
 
 function WhyAlternatives() {
   const reasons = [
-    ["Better Price", "Options that deliver similar or better performance at a lower price.", CircleDollarSign, "text-[#4f46e5] bg-[#f0ecff]"],
+    ["Better Price", "Options that deliver similar or better performance at a lower price.", CircleDollarSign, "text-value bg-soft-value"],
     ["Superior Comfort", "Designed for long listening sessions with plush padding and better ergonomics.", Headphones, "text-buy bg-soft-buy"],
     ["Stronger Noise Cancellation", "Advanced ANC performance for quieter, more immersive listening.", Sparkles, "text-blue-600 bg-blue-50"],
     ["Longer Battery Life", "More hours between charges so your music never stops.", Battery, "text-buy bg-soft-buy"],
-    ["Portability", "Foldable or more compact designs for easy travel.", Briefcase, "text-[#4f46e5] bg-[#f0ecff]"],
+    ["Portability", "Foldable or more compact designs for easy travel.", Briefcase, "text-value bg-soft-value"],
     ["Ecosystem Integration", "Seamless pairing and features with your devices and platforms.", CheckCircle2, "text-accent bg-soft-wait"],
   ] as const;
 
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Why these alternatives? <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4">
@@ -839,7 +839,7 @@ function WhyAlternatives() {
               <Icon className="size-5" />
             </span>
             <div>
-              <p className="font-extrabold text-[#4f46e5]">{title}</p>
+              <p className="font-bold text-value">{title}</p>
               <p className="mt-1 text-sm font-medium leading-5 text-muted-foreground">{body}</p>
             </div>
           </div>
@@ -863,16 +863,16 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
 
   return (
     <BentoCard className="p-4">
-      <h2 className="mb-4 text-base font-extrabold">
+      <h2 className="mb-4 text-base font-bold">
         Side-by-side comparison <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[760px] border-collapse text-center text-sm">
           <thead>
             <tr className="border-y border-border bg-muted/40">
-              <th className="p-3 text-left font-extrabold">Feature</th>
+              <th className="p-3 text-left font-bold">Feature</th>
               {columns.map((column) => (
-                <th className="p-3 font-extrabold" key={column}>{column}</th>
+                <th className="p-3 font-bold" key={column}>{column}</th>
               ))}
             </tr>
           </thead>
@@ -880,7 +880,7 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
             {rows.map((row) => (
               <tr className="border-b border-border" key={row[0]}>
                 {row.map((cell, index) => (
-                  <td className={`p-3 ${index === 0 ? "text-left font-extrabold" : "font-semibold text-muted-foreground"}`} key={`${row[0]}-${index}-${cell}`}>
+                  <td className={`p-3 ${index === 0 ? "text-left font-bold" : "font-semibold text-muted-foreground"}`} key={`${row[0]}-${index}-${cell}`}>
                     {cell === "Yes" ? <CheckCircle2 className="mx-auto size-5 text-buy" /> : cell === "No" ? <XCircle className="mx-auto size-5 text-avoid" /> : cell}
                   </td>
                 ))}
@@ -895,7 +895,7 @@ function ComparisonTable({ alternatives, product }: { alternatives: AlternativeP
 
 function NeedsPanel({ alternatives, product }: { alternatives: AlternativeProduct[]; product: ProductData }) {
   const needs = [
-    ["Travel", alternatives[0].name, "Best all-around upgrade for most buyers", Plane, "bg-[#f0ecff] text-[#4f46e5]"],
+    ["Travel", alternatives[0].name, "Best all-around upgrade for most buyers", Plane, "bg-soft-value text-value"],
     ["Calls", product.name, "Keep this one if its current strengths matter most", Phone, "bg-soft-buy text-buy"],
     ["Gym", alternatives[1].name, "Best lighter or better-value option", Dumbbell, "bg-blue-50 text-blue-600"],
     ["Budget", alternatives[1].name, "Most value-focused recommendation", CircleDollarSign, "bg-soft-wait text-accent"],
@@ -904,14 +904,14 @@ function NeedsPanel({ alternatives, product }: { alternatives: AlternativeProduc
 
   return (
     <BentoCard className="p-4">
-      <h2 className="mb-4 text-base font-extrabold">
+      <h2 className="mb-4 text-base font-bold">
         Best for your needs <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="grid gap-3">
         {needs.map(([need, item, body, Icon, tone]) => (
           <div className={`grid grid-cols-[34px_100px_1fr_18px] items-center gap-3 rounded-xl p-3 ${tone}`} key={need}>
             <Icon className="size-5" />
-            <span className="font-extrabold">{need}</span>
+            <span className="font-bold">{need}</span>
             <span className="text-sm font-semibold text-foreground">
               {item}
               <span className="block text-xs font-medium text-muted-foreground">{body}</span>
@@ -927,14 +927,14 @@ function NeedsPanel({ alternatives, product }: { alternatives: AlternativeProduc
 function MoreAlternatives({ alternatives, moreAlternatives }: { alternatives: AlternativeProduct[]; moreAlternatives: string[][] }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="mb-4 text-base font-extrabold">More top alternatives</h2>
+      <h2 className="mb-4 text-base font-bold">More top alternatives</h2>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {moreAlternatives.map(([name, price, score], index) => (
           <BentoCard className="flex items-center gap-4 p-4 shadow-none hover:translate-y-0" key={name}>
             <img alt={name} className="size-14 object-contain mix-blend-multiply" src={alternatives[index % alternatives.length].image} />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-extrabold">{name}</p>
-              <p className="text-sm font-extrabold">{price} <span className="ml-2 text-[#4f46e5]">{score}</span></p>
+              <p className="truncate text-sm font-bold">{name}</p>
+              <p className="text-sm font-bold">{price} <span className="ml-2 text-value">{score}</span></p>
             </div>
             <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
           </BentoCard>
@@ -972,16 +972,16 @@ export default async function AlternativesPage({
         <main className="p-4 lg:p-5">
           <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Alternatives</h1>
+            <h1 className="text-4xl font-bold tracking-tight">Alternatives</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
               AI-ranked alternatives and side-by-side product comparisons
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Share2 className="size-4" /> Share
             </Button>
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
@@ -1006,13 +1006,13 @@ export default async function AlternativesPage({
           <HighlightCard icon={CircleDollarSign} product={alternatives[1]} title="Best Budget Pick" />
           <HighlightCard icon={Star} product={alternatives[2]} title="Best Premium Pick" />
     <BentoCard className="p-4">
-            <p className="flex items-center gap-2 text-sm font-extrabold">
+            <p className="flex items-center gap-2 text-sm font-bold">
               <span className="grid size-7 place-items-center rounded-full bg-soft-wait text-accent">
                 <Sparkles className="size-4" />
               </span>
               Comparison Coverage
             </p>
-            <p className="mt-7 text-center text-5xl font-extrabold text-accent">26</p>
+            <p className="mt-7 text-center text-5xl font-bold text-accent">26</p>
             <p className="mt-1 text-center text-lg font-semibold">matching products</p>
             <p className="mt-3 text-center text-sm font-medium text-muted-foreground">Continuously updated</p>
     </BentoCard>
@@ -1020,7 +1020,7 @@ export default async function AlternativesPage({
 
           <section className="mt-4 grid gap-4 xl:grid-cols-[1.45fr_1fr]">
           <BentoCard className="p-4">
-            <h2 className="mb-4 text-base font-extrabold">
+            <h2 className="mb-4 text-base font-bold">
               Top AI Alternatives <Info className="inline size-4 text-muted-foreground" />
             </h2>
             <div className="grid gap-4 md:grid-cols-2">

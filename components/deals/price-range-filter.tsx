@@ -15,7 +15,7 @@ export default function PriceRangeFilter() {
 
   return (
     <section>
-      <h3 className="mb-3 text-xs font-extrabold text-foreground">
+      <h3 className="mb-3 text-xs font-bold text-foreground">
         Price Range <span className="text-muted-foreground">(i)</span>
       </h3>
 
@@ -42,12 +42,12 @@ export default function PriceRangeFilter() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-white px-3 text-xs font-extrabold text-foreground">
-          <span className="font-extrabold text-muted-foreground">$</span>
+        <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-white px-3 text-xs font-bold text-foreground">
+          <span className="font-bold text-muted-foreground">$</span>
           {MIN_PRICE}
         </div>
-        <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-white px-3 text-xs font-extrabold text-foreground">
-          <span className="font-extrabold text-muted-foreground">$</span>
+        <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-white px-3 text-xs font-bold text-foreground">
+          <span className="font-bold text-muted-foreground">$</span>
           {maxPrice === MAX_PRICE ? "1000+" : maxPrice}
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function PriceRangeFilter() {
         .deal-price-range::-webkit-slider-thumb {
           appearance: none;
           background: #ffffff;
-          border: 4px solid #6d28d9;
+          border: 4px solid var(--value);
           border-radius: 999px;
           cursor: pointer;
           height: 14px;
@@ -93,7 +93,7 @@ export default function PriceRangeFilter() {
 
         .deal-price-range::-moz-range-thumb {
           background: #ffffff;
-          border: 4px solid #6d28d9;
+          border: 4px solid var(--value);
           border-radius: 999px;
           cursor: pointer;
           height: 14px;

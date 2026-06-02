@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Space_Grotesk } from "next/font/google";
+import { Manrope, Sora } from "next/font/google";
 import Providers from "@/app/providers";
 import "./globals.css";
 
-const geist = Geist({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-geist",
+  variable: "--font-sora",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} ${spaceGrotesk.variable} min-h-screen overflow-x-hidden bg-background font-sans text-foreground antialiased`}>
+      <body className={`${sora.variable} ${manrope.variable} min-h-screen overflow-x-hidden bg-background font-sans text-foreground antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

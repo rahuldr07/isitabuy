@@ -32,13 +32,13 @@ This is the main map for the IsItABuy project. Start here when you want context 
 - Product: AI-powered shopping advisor with buy, wait, avoid, and better alternative verdicts.
 - Current state: frontend-only Next.js prototype with static demo data.
 - Main user actions: search product, compare items, inspect verdict, track price, save/watch items, analyze receipts, ask shopping assistant.
-- Stack: Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui, Material Symbols, Plus Jakarta Sans.
+- Stack: Next.js 16 App Router, React 19, TypeScript, Tailwind CSS v4, shadcn/ui, lucide-react, Sora, and Manrope.
 - Verification: use `npm.cmd run build` and `npm.cmd run lint` on this Windows machine.
 
 ## Important Local Files
 
 - `app/page.tsx` - landing page composition.
-- `app/layout.tsx` - root metadata, font, Material Symbols, shadcn providers.
+- `app/layout.tsx` - root metadata, Sora/Manrope font loading, shadcn providers.
 - `app/globals.css` - Tailwind v4 theme, custom utilities, shadcn theme variables.
 - `app/components/` - app-specific shared components.
 - `components/ui/` - shadcn/ui primitives.

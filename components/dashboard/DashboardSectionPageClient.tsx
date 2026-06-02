@@ -126,7 +126,7 @@ function Logo() {
       <span className="grid size-9 place-items-center rounded-2xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-black tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+      <span className="text-xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </Link>
   );
 }
@@ -149,7 +149,7 @@ function SectionSidebar({ onNavigate }: { onNavigate?: () => void }) {
               asChild
               variant="ghost"
               className={cn(
-                "h-11 justify-start rounded-xl px-3 text-sm font-black",
+                "h-11 justify-start rounded-xl px-3 text-sm font-bold",
                 active ? "bg-[var(--isitabuy-green-soft)] text-emerald-700 hover:bg-[var(--isitabuy-green-soft)]" : "text-[var(--isitabuy-muted)] hover:bg-slate-50 hover:text-[var(--isitabuy-ink)]",
               )}
               aria-current={active ? "page" : undefined}
@@ -169,14 +169,14 @@ function SectionSidebar({ onNavigate }: { onNavigate?: () => void }) {
             <BadgeDollarSign className="size-4" aria-hidden="true" />
           </span>
           <div className="min-w-0">
-            <p className="text-xs font-black text-emerald-700">Total Saved</p>
-            <p className="font-numeric mt-0.5 text-2xl font-black text-[var(--isitabuy-ink)]">$312.45</p>
+            <p className="text-xs font-bold text-emerald-700">Total Saved</p>
+            <p className="font-numeric mt-0.5 text-2xl font-bold text-[var(--isitabuy-ink)]">$312.45</p>
             <p className="mt-0.5 text-[0.68rem] font-bold leading-4 text-emerald-800/80">Across tracked purchases</p>
           </div>
         </div>
       </div>
-      <div className="mt-auto shrink-0 rounded-2xl border border-[#ead8bb] bg-[linear-gradient(135deg,#fffaf1,#f4e8d6)] p-4 shadow-[0_14px_34px_rgb(105_72_34/0.08)]">
-        <p className="text-sm font-black">Premium protection</p>
+      <div className="mt-auto shrink-0 rounded-2xl border border-brand-amber/25 bg-[linear-gradient(135deg,#fffaf1,#f4e8d6)] p-4 shadow-[0_14px_34px_rgb(105_72_34/0.08)]">
+        <p className="text-sm font-bold">Premium protection</p>
         <p className="mt-2 text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">Alerts, warranties, and better alternatives stay organized here.</p>
       </div>
     </div>
@@ -245,12 +245,12 @@ export default function DashboardSectionPageClient({ section }: { section: Dashb
                       aria-label="Search IsItABuy"
                     />
                   </div>
-                  <Button className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5" onClick={() => runSearch()}>
+                  <Button className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5" onClick={() => runSearch()}>
                     Search
                   </Button>
                 </div>
                 <div className="flex items-center justify-between gap-2 lg:justify-end">
-                  <Button variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-black" onClick={() => navigate("/dashboard/saved")}>
+                  <Button variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-bold" onClick={() => navigate("/dashboard/saved")}>
                     <Heart className="size-4" aria-hidden="true" />
                     Saved
                   </Button>
@@ -263,16 +263,16 @@ export default function DashboardSectionPageClient({ section }: { section: Dashb
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-[min(22rem,calc(100vw-2rem))] p-2">
                       <div className="flex items-center justify-between gap-3 px-2 py-2">
-                        <p className="text-sm font-black">Notifications</p>
-                        <Button variant="ghost" size="sm" className="h-7 rounded-full text-xs font-black" onClick={() => setNotificationsRead(true)}>
+                        <p className="text-sm font-bold">Notifications</p>
+                        <Button variant="ghost" size="sm" className="h-7 rounded-full text-xs font-bold" onClick={() => setNotificationsRead(true)}>
                           Mark all read
                         </Button>
                       </div>
                       {notifications.map((item) => (
                         <div key={item.id} className="rounded-xl p-2 hover:bg-slate-50">
-                          <p className="text-sm font-black">{item.title}</p>
+                          <p className="text-sm font-bold">{item.title}</p>
                           <p className="mt-1 text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">{item.description}</p>
-                          <Button variant="outline" size="sm" className="mt-2 h-8 rounded-full text-xs font-black" onClick={() => item.route ? navigate(item.route) : notify(item.title, item.description)}>
+                          <Button variant="outline" size="sm" className="mt-2 h-8 rounded-full text-xs font-bold" onClick={() => item.route ? navigate(item.route) : notify(item.title, item.description)}>
                             View
                           </Button>
                         </div>
@@ -283,14 +283,14 @@ export default function DashboardSectionPageClient({ section }: { section: Dashb
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" className="h-10 gap-2 rounded-full px-2" aria-label="Open account menu">
                         <Avatar size="lg" className="size-9">
-                          <AvatarFallback className="bg-[var(--isitabuy-green-soft)] text-sm font-black text-emerald-700">{dashboardUser.initials}</AvatarFallback>
+                          <AvatarFallback className="bg-[var(--isitabuy-green-soft)] text-sm font-bold text-emerald-700">{dashboardUser.initials}</AvatarFallback>
                         </Avatar>
                         <ChevronDown className="size-4" aria-hidden="true" />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-56">
                       <div className="px-2 py-2">
-                        <p className="text-sm font-black">{dashboardUser.name}</p>
+                        <p className="text-sm font-bold">{dashboardUser.name}</p>
                         <p className="text-xs font-semibold text-[var(--isitabuy-muted)]">{dashboardUser.email}</p>
                       </div>
                       <DropdownMenuSeparator />
@@ -307,23 +307,23 @@ export default function DashboardSectionPageClient({ section }: { section: Dashb
           </header>
 
           <main className="mx-auto grid w-full max-w-[1440px] gap-5 px-4 py-5 sm:px-5 lg:px-8 lg:py-6">
-            <section className="overflow-hidden rounded-[1.45rem] border border-[#e8d8c0] bg-[linear-gradient(135deg,#fffdf8_0%,#f7efe3_48%,#fffaf1_100%)] p-5 shadow-[0_22px_60px_rgb(110_76_37/0.11)] sm:p-6">
+            <section className="overflow-hidden rounded-[1.45rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--card)_0%,var(--soft-wait)_52%,var(--card)_100%)] p-5 shadow-[0_22px_60px_rgb(110_76_37/0.11)] sm:p-6">
               <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-[#9a6829]">{copy.eyebrow}</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">{copy.eyebrow}</p>
                   <div className="mt-3 flex items-center gap-3">
                     <span className="grid size-12 place-items-center rounded-2xl bg-white text-emerald-700 shadow-sm">
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
-                    <h1 className="text-3xl font-black tracking-tight sm:text-4xl">{copy.title}</h1>
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{copy.title}</h1>
                   </div>
-                  <p className="mt-3 max-w-3xl text-sm font-semibold leading-6 text-[#75614a]">{copy.subtitle}</p>
+                  <p className="mt-3 max-w-3xl text-sm font-semibold leading-6 text-muted-foreground">{copy.subtitle}</p>
                 </div>
                 <div className="grid gap-2 sm:grid-cols-3 lg:min-w-[28rem]">
                   {quickStats.map((stat) => (
-                    <div key={stat.label} className="rounded-2xl border border-[#ead8bb] bg-white/82 p-4 shadow-sm">
-                      <p className="font-numeric text-2xl font-black">{stat.value}</p>
-                      <p className="mt-1 text-xs font-black text-[#80613c]">{stat.label}</p>
+                    <div key={stat.label} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-4 shadow-sm">
+                      <p className="font-numeric text-2xl font-bold">{stat.value}</p>
+                      <p className="mt-1 text-xs font-bold text-muted-foreground">{stat.label}</p>
                     </div>
                   ))}
                 </div>
@@ -365,12 +365,12 @@ function SavedSection({ runSearch }: { runSearch: (value?: string) => void }) {
       <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
         <CardContent className="grid gap-3 p-5 sm:grid-cols-2 lg:grid-cols-4">
           {savedProducts.map((product) => (
-            <Link key={product.id} href={buildProductUrl(product.slug)} className="group rounded-2xl border border-[var(--isitabuy-line)] p-3 transition hover:-translate-y-0.5 hover:bg-[#f7efe3] hover:shadow-[var(--isitabuy-card-shadow)]">
+            <Link key={product.id} href={buildProductUrl(product.slug)} className="group rounded-2xl border border-[var(--isitabuy-line)] p-3 transition hover:-translate-y-0.5 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)]">
               <span className="relative grid aspect-square place-items-center overflow-hidden rounded-2xl bg-slate-50 text-[var(--isitabuy-purple)]">
                 {product.imageSrc ? <Image src={product.imageSrc} alt="" fill sizes="180px" className="object-contain p-3" /> : <PackageCheck className="size-8" aria-hidden="true" />}
               </span>
-              <Badge className={cn("mt-3 rounded-full border px-2 py-0.5 text-[0.65rem] font-black", getVerdictStyles(product.verdict))}>{product.verdict}</Badge>
-              <h2 className="mt-2 line-clamp-2 text-sm font-black">{product.name}</h2>
+              <Badge className={cn("mt-3 rounded-full border px-2 py-0.5 text-[0.65rem] font-bold", getVerdictStyles(product.verdict))}>{product.verdict}</Badge>
+              <h2 className="mt-2 line-clamp-2 text-sm font-bold">{product.name}</h2>
               <p className="font-numeric mt-1 text-sm font-bold text-[var(--isitabuy-muted)]">{formatPrice(product.currentPrice)} · Score {product.aiBuyScore}</p>
             </Link>
           ))}
@@ -385,20 +385,20 @@ function WatchlistSection() {
   return (
     <section className="grid gap-4 lg:grid-cols-3">
       {watchlistProducts.map((product) => (
-        <Card key={product.id} className="rounded-[1.35rem] border border-[#ead8bb] bg-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f7efe3] hover:shadow-[var(--isitabuy-card-shadow)]">
+        <Card key={product.id} className="rounded-[1.35rem] border border-brand-amber/25 bg-white shadow-sm transition hover:-translate-y-0.5 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)]">
           <CardContent className="p-5">
-            <Badge className={cn("rounded-full border text-[0.68rem] font-black", getStatusStyles(product.status))}>{product.status}</Badge>
-            <h2 className="mt-4 text-xl font-black">{product.name}</h2>
-            <p className="font-numeric mt-3 text-3xl font-black">{formatPrice(product.currentPrice)}</p>
+            <Badge className={cn("rounded-full border text-[0.68rem] font-bold", getStatusStyles(product.status))}>{product.status}</Badge>
+            <h2 className="mt-4 text-xl font-bold">{product.name}</h2>
+            <p className="font-numeric mt-3 text-3xl font-bold">{formatPrice(product.currentPrice)}</p>
             <p className="font-numeric mt-1 text-sm font-semibold text-[var(--isitabuy-muted)]">Target {formatPrice(product.targetPrice)}</p>
             <div className="mt-5 h-2 rounded-full bg-slate-100">
               <div className="h-2 rounded-full bg-emerald-500" style={{ width: `${product.aiBuyScore}%` }} />
             </div>
             <div className="mt-5 flex gap-2">
-              <Button asChild className="h-9 rounded-full bg-[var(--isitabuy-orange)] text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]">
+              <Button asChild className="h-9 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
                 <Link href={buildProductUrl(product.slug)}>View</Link>
               </Button>
-              <Button variant="outline" className="h-9 rounded-full text-xs font-black" onClick={() => notify("Alert draft opened", `IsItABuy would create a target alert for ${product.name}.`)}>
+              <Button variant="outline" className="h-9 rounded-full text-xs font-bold" onClick={() => notify("Alert draft opened", `IsItABuy would create a target alert for ${product.name}.`)}>
                 Track price
               </Button>
             </div>
@@ -413,16 +413,16 @@ function AlertsSection() {
   return (
     <section className="grid gap-3 xl:grid-cols-2">
       {smartActions.filter((action) => action.type === "price-drop" || action.type === "alert-suggestion" || action.type === "better-alternative").map((action) => (
-        <Card key={action.id} className="rounded-[1.35rem] border border-[#ead8bb] bg-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f7efe3] hover:shadow-[var(--isitabuy-card-shadow)]">
+        <Card key={action.id} className="rounded-[1.35rem] border border-brand-amber/25 bg-white shadow-sm transition hover:-translate-y-0.5 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)]">
           <CardContent className="p-5">
-            <p className="text-xs font-black uppercase tracking-[0.14em] text-[#9a6829]">Alert intelligence</p>
-            <h2 className="mt-3 text-xl font-black">{action.title}</h2>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">Alert intelligence</p>
+            <h2 className="mt-3 text-xl font-bold">{action.title}</h2>
             <p className="mt-2 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{action.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
-              <Button asChild className="h-9 rounded-full bg-[var(--isitabuy-orange)] text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]">
+              <Button asChild className="h-9 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
                 <Link href={action.productSlug ? buildProductUrl(action.productSlug) : "/search"}>View</Link>
               </Button>
-              <Button variant="outline" className="h-9 rounded-full text-xs font-black" onClick={() => notify("Alert saved", "IsItABuy saved this alert preference in demo mode.")}>
+              <Button variant="outline" className="h-9 rounded-full text-xs font-bold" onClick={() => notify("Alert saved", "IsItABuy saved this alert preference in demo mode.")}>
                 Save alert
               </Button>
             </div>
@@ -464,39 +464,39 @@ function ReceiptsSection() {
   return (
     <section className="grid gap-5">
       <section className="grid gap-4 xl:grid-cols-12">
-        <Card className="overflow-hidden rounded-[1.35rem] border border-[#e3cfad] bg-[linear-gradient(135deg,#fffdf8,#f7efe3)] shadow-[0_20px_48px_rgb(105_72_34/0.1)] xl:col-span-7">
+        <Card className="overflow-hidden rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--card),var(--soft-wait))] shadow-[0_20px_48px_rgb(105_72_34/0.1)] xl:col-span-7">
           <CardContent className="grid min-h-[19rem] gap-5 p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_15rem]">
             <div className="flex min-w-0 flex-col">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#9a6829]">Receipt inbox</p>
-              <h2 className="mt-3 max-w-xl text-3xl font-black tracking-tight">Upload once. IsItABuy tracks the rest.</h2>
-              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[#75614a]">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">Receipt inbox</p>
+              <h2 className="mt-3 max-w-xl text-3xl font-bold tracking-tight">Upload once. IsItABuy tracks the rest.</h2>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-muted-foreground">
                 Add a receipt to extract items, link product verdicts, watch return windows, and keep warranties from getting buried.
               </p>
               <div className="mt-auto flex flex-wrap gap-2 pt-5">
-                <Button asChild className="h-10 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]">
+                <Button asChild className="h-10 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
                   <Link href="/receipts">Upload receipt</Link>
                 </Button>
-                <Button variant="outline" className="h-10 rounded-full border-[#dec9aa] bg-white px-4 text-xs font-black hover:bg-[#fff4df]" onClick={saveDemoReceipt}>
+                <Button variant="outline" className="h-10 rounded-full border-brand-amber/35 bg-white px-4 text-xs font-bold hover:bg-soft-wait" onClick={saveDemoReceipt}>
                   Use demo receipt
                 </Button>
               </div>
             </div>
-            <div className="grid rounded-[1.15rem] border border-dashed border-[#d5bb91] bg-white/78 p-4">
+            <div className="grid rounded-[1.15rem] border border-dashed border-brand-amber/35 bg-white/78 p-4">
               <span className="grid size-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
                 <Upload className="size-5" aria-hidden="true" />
               </span>
               <div className="mt-5 grid gap-3">
-                <div className="rounded-2xl border border-[#ead8bb] bg-[#fffaf2] p-3">
-                  <p className="text-xs font-black text-[#80613c]">Next receipt</p>
-                  <p className="mt-1 font-black">Image or PDF</p>
+                <div className="rounded-2xl border border-brand-amber/25 bg-soft-wait p-3">
+                  <p className="text-xs font-bold text-muted-foreground">Next receipt</p>
+                  <p className="mt-1 font-bold">Image or PDF</p>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="rounded-2xl border border-[#ead8bb] bg-white p-3">
-                    <p className="font-numeric text-xl font-black">5</p>
+                  <div className="rounded-2xl border border-brand-amber/25 bg-white p-3">
+                    <p className="font-numeric text-xl font-bold">5</p>
                     <p className="text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">Items extracted</p>
                   </div>
-                  <div className="rounded-2xl border border-[#ead8bb] bg-white p-3">
-                    <p className="font-numeric text-xl font-black">$22</p>
+                  <div className="rounded-2xl border border-brand-amber/25 bg-white p-3">
+                    <p className="font-numeric text-xl font-bold">$22</p>
                     <p className="text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">Savings found</p>
                   </div>
                 </div>
@@ -505,23 +505,23 @@ function ReceiptsSection() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-[1.35rem] border border-[#ead8bb] bg-white shadow-sm xl:col-span-5">
+        <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-white shadow-sm xl:col-span-5">
           <CardContent className="grid h-full gap-3 p-5">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.14em] text-[#9a6829]">Needs attention</p>
-                <h2 className="mt-2 text-2xl font-black">1 receipt is ready</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">Needs attention</p>
+                <h2 className="mt-2 text-2xl font-bold">1 receipt is ready</h2>
               </div>
               <span className="grid size-10 place-items-center rounded-2xl bg-amber-50 text-amber-700">
                 <FileCheck2 className="size-5" aria-hidden="true" />
               </span>
             </div>
-            <button type="button" onClick={() => notify("Target receipt", "Receipt review will open here in demo mode.")} className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-left transition hover:bg-[#f2e3cc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
+            <button type="button" onClick={() => notify("Target receipt", "Receipt review will open here in demo mode.")} className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-left transition hover:bg-soft-wait focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="font-black">Target receipt</p>
+                <p className="font-bold">Target receipt</p>
                 <Badge className="rounded-full border border-amber-200 bg-white text-amber-700">Ready for review</Badge>
               </div>
-              <p className="mt-2 text-sm font-semibold leading-6 text-[#75614a]">5 items extracted. Confirm matches to unlock savings suggestions.</p>
+              <p className="mt-2 text-sm font-semibold leading-6 text-muted-foreground">5 items extracted. Confirm matches to unlock savings suggestions.</p>
             </button>
             <div className="grid grid-cols-3 gap-2">
               {[
@@ -529,8 +529,8 @@ function ReceiptsSection() {
                 { label: "Warranties", value: "9" },
                 { label: "Return alerts", value: "2" },
               ].map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-[var(--isitabuy-line)] bg-[#fffdf8] p-3">
-                  <p className="font-numeric text-xl font-black">{stat.value}</p>
+                <div key={stat.label} className="rounded-2xl border border-[var(--isitabuy-line)] bg-card p-3">
+                  <p className="font-numeric text-xl font-bold">{stat.value}</p>
                   <p className="mt-1 text-[0.68rem] font-bold leading-4 text-[var(--isitabuy-muted)]">{stat.label}</p>
                 </div>
               ))}
@@ -543,35 +543,35 @@ function ReceiptsSection() {
         <CardContent className="grid gap-3 p-5 sm:p-6">
           <div className="mb-1 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <h2 className="text-2xl font-black tracking-tight">Receipt ledger</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Receipt ledger</h2>
               <p className="mt-1 text-sm font-semibold text-[var(--isitabuy-muted)]">Purchases linked to savings, warranties, and product verdicts.</p>
             </div>
-            <Button variant="outline" className="h-9 rounded-full border-[#dec9aa] bg-white text-xs font-black hover:bg-[#fff4df]" onClick={() => notify("Receipt filters", "Full receipt filters will be connected in a later pass.")}>
+            <Button variant="outline" className="h-9 rounded-full border-brand-amber/35 bg-white text-xs font-bold hover:bg-soft-wait" onClick={() => notify("Receipt filters", "Full receipt filters will be connected in a later pass.")}>
               Filter receipts
             </Button>
           </div>
           {purchaseSummaries.map((purchase) => (
-            <div key={purchase.id} className="grid gap-4 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#dec9aa] hover:bg-[#fffaf2] hover:shadow-[var(--isitabuy-card-shadow)] lg:grid-cols-[minmax(0,1.35fr)_0.7fr_0.7fr_auto] lg:items-center">
+            <div key={purchase.id} className="grid gap-4 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 transition hover:-translate-y-0.5 hover:border-brand-amber/35 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)] lg:grid-cols-[minmax(0,1.35fr)_0.7fr_0.7fr_auto] lg:items-center">
               <div className="min-w-0">
-                <h2 className="truncate font-black">{purchase.productName}</h2>
+                <h2 className="truncate font-bold">{purchase.productName}</h2>
                 <p className="mt-1 text-sm font-semibold text-[var(--isitabuy-muted)]">{purchase.store} · {formatDate(purchase.orderDate)} · paid {formatPrice(purchase.paidPrice)}</p>
               </div>
-              <div className="rounded-2xl border border-[#ead8bb] bg-[#fffdf8] px-3 py-2">
-                <p className="text-[0.68rem] font-black uppercase tracking-[0.12em] text-[#9a6829]">Paid</p>
-                <p className="font-numeric mt-1 text-sm font-black">{formatPrice(purchase.paidPrice)}</p>
+              <div className="rounded-2xl border border-brand-amber/25 bg-card px-3 py-2">
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.12em] text-accent">Paid</p>
+                <p className="font-numeric mt-1 text-sm font-bold">{formatPrice(purchase.paidPrice)}</p>
               </div>
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2">
-                <p className="text-[0.68rem] font-black uppercase tracking-[0.12em] text-emerald-700">Saved</p>
-                <p className="font-numeric mt-1 text-sm font-black text-emerald-700">{formatPrice(purchase.savedAmount)}</p>
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.12em] text-emerald-700">Saved</p>
+                <p className="font-numeric mt-1 text-sm font-bold text-emerald-700">{formatPrice(purchase.savedAmount)}</p>
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
                 <Badge className={cn("rounded-full border", purchase.warrantyStatus === "expiring" ? "border-amber-200 bg-amber-50 text-amber-700" : purchase.warrantyStatus === "active" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-slate-50 text-slate-600")}>
                   {purchase.warrantyStatus === "expiring" ? "Warranty expiring" : purchase.warrantyStatus === "active" ? "Warranty active" : "No warranty"}
                 </Badge>
-                <Button asChild variant="outline" className="h-9 rounded-full text-xs font-black">
+                <Button asChild variant="outline" className="h-9 rounded-full text-xs font-bold">
                   <Link href={buildProductUrl(purchase.productSlug)}>Product</Link>
                 </Button>
-                <Button variant="outline" className="h-9 rounded-full text-xs font-black" onClick={() => notify("Receipt details", `${purchase.productName} receipt details will open here.`)}>
+                <Button variant="outline" className="h-9 rounded-full text-xs font-bold" onClick={() => notify("Receipt details", `${purchase.productName} receipt details will open here.`)}>
                   Details
                 </Button>
               </div>
@@ -580,18 +580,18 @@ function ReceiptsSection() {
         </CardContent>
       </Card>
       <div className="grid gap-5">
-      <Card className="rounded-[1.35rem] border border-[#ead8bb] bg-[linear-gradient(135deg,#fffaf1,#f7efe3)] shadow-sm">
+      <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--soft-wait),var(--card))] shadow-sm">
         <CardContent className="p-5">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-xl font-black">Review queue</h2>
-            <FileCheck2 className="size-5 text-[#9a6829]" aria-hidden="true" />
+            <h2 className="text-xl font-bold">Review queue</h2>
+            <FileCheck2 className="size-5 text-accent" aria-hidden="true" />
           </div>
           <div className="mt-4 grid gap-3">
             {reviewQueue.map((item) => (
-              <button key={item.title} type="button" onClick={() => notify(item.title, `${item.detail} is ready in demo mode.`)} className="rounded-2xl border border-[#ead8bb] bg-white/82 p-3 text-left transition hover:bg-[#f2e3cc] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
-                <p className="font-black">{item.title}</p>
+              <button key={item.title} type="button" onClick={() => notify(item.title, `${item.detail} is ready in demo mode.`)} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3 text-left transition hover:bg-soft-wait focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
+                <p className="font-bold">{item.title}</p>
                 <p className="mt-1 text-xs font-bold text-[var(--isitabuy-muted)]">{item.detail}</p>
-                <span className={cn("mt-3 inline-flex rounded-full border px-2.5 py-1 text-[0.68rem] font-black", item.tone)}>{item.status}</span>
+                <span className={cn("mt-3 inline-flex rounded-full border px-2.5 py-1 text-[0.68rem] font-bold", item.tone)}>{item.status}</span>
               </button>
             ))}
           </div>
@@ -601,33 +601,33 @@ function ReceiptsSection() {
       <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
         <CardContent className="p-5">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-xl font-black">Return windows</h2>
+            <h2 className="text-xl font-bold">Return windows</h2>
             <RotateCcw className="size-5 text-amber-600" aria-hidden="true" />
           </div>
           <div className="mt-4 grid gap-3">
             {returnWindows.map((item) => (
               <button key={item.title} type="button" onClick={() => notify("Return reminder", `${item.title} has ${item.days} days left.`)} className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--isitabuy-line)] p-3 text-left transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-black">{item.title}</span>
+                  <span className="block truncate text-sm font-bold">{item.title}</span>
                   <span className="mt-1 block text-xs font-semibold text-[var(--isitabuy-muted)]">{item.store}</span>
                 </span>
-                <span className="font-numeric shrink-0 rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">{item.days} days</span>
+                <span className="font-numeric shrink-0 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">{item.days} days</span>
               </button>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      <Card className="rounded-[1.35rem] border border-[#ead8bb] bg-[linear-gradient(135deg,#fffaf1,#f7efe3)] shadow-sm">
+      <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--soft-wait),var(--card))] shadow-sm">
         <CardContent className="p-5">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="text-xl font-black">Warranty tracker</h2>
-            <Clock3 className="size-5 text-[#9a6829]" aria-hidden="true" />
+            <h2 className="text-xl font-bold">Warranty tracker</h2>
+            <Clock3 className="size-5 text-accent" aria-hidden="true" />
           </div>
           <div className="mt-4 grid gap-3">
             {warrantySummaries.map((warranty) => (
-              <Link key={warranty.id} href={buildProductUrl(warranty.productSlug)} className="rounded-2xl border border-[#ead8bb] bg-white/82 p-3 transition hover:bg-[#f2e3cc]">
-                <p className="font-black">{warranty.productName}</p>
+              <Link key={warranty.id} href={buildProductUrl(warranty.productSlug)} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3 transition hover:bg-soft-wait">
+                <p className="font-bold">{warranty.productName}</p>
                 <p className="mt-1 text-xs font-bold text-[var(--isitabuy-muted)]">Expires in {warranty.expiresInDays} days</p>
               </Link>
             ))}
@@ -650,14 +650,14 @@ function CompareHistorySection() {
   return (
     <section className="grid gap-3">
       {compares.map((item) => (
-        <Link key={item.slug} href={buildCompareUrl(item.slug)} className="group rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f7efe3] hover:shadow-[var(--isitabuy-card-shadow)]">
+        <Link key={item.slug} href={buildCompareUrl(item.slug)} className="group rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)]">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.14em] text-[#9a6829]">Compared recently</p>
-              <h2 className="mt-2 text-xl font-black">{item.title}</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">Compared recently</p>
+              <h2 className="mt-2 text-xl font-bold">{item.title}</h2>
               <p className="mt-2 text-sm font-semibold text-[var(--isitabuy-muted)]">{item.verdict}</p>
             </div>
-            <ArrowRight className="size-5 shrink-0 text-[#b58a51] transition group-hover:translate-x-1" aria-hidden="true" />
+            <ArrowRight className="size-5 shrink-0 text-accent transition group-hover:translate-x-1" aria-hidden="true" />
           </div>
         </Link>
       ))}
@@ -668,10 +668,10 @@ function CompareHistorySection() {
 function ChatSection({ prompt, setPrompt, runSearch }: { prompt: string; setPrompt: (value: string) => void; runSearch: (value?: string) => void }) {
   return (
     <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(20rem,0.42fr)]">
-      <Card className="rounded-[1.35rem] border border-[#ead8bb] bg-white shadow-sm">
+      <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-white shadow-sm">
         <CardContent className="p-5">
-          <div className="rounded-2xl border border-[#ead8bb] bg-[#fffaf2] p-4">
-            <p className="text-sm font-black">IsItABuy assistant</p>
+          <div className="rounded-2xl border border-brand-amber/25 bg-soft-wait p-4">
+            <p className="text-sm font-bold">IsItABuy assistant</p>
             <p className="mt-2 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">Ask about saved products, price timing, alternatives, or receipts. Demo answers are routed into product search.</p>
           </div>
           <div className="mt-4 flex gap-2">
@@ -691,10 +691,10 @@ function SettingsSection() {
   return (
     <section className="grid gap-3 md:grid-cols-2">
       {settings.map((setting) => (
-        <button key={setting} type="button" className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-[#f7efe3] hover:shadow-[var(--isitabuy-card-shadow)]" onClick={() => notify("Preference updated", `${setting} stays enabled in this demo.`)}>
+        <button key={setting} type="button" className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)]" onClick={() => notify("Preference updated", `${setting} stays enabled in this demo.`)}>
           <span className="flex items-center justify-between gap-3">
             <span>
-              <span className="block text-lg font-black">{setting}</span>
+              <span className="block text-lg font-bold">{setting}</span>
               <span className="mt-2 block text-sm font-semibold text-[var(--isitabuy-muted)]">Enabled for Ahmed&rsquo;s Premium dashboard.</span>
             </span>
             <span className="grid size-10 place-items-center rounded-full bg-emerald-50 text-emerald-700">
@@ -709,14 +709,14 @@ function SettingsSection() {
 
 function PremiumAside({ title, body, action, onClick }: { title: string; body: string; action: string; onClick: () => void }) {
   return (
-    <Card className="rounded-[1.35rem] border border-[#ead8bb] bg-[linear-gradient(135deg,#fffaf1,#f7efe3)] shadow-[0_18px_48px_rgb(105_72_34/0.08)]">
+    <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--soft-wait),var(--card))] shadow-[0_18px_48px_rgb(105_72_34/0.08)]">
       <CardContent className="p-5">
         <span className="grid size-12 place-items-center rounded-2xl bg-white text-emerald-700 shadow-sm">
           <Sparkles className="size-5" aria-hidden="true" />
         </span>
-        <h2 className="mt-5 text-xl font-black">{title}</h2>
-        <p className="mt-3 text-sm font-semibold leading-6 text-[#75614a]">{body}</p>
-        <Button className="mt-5 h-10 rounded-full bg-[var(--isitabuy-orange)] text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onClick}>
+        <h2 className="mt-5 text-xl font-bold">{title}</h2>
+        <p className="mt-3 text-sm font-semibold leading-6 text-muted-foreground">{body}</p>
+        <Button className="mt-5 h-10 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onClick}>
           {action}
         </Button>
       </CardContent>

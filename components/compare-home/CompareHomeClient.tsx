@@ -107,7 +107,7 @@ function Logo() {
       <span className="grid size-8 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+      <span className="text-xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -181,7 +181,7 @@ function Header({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-10 gap-2 rounded-full px-2" aria-label="Open profile menu">
-                  <span className="grid size-8 place-items-center rounded-full bg-purple-100 text-sm font-black text-[var(--isitabuy-purple)]">A</span>
+                  <span className="grid size-8 place-items-center rounded-full bg-purple-100 text-sm font-bold text-[var(--isitabuy-purple)]">A</span>
                   <ChevronDown className="size-4" aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
@@ -196,7 +196,7 @@ function Header({
           </div>
         </div>
       </div>
-      <nav className="mx-auto flex max-w-[92.5rem] items-center gap-7 overflow-x-auto px-4 text-xs font-black text-[var(--isitabuy-ink)] lg:px-8" aria-label="Categories">
+      <nav className="mx-auto flex max-w-[92.5rem] items-center gap-7 overflow-x-auto px-4 text-xs font-bold text-[var(--isitabuy-ink)] lg:px-8" aria-label="Categories">
         {compareHomeCategories.map((category) => (
           <button
             key={category.id}
@@ -273,10 +273,10 @@ function SuggestionList({
         >
           <ProductArtwork product={product} />
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-black text-[var(--isitabuy-ink)]">{product.name}</span>
+            <span className="block truncate text-sm font-bold text-[var(--isitabuy-ink)]">{product.name}</span>
             <span className="mt-0.5 block text-xs font-semibold text-[var(--isitabuy-muted)]">{product.category} • {formatPrice(product.price)}</span>
           </span>
-          <Badge className="border-0 bg-emerald-50 text-[0.68rem] font-black text-emerald-700">{product.aiBuyScore}</Badge>
+          <Badge className="border-0 bg-emerald-50 text-[0.68rem] font-bold text-emerald-700">{product.aiBuyScore}</Badge>
         </button>
       ))}
     </div>
@@ -313,8 +313,8 @@ function ProductCompareSlot({
       <div className="flex min-h-[13.25rem] flex-col justify-between rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 shadow-sm">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[0.7rem] font-black uppercase text-[var(--isitabuy-orange)]">Product {slot}</p>
-            <h3 className="mt-1 text-lg font-black leading-tight text-[var(--isitabuy-ink)]">{product.name}</h3>
+            <p className="text-[0.7rem] font-bold uppercase text-[var(--isitabuy-orange)]">Product {slot}</p>
+            <h3 className="mt-1 text-lg font-bold leading-tight text-[var(--isitabuy-ink)]">{product.name}</h3>
             <p className="mt-1 text-xs font-semibold text-[var(--isitabuy-muted)]">{product.category}</p>
           </div>
           <ProductArtwork product={product} />
@@ -323,24 +323,24 @@ function ProductCompareSlot({
           <div className="grid grid-cols-3 gap-2 rounded-xl bg-slate-50 p-3 text-center">
             <span>
               <span className="block text-[0.65rem] font-bold text-[var(--isitabuy-muted)]">Rating</span>
-              <span className="mt-1 flex items-center justify-center gap-1 text-sm font-black text-[var(--isitabuy-ink)]">
+              <span className="mt-1 flex items-center justify-center gap-1 text-sm font-bold text-[var(--isitabuy-ink)]">
                 <Star className="size-3.5 fill-[var(--isitabuy-orange)] text-[var(--isitabuy-orange)]" aria-hidden="true" />
                 {product.rating.toFixed(1)}
               </span>
             </span>
             <span>
               <span className="block text-[0.65rem] font-bold text-[var(--isitabuy-muted)]">Price</span>
-              <span className="font-numeric mt-1 block text-sm font-black text-[var(--isitabuy-ink)]">{formatPrice(product.price)}</span>
+              <span className="font-numeric mt-1 block text-sm font-bold text-[var(--isitabuy-ink)]">{formatPrice(product.price)}</span>
             </span>
             <span>
               <span className="block text-[0.65rem] font-bold text-[var(--isitabuy-muted)]">AI Score</span>
-              <span className="font-numeric mt-1 block text-sm font-black text-[var(--isitabuy-green)]">{product.aiBuyScore}</span>
+              <span className="font-numeric mt-1 block text-sm font-bold text-[var(--isitabuy-green)]">{product.aiBuyScore}</span>
             </span>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <Button
               variant="outline"
-              className="h-9 rounded-full text-xs font-black"
+              className="h-9 rounded-full text-xs font-bold"
               onClick={() => {
                 onRemove();
                 onActivate();
@@ -349,7 +349,7 @@ function ProductCompareSlot({
             >
               Change
             </Button>
-            <Button variant="ghost" className="h-9 rounded-full text-xs font-black text-red-600 hover:bg-red-50 hover:text-red-700" onClick={onRemove}>
+            <Button variant="ghost" className="h-9 rounded-full text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700" onClick={onRemove}>
               Remove
             </Button>
           </div>
@@ -360,8 +360,8 @@ function ProductCompareSlot({
 
   return (
     <div className="relative min-h-[13.25rem] rounded-2xl border border-dashed border-[var(--isitabuy-line)] bg-[linear-gradient(135deg,#fff,#fbfcff)] p-4">
-      <p className="text-[0.7rem] font-black uppercase text-[var(--isitabuy-orange)]">Product {slot}</p>
-      <h3 className="mt-2 text-sm font-black leading-5 text-[var(--isitabuy-ink)] sm:text-base">
+      <p className="text-[0.7rem] font-bold uppercase text-[var(--isitabuy-orange)]">Product {slot}</p>
+      <h3 className="mt-2 text-sm font-bold leading-5 text-[var(--isitabuy-ink)] sm:text-base">
         {isA ? "Search product, paste link, or scan barcode" : "Search product, paste link, or let AI choose"}
       </h3>
       <p className="mt-2 text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">
@@ -394,7 +394,7 @@ function ProductCompareSlot({
           <button
             key={item.id}
             type="button"
-            className="rounded-full bg-slate-100 px-3 py-1.5 text-[0.7rem] font-black text-[var(--isitabuy-ink)] transition hover:bg-orange-50 hover:text-[var(--isitabuy-orange)]"
+            className="rounded-full bg-slate-100 px-3 py-1.5 text-[0.7rem] font-bold text-[var(--isitabuy-ink)] transition hover:bg-orange-50 hover:text-[var(--isitabuy-orange)]"
             onClick={() => onSelect(item)}
           >
             {item.name.split(" ")[0]}
@@ -415,7 +415,7 @@ function AiCompareAssistant({
   return (
     <Card className="h-full overflow-hidden rounded-[1.5rem] border border-purple-100 bg-[image:var(--isitabuy-violet-panel)] shadow-[var(--isitabuy-card-shadow)]">
       <CardContent className="flex h-full flex-col p-5 sm:p-6">
-        <div className="flex items-center gap-2 text-xs font-black uppercase text-[var(--isitabuy-ink)]">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase text-[var(--isitabuy-ink)]">
           <span className="grid size-8 place-items-center rounded-xl bg-white text-[var(--isitabuy-purple)] shadow-sm">
             <Sparkles className="size-4" aria-hidden="true" />
           </span>
@@ -432,20 +432,20 @@ function AiCompareAssistant({
                 <span className={cn("grid size-9 place-items-center rounded-xl", row.tone)}>
                   <Icon className="size-4" aria-hidden="true" />
                 </span>
-                <span className="text-sm font-black text-[var(--isitabuy-ink)]">{row.label}</span>
+                <span className="text-sm font-bold text-[var(--isitabuy-ink)]">{row.label}</span>
               </div>
             );
           })}
         </div>
         <div className="mt-auto pt-5">
-          <Button className="h-11 w-full rounded-full bg-[var(--isitabuy-orange)] text-sm font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onDemo}>
+          <Button className="h-11 w-full rounded-full bg-[var(--isitabuy-orange)] text-sm font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onDemo}>
             Try demo comparison
             <ArrowRight className="size-4" aria-hidden="true" />
           </Button>
           <button
             type="button"
             onClick={onCommission}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full text-xs font-black text-[var(--isitabuy-purple)] hover:text-violet-700"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full text-xs font-bold text-[var(--isitabuy-purple)] hover:text-violet-700"
           >
             <ShieldCheck className="size-4" aria-hidden="true" />
             Commission-blind recommendations
@@ -460,8 +460,8 @@ function SectionHeader({ kicker, title, body }: { kicker: string; title: string;
   return (
     <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
       <div>
-        <p className="text-[0.72rem] font-black uppercase text-[var(--isitabuy-orange)]">{kicker}</p>
-        <h2 className="mt-1 text-2xl font-black tracking-tight text-[var(--isitabuy-ink)]">{title}</h2>
+        <p className="text-[0.72rem] font-bold uppercase text-[var(--isitabuy-orange)]">{kicker}</p>
+        <h2 className="mt-1 text-2xl font-bold tracking-tight text-[var(--isitabuy-ink)]">{title}</h2>
       </div>
       {body ? <p className="max-w-md text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{body}</p> : null}
     </div>
@@ -599,7 +599,7 @@ export default function CompareHomeClient() {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[image:var(--isitabuy-hero-glow)]" aria-hidden="true" />
           <div className="relative mx-auto max-w-[92.5rem] px-4 pb-8 pt-7 lg:px-8 lg:pb-10 lg:pt-9">
             <div className="mb-6 max-w-5xl">
-              <h1 className="font-heading text-[2rem] font-extrabold leading-[1.05] tracking-normal text-[var(--isitabuy-ink)] sm:text-[clamp(2.15rem,4.1vw,3.65rem)]">
+              <h1 className="font-heading text-[2rem] font-bold leading-[1.05] tracking-normal text-[var(--isitabuy-ink)] sm:text-[clamp(2.15rem,4.1vw,3.65rem)]">
                 <span className="block sm:inline">Compare products </span>
                 <span className="block sm:inline">before you <span className="text-[var(--isitabuy-orange)]">buy</span></span>
               </h1>
@@ -613,10 +613,10 @@ export default function CompareHomeClient() {
                 <CardContent className="p-4 sm:p-6">
                   <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
                     <div>
-                      <p className="text-xs font-black uppercase text-[var(--isitabuy-orange)]">Start your comparison</p>
-                      <h2 className="mt-1 text-2xl font-black text-[var(--isitabuy-ink)]">Choose two products</h2>
+                      <p className="text-xs font-bold uppercase text-[var(--isitabuy-orange)]">Start your comparison</p>
+                      <h2 className="mt-1 text-2xl font-bold text-[var(--isitabuy-ink)]">Choose two products</h2>
                     </div>
-                    <Badge className="w-fit border-0 bg-[var(--isitabuy-green-soft)] px-3 py-1 text-xs font-black text-emerald-700">
+                    <Badge className="w-fit border-0 bg-[var(--isitabuy-green-soft)] px-3 py-1 text-xs font-bold text-emerald-700">
                       AI Buy Score ready
                     </Badge>
                   </div>
@@ -634,7 +634,7 @@ export default function CompareHomeClient() {
                       onActivate={() => setState((current) => ({ ...current, activeSlot: "A" }))}
                     />
                     <div className="flex items-center justify-center">
-                      <span className="grid size-12 place-items-center rounded-full border border-[var(--isitabuy-line)] bg-white text-sm font-black text-[var(--isitabuy-purple)] shadow-sm lg:size-14">
+                      <span className="grid size-12 place-items-center rounded-full border border-[var(--isitabuy-line)] bg-white text-sm font-bold text-[var(--isitabuy-purple)] shadow-sm lg:size-14">
                         VS
                       </span>
                     </div>
@@ -652,17 +652,17 @@ export default function CompareHomeClient() {
                   </div>
 
                   <div className="mt-5 grid gap-3 lg:grid-cols-[1fr_1fr_auto_auto]">
-                    <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] text-sm font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={compareNow}>
+                    <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] text-sm font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={compareNow}>
                       Compare Now
                       <ArrowRight className="size-4" aria-hidden="true" />
                     </Button>
-                    <Button variant="outline" className="h-11 rounded-full text-sm font-black" onClick={findAlternative}>
+                    <Button variant="outline" className="h-11 rounded-full text-sm font-bold" onClick={findAlternative}>
                       Find Better Alternative
                     </Button>
-                    <Button variant="ghost" className="h-11 rounded-full px-5 text-sm font-black" onClick={swapProducts}>
+                    <Button variant="ghost" className="h-11 rounded-full px-5 text-sm font-bold" onClick={swapProducts}>
                       Swap
                     </Button>
-                    <Button variant="ghost" className="h-11 rounded-full px-5 text-sm font-black text-red-600 hover:bg-red-50 hover:text-red-700" onClick={clearProducts}>
+                    <Button variant="ghost" className="h-11 rounded-full px-5 text-sm font-bold text-red-600 hover:bg-red-50 hover:text-red-700" onClick={clearProducts}>
                       Clear
                     </Button>
                   </div>
@@ -680,7 +680,7 @@ export default function CompareHomeClient() {
                           key={item.label}
                           type="button"
                           onClick={item.action}
-                          className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white px-3 py-2 text-xs font-black text-[var(--isitabuy-ink)] shadow-sm transition hover:-translate-y-px hover:border-orange-200 hover:text-[var(--isitabuy-orange)]"
+                          className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white px-3 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-sm transition hover:-translate-y-px hover:border-orange-200 hover:text-[var(--isitabuy-orange)]"
                         >
                           <Icon className="size-3.5" aria-hidden="true" />
                           {item.label}
@@ -712,7 +712,7 @@ export default function CompareHomeClient() {
                 <span className="grid size-10 place-items-center rounded-xl bg-orange-100 text-[var(--isitabuy-orange)]">
                   <ShoppingBag className="size-5" aria-hidden="true" />
                 </span>
-                <span className="mt-4 block text-sm font-black text-[var(--isitabuy-ink)]">{category}</span>
+                <span className="mt-4 block text-sm font-bold text-[var(--isitabuy-ink)]">{category}</span>
                 <span className="mt-1 block text-xs font-semibold text-[var(--isitabuy-muted)]">Find similar products fast</span>
               </button>
             ))}
@@ -733,12 +733,12 @@ export default function CompareHomeClient() {
                   className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--isitabuy-card-shadow)]"
                   onClick={() => loadTrending(productA.id, productB.id)}
                 >
-                  <span className="text-sm font-black text-[var(--isitabuy-ink)]">{item.title}</span>
+                  <span className="text-sm font-bold text-[var(--isitabuy-ink)]">{item.title}</span>
                   <span className="mt-1 block text-xs font-semibold text-[var(--isitabuy-muted)]">{item.note}</span>
                   <span className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-                    <span className="truncate rounded-xl bg-slate-50 px-3 py-2 text-center text-xs font-black">{productA.name}</span>
-                    <span className="text-[0.65rem] font-black text-[var(--isitabuy-purple)]">VS</span>
-                    <span className="truncate rounded-xl bg-slate-50 px-3 py-2 text-center text-xs font-black">{productB.name}</span>
+                    <span className="truncate rounded-xl bg-slate-50 px-3 py-2 text-center text-xs font-bold">{productA.name}</span>
+                    <span className="text-[0.65rem] font-bold text-[var(--isitabuy-purple)]">VS</span>
+                    <span className="truncate rounded-xl bg-slate-50 px-3 py-2 text-center text-xs font-bold">{productB.name}</span>
                   </span>
                 </button>
               );
@@ -749,13 +749,13 @@ export default function CompareHomeClient() {
         <section className="mx-auto max-w-[92.5rem] px-4 pb-10 lg:px-8">
           <div className="grid gap-5 rounded-[1.5rem] border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-warm-strip)] p-5 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="text-xs font-black uppercase text-[var(--isitabuy-orange)]">Start with one product</p>
-              <h2 className="mt-1 text-2xl font-black text-[var(--isitabuy-ink)]">Already have a product in mind?</h2>
+              <p className="text-xs font-bold uppercase text-[var(--isitabuy-orange)]">Start with one product</p>
+              <h2 className="mt-1 text-2xl font-bold text-[var(--isitabuy-ink)]">Already have a product in mind?</h2>
               <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">
                 Add one product and IsItABuy can suggest similar-price, cheaper, premium, or better-reviewed alternatives.
               </p>
             </div>
-            <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] px-5 text-sm font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={findAlternative}>
+            <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] px-5 text-sm font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={findAlternative}>
               Find an alternative
             </Button>
           </div>
@@ -768,7 +768,7 @@ export default function CompareHomeClient() {
               <button
                 key={`recent-${item.id}`}
                 type="button"
-                className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 text-left text-sm font-black shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--isitabuy-card-shadow)]"
+                className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 text-left text-sm font-bold shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--isitabuy-card-shadow)]"
                 onClick={() => loadTrending(item.productA, item.productB, "Recent comparison loaded.")}
               >
                 {item.title}
@@ -788,8 +788,8 @@ export default function CompareHomeClient() {
               "Generate the AI Buy Score",
             ].map((step, index) => (
               <div key={step} className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 shadow-sm">
-                <span className="grid size-9 place-items-center rounded-full bg-[var(--isitabuy-green-soft)] text-sm font-black text-emerald-700">{index + 1}</span>
-                <h3 className="mt-4 text-sm font-black text-[var(--isitabuy-ink)]">{step}</h3>
+                <span className="grid size-9 place-items-center rounded-full bg-[var(--isitabuy-green-soft)] text-sm font-bold text-emerald-700">{index + 1}</span>
+                <h3 className="mt-4 text-sm font-bold text-[var(--isitabuy-ink)]">{step}</h3>
               </div>
             ))}
           </div>
@@ -809,7 +809,7 @@ export default function CompareHomeClient() {
                     <Icon className="size-5" aria-hidden="true" />
                   </span>
                   <span>
-                    <span className="block text-sm font-black text-[var(--isitabuy-ink)]">{item.title}</span>
+                    <span className="block text-sm font-bold text-[var(--isitabuy-ink)]">{item.title}</span>
                     <span className="mt-1 block text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">{item.body}</span>
                   </span>
                 </div>

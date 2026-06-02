@@ -80,7 +80,7 @@ export function showBuyVerdictToast() {
 export function showAiAnalysisToast() {
   return showToast("AI analysis ready", {
     description: "Price, trust, quality, and value all support the buy verdict.",
-    icon: <Sparkles className="size-4 text-[#622395]" aria-hidden="true" />,
+    icon: <Sparkles className="size-4 text-value" aria-hidden="true" />,
   });
 }
 
@@ -94,6 +94,6 @@ export function showPriceAlertToast() {
 export function showCompareToast(title: string, description: string) {
   return showToast(title, {
     description,
-    icon: <Sparkles className="size-4 text-[#622395]" aria-hidden="true" />,
+    icon: <Sparkles className="size-4 text-value" aria-hidden="true" />,
   });
 }

@@ -490,7 +490,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
                             {authMode === "login" ? (
                               <Link
                                 href="/signin?mode=forgot"
-                                className="truncate text-sm font-extrabold text-buy"
+                                className="truncate text-sm font-bold text-buy"
                                 onClick={(event) => {
                                   event.preventDefault();
                                   switchAuthMode("forgot");

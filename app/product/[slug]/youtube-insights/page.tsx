@@ -280,15 +280,15 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-6 lg:flex lg:flex-col">
       <Link className="mb-9 flex items-center gap-4" href="/deals">
-        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
+        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-value to-brand-navy text-sm font-bold text-white shadow-sm">
           BW
         </span>
-        <span className="text-3xl font-extrabold leading-none tracking-tight">
+        <span className="text-3xl font-bold leading-none tracking-tight">
           BuyWise<br />
-          <span className="text-[#4f46e5]">AI</span>
+          <span className="text-value">AI</span>
         </span>
       </Link>
-      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-bold text-value hover:bg-soft-value" href="/deals">
         <ArrowLeft className="size-4" />
         Back to Deals
       </Link>
@@ -301,7 +301,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           return (
             <Link
               className={`flex h-13 items-center gap-4 rounded-xl px-4 text-sm font-semibold ${
-                active ? "bg-[#f0ecff] text-[#4f46e5]" : "text-foreground hover:bg-muted"
+                active ? "bg-soft-value text-value" : "text-foreground hover:bg-muted"
               }`}
               href={href}
               key={label}
@@ -319,8 +319,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
             <User className="size-5" />
           </span>
           <div>
-            <p className="text-sm font-extrabold">Alex Thompson</p>
-            <Badge className="mt-1 bg-[#f0ecff] text-[#4f46e5]">Pro</Badge>
+            <p className="text-sm font-bold">Alex Thompson</p>
+            <Badge className="mt-1 bg-soft-value text-value">Pro</Badge>
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
@@ -336,17 +336,17 @@ function TopControls({ product }: { product: ProductData }) {
         <span className="grid size-16 place-items-center rounded-lg bg-muted">
           <img alt={product.name} className="max-h-14 w-full object-contain mix-blend-multiply" src={product.image} />
         </span>
-        <span className="min-w-0 truncate text-left text-lg font-extrabold">{product.name}</span>
+        <span className="min-w-0 truncate text-left text-lg font-bold">{product.name}</span>
         <ChevronDown className="size-4 text-muted-foreground" />
       </button>
       <div className="flex flex-wrap gap-3">
-        <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+        <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
           <Users className="size-4" /> Creator Type <ChevronDown className="size-4" />
         </Button>
-        <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+        <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
           <CalendarDays className="size-4" /> Last 6 months <ChevronDown className="size-4" />
         </Button>
-        <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+        <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
           <CirclePlay className="size-4" /> All Videos <ChevronDown className="size-4" />
         </Button>
       </div>
@@ -357,7 +357,7 @@ function TopControls({ product }: { product: ProductData }) {
 function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; label: string; value: React.ReactNode; note: string; tone: string }) {
   return (
     <BentoCard className="p-4">
-      <p className="flex items-center gap-2 text-sm font-extrabold">
+      <p className="flex items-center gap-2 text-sm font-bold">
         {label} <Info className="size-4 text-muted-foreground" />
       </p>
       <div className="mt-4 flex items-center gap-4">
@@ -365,7 +365,7 @@ function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; 
           <Icon className="size-7" />
         </span>
         <div>
-          <div className="text-3xl font-extrabold leading-none">{value}</div>
+          <div className="text-3xl font-bold leading-none">{value}</div>
           <p className="mt-3 text-sm font-semibold text-buy">{note}</p>
         </div>
       </div>
@@ -376,7 +376,7 @@ function StatCard({ icon: Icon, label, value, note, tone }: { icon: LucideIcon; 
 function SentimentTrend() {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Creator sentiment trend <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4 lg:grid-cols-[1.5fr_0.9fr]">
@@ -404,7 +404,7 @@ function SentimentTrend() {
         <div className="grid place-items-center">
           <div className="grid size-36 place-items-center rounded-full" style={{ background: "conic-gradient(#22c55e 0 72%, #fbbf24 72% 93%, #ef4444 93% 100%)" }}>
             <div className="grid size-24 place-items-center rounded-full bg-white text-center">
-              <span className="text-3xl font-extrabold">72%</span>
+              <span className="text-3xl font-bold">72%</span>
               <span className="-mt-4 text-xs font-semibold">Positive</span>
             </div>
           </div>
@@ -422,7 +422,7 @@ function SentimentTrend() {
 function MentionList({ title, items, positive }: { title: string; items: InsightProfile["pros"]; positive: boolean }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         {title} <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4">
@@ -436,7 +436,7 @@ function MentionList({ title, items, positive }: { title: string; items: Insight
           </div>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
         View all {positive ? "pros" : "cons"} <ChevronDown className="-rotate-90 size-4" />
       </a>
     </BentoCard>
@@ -444,7 +444,7 @@ function MentionList({ title, items, positive }: { title: string; items: Insight
 }
 
 function VideoCard({ video }: { video: ReturnType<typeof videoSet>[number] }) {
-  const toneClass = video.tone === "Positive" ? "bg-soft-buy text-buy" : video.tone === "Balanced" ? "bg-soft-wait text-accent" : "bg-[#f0ecff] text-[#4f46e5]";
+  const toneClass = video.tone === "Positive" ? "bg-soft-buy text-buy" : video.tone === "Balanced" ? "bg-soft-wait text-accent" : "bg-soft-value text-value";
 
   return (
     <div>
@@ -455,16 +455,16 @@ function VideoCard({ video }: { video: ReturnType<typeof videoSet>[number] }) {
             <Play className="ml-1 size-6 fill-white" />
           </span>
         </span>
-        <span className="absolute bottom-2 right-2 rounded bg-black/75 px-2 py-1 text-xs font-extrabold text-white">{video.duration}</span>
+        <span className="absolute bottom-2 right-2 rounded bg-black/75 px-2 py-1 text-xs font-bold text-white">{video.duration}</span>
       </div>
-      <h3 className="mt-3 line-clamp-2 text-sm font-extrabold leading-5">{video.title}</h3>
+      <h3 className="mt-3 line-clamp-2 text-sm font-bold leading-5">{video.title}</h3>
       <p className="mt-2 text-xs font-semibold text-muted-foreground">
-        {video.creator} <span className="text-[#4f46e5]">●</span>
+        {video.creator} <span className="text-value">●</span>
       </p>
       <p className="mt-1 text-xs font-medium text-muted-foreground">{video.views} · {video.age}</p>
       <Badge className={`mt-3 ${toneClass}`}>{video.tone}</Badge>
       <p className="mt-3 text-xs font-medium leading-5 text-muted-foreground">
-        <span className="font-extrabold text-foreground">AI Summary:</span> {video.summary}
+        <span className="font-bold text-foreground">AI Summary:</span> {video.summary}
       </p>
     </div>
   );
@@ -473,7 +473,7 @@ function VideoCard({ video }: { video: ReturnType<typeof videoSet>[number] }) {
 function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Top videos analyzed <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -481,7 +481,7 @@ function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
           <VideoCard key={video.title} video={video} />
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
         View all videos analyzed <ChevronDown className="-rotate-90 size-4" />
       </a>
     </BentoCard>
@@ -491,13 +491,13 @@ function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
 function Takeaways({ items }: { items: string[] }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Key takeaways from creators <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4">
         {items.map((item) => (
           <p className="flex gap-3 text-sm font-medium leading-6" key={item}>
-            <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#4f46e5]" />
+            <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-value" />
             {item}
           </p>
         ))}
@@ -509,15 +509,15 @@ function Takeaways({ items }: { items: string[] }) {
 function QuoteHighlights({ quotes }: { quotes: InsightProfile["quotes"] }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Quote highlights <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         {quotes.map(([quote, source]) => (
           <div className="rounded-xl bg-[#faf8ff] p-4" key={quote}>
-            <p className="text-3xl font-black leading-none text-[#7c3aed]">“</p>
+            <p className="text-3xl font-bold leading-none text-value">“</p>
             <p className="mt-2 text-sm font-medium leading-6">“{quote}”</p>
-            <p className="mt-4 text-xs font-extrabold text-[#4f46e5]">— {source}</p>
+            <p className="mt-4 text-xs font-bold text-value">— {source}</p>
           </div>
         ))}
       </div>
@@ -550,16 +550,16 @@ export default async function YoutubeInsightsPage({
         <main className="p-4 lg:p-5">
           <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight">YouTube Insights</h1>
+            <h1 className="text-4xl font-bold tracking-tight">YouTube Insights</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
               Creator opinions, video summaries, and recurring product mentions
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Share2 className="size-4" /> Share
             </Button>
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
@@ -575,7 +575,7 @@ export default async function YoutubeInsightsPage({
           <TopControls product={product} />
 
           <section className="mt-4 grid gap-4 xl:grid-cols-4">
-          <StatCard icon={CirclePlay} label="Videos analyzed" value="126" note="+18 vs last 6 months" tone="bg-[#f0ecff] text-[#4f46e5]" />
+          <StatCard icon={CirclePlay} label="Videos analyzed" value="126" note="+18 vs last 6 months" tone="bg-soft-value text-value" />
           <StatCard icon={Star} label="Average creator rating" value={<><span>4.4</span><span className="text-xl text-muted-foreground"> /5</span></>} note="Very positive" tone="bg-soft-buy text-buy" />
           <StatCard icon={ShieldCheck} label="Most mentioned strength" value={<span className="block max-w-[170px] text-2xl text-blue-600">{profile.strength}</span>} note="Mentioned in 78% of videos" tone="bg-blue-50 text-blue-600" />
           <StatCard icon={AlertTriangle} label="Most mentioned concern" value={<span className="block max-w-[170px] text-2xl text-red-500">{profile.concern}</span>} note="Mentioned in 61% of videos" tone="bg-red-50 text-red-500" />
@@ -596,29 +596,29 @@ export default async function YoutubeInsightsPage({
           </section>
 
           <BentoCard className="mt-4 grid gap-4 p-4 md:grid-cols-[auto_1fr_repeat(4,minmax(110px,1fr))] md:items-center">
-          <span className="grid size-16 place-items-center rounded-full bg-[#f0ecff] text-[#4f46e5]">
+          <span className="grid size-16 place-items-center rounded-full bg-soft-value text-value">
             <Users className="size-8" />
           </span>
           <div>
             <p className="text-sm font-semibold text-muted-foreground">Overall verdict</p>
-            <p className="mt-1 text-xl font-extrabold text-[#4f46e5]">
+            <p className="mt-1 text-xl font-bold text-value">
               Excellent for frequent buyers, but price-sensitive shoppers should compare first.
             </p>
           </div>
           <div className="text-center">
             <p className="text-sm font-semibold text-muted-foreground">Positive</p>
-            <p className="text-2xl font-extrabold text-buy">72%</p>
+            <p className="text-2xl font-bold text-buy">72%</p>
           </div>
           <div className="text-center">
             <p className="text-sm font-semibold text-muted-foreground">Mixed</p>
-            <p className="text-2xl font-extrabold text-accent">21%</p>
+            <p className="text-2xl font-bold text-accent">21%</p>
           </div>
           <div className="text-center">
             <p className="text-sm font-semibold text-muted-foreground">Negative</p>
-            <p className="text-2xl font-extrabold text-red-500">7%</p>
+            <p className="text-2xl font-bold text-red-500">7%</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-extrabold text-[#4f46e5]">87</p>
+            <p className="text-2xl font-bold text-value">87</p>
             <p className="text-sm font-medium text-muted-foreground">unique creators</p>
           </div>
           </BentoCard>

@@ -14,8 +14,8 @@ The project is currently a frontend-only prototype with static demo data. It con
 | UI Library | [React](https://react.dev) | 19.2.4 |
 | Language | [TypeScript](https://www.typescriptlang.org) | ^5 |
 | Styling | [Tailwind CSS](https://tailwindcss.com) | ^4 |
-| Icons | [Material Symbols](https://fonts.google.com/icons) (Google Fonts) |
-| Font | [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) (Google Fonts) |
+| Icons | [lucide-react](https://lucide.dev) + shadcn/ui icon patterns |
+| Font | [Sora](https://fonts.google.com/specimen/Sora) + [Manrope](https://fonts.google.com/specimen/Manrope) via `next/font/google` |
 | Linting | [ESLint](https://eslint.org) ^9 + `eslint-config-next` |
 
 ## Project Structure
@@ -84,13 +84,13 @@ TypeScript path aliases: `@/*` maps to `./*`.
 - Tailwind v4 uses `@import "tailwindcss";` and `@theme` blocks in `globals.css` instead of a traditional `tailwind.config.js`.
 - Custom theme tokens (colors, spacing, shadows, typography) are defined inside `@theme`.
 - Custom utility classes (e.g., `.text-display-xl`, `.shadow-premium`) are defined in `globals.css` after the `@theme` block.
-- Color naming follows Material Design 3 conventions: `surface`, `on-surface`, `surface-container`, `primary-container`, `outline`, `error`, etc.
+- Current palette anchors are deep navy `#00132e`, ink `#111827`, action orange `#ff7300`, amber `#f59e0b`, buy green `#16a34a`, avoid red `#dc2626`, and insight purple `#622395`.
 - Verdict colors: `verdict-buy` (#16a34a), `verdict-wait` (#f59e0b), `verdict-avoid` (#dc2626).
 
 ### Icons
-- Use Google Material Symbols Outlined via a `<link>` in `layout.tsx`.
-- Icons are rendered as `<span className="material-symbols-outlined">icon_name</span>`.
-- Filled variants use the additional `.filled` class.
+- Prefer `lucide-react` icons and existing shadcn/ui icon patterns.
+- Keep any existing retailer/product logos and brand marks visually accurate.
+- Do not add Google Material Symbols font links for new UI.
 
 ## Testing Instructions
 

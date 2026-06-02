@@ -68,39 +68,39 @@ export default function ReceiptUploadPanel() {
   };
 
   return (
-    <BentoCard className="relative min-h-[32rem] border-[#e8d8c0] bg-[linear-gradient(135deg,#fffdf8,#f7efe3_56%,#fffaf1)] p-5 shadow-[0_24px_70px_rgb(110_76_37/0.13)]">
-      <div className="rounded-[1.35rem] border border-[#ead8bb] bg-white/88 p-4 shadow-[0_18px_42px_rgb(105_72_34/0.09)]">
+    <BentoCard className="relative min-h-[32rem] border-brand-amber/25 bg-[linear-gradient(135deg,var(--card),var(--soft-wait)_56%,var(--card))] p-5 shadow-[0_24px_70px_rgb(110_76_37/0.13)]">
+      <div className="rounded-[1.35rem] border border-brand-amber/25 bg-white/88 p-4 shadow-[0_18px_42px_rgb(105_72_34/0.09)]">
         <div className="flex items-start justify-between gap-4">
-          <span className="grid size-12 place-items-center rounded-2xl bg-[#fff4df] text-[#9a6829]">
+          <span className="grid size-12 place-items-center rounded-2xl bg-soft-wait text-accent">
             {processed ? <FileCheck2 className="size-6" aria-hidden="true" /> : <ReceiptText className="size-6" aria-hidden="true" />}
           </span>
-          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">
+          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
             {processed ? "Processed" : "Demo upload"}
           </span>
         </div>
 
-        <h2 className="mt-5 text-2xl font-black">{processed ? `${store} receipt` : "Upload a receipt"}</h2>
-        <p className="mt-2 text-sm font-semibold leading-6 text-[#75614a]">
+        <h2 className="mt-5 text-2xl font-bold">{processed ? `${store} receipt` : "Upload a receipt"}</h2>
+        <p className="mt-2 text-sm font-semibold leading-6 text-muted-foreground">
           {processed ? "5 items extracted. 3 warranties tracked. 1 item needs review." : "Add an image or PDF and IsItABuy will turn it into purchase memory."}
         </p>
 
         <div className="mt-5 grid gap-3">
           <div>
-            <label className="text-xs font-black text-[#80613c]" htmlFor="public-receipt-file">Receipt file</label>
+            <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-file">Receipt file</label>
             <Input
               ref={fileInputRef}
               id="public-receipt-file"
               type="file"
               accept="image/*,application/pdf"
-              className="mt-1 h-11 rounded-xl border-[#ead8bb] bg-[#fffaf2] text-xs font-bold"
+              className="mt-1 h-11 rounded-xl border-brand-amber/25 bg-soft-wait text-xs font-bold"
               onChange={handleFileChange}
             />
-            <p className="mt-1 text-xs font-semibold text-[#75614a]">{fileName || "Image or PDF receipt"}</p>
+            <p className="mt-1 text-xs font-semibold text-muted-foreground">{fileName || "Image or PDF receipt"}</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="text-xs font-black text-[#80613c]" htmlFor="public-receipt-store">Store</label>
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-store">Store</label>
               <select
                 id="public-receipt-store"
                 value={store}
@@ -108,7 +108,7 @@ export default function ReceiptUploadPanel() {
                   setStore(event.target.value);
                   setProcessed(false);
                 }}
-                className="mt-1 h-11 w-full rounded-xl border border-[#ead8bb] bg-[#fffaf2] px-3 text-sm font-bold outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                className="mt-1 h-11 w-full rounded-xl border border-brand-amber/25 bg-soft-wait px-3 text-sm font-bold outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
               >
                 {["Target", "Amazon", "Best Buy", "Walmart", "Nike"].map((option) => (
                   <option key={option} value={option}>{option}</option>
@@ -116,7 +116,7 @@ export default function ReceiptUploadPanel() {
               </select>
             </div>
             <div>
-              <label className="text-xs font-black text-[#80613c]" htmlFor="public-receipt-date">Purchase date</label>
+              <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-date">Purchase date</label>
               <Input
                 id="public-receipt-date"
                 type="date"
@@ -125,13 +125,13 @@ export default function ReceiptUploadPanel() {
                   setPurchaseDate(event.target.value);
                   setProcessed(false);
                 }}
-                className="mt-1 h-11 rounded-xl border-[#ead8bb] bg-[#fffaf2] text-sm font-bold"
+                className="mt-1 h-11 rounded-xl border-brand-amber/25 bg-soft-wait text-sm font-bold"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-black text-[#80613c]" htmlFor="public-receipt-notes">Notes</label>
+            <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-notes">Notes</label>
             <Textarea
               id="public-receipt-notes"
               value={notes}
@@ -140,17 +140,17 @@ export default function ReceiptUploadPanel() {
                 setProcessed(false);
               }}
               placeholder="Optional notes for this purchase..."
-              className="mt-1 min-h-20 rounded-xl border-[#ead8bb] bg-[#fffaf2] text-sm font-semibold"
+              className="mt-1 min-h-20 rounded-xl border-brand-amber/25 bg-soft-wait text-sm font-semibold"
             />
           </div>
         </div>
 
         <div className="mt-5 grid gap-2 sm:grid-cols-2">
-          <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => processReceipt(false)}>
+          <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => processReceipt(false)}>
             <Upload className="size-4" aria-hidden="true" />
             Upload receipt
           </Button>
-          <Button variant="outline" className="h-10 rounded-full border-[#dec9aa] bg-white text-xs font-black hover:bg-[#fff4df]" onClick={() => processReceipt(true)}>
+          <Button variant="outline" className="h-10 rounded-full border-brand-amber/35 bg-white text-xs font-bold hover:bg-soft-wait" onClick={() => processReceipt(true)}>
             Use demo receipt
           </Button>
         </div>
@@ -159,9 +159,9 @@ export default function ReceiptUploadPanel() {
       {processed ? (
         <div className="mt-4 grid gap-2">
           {extractedItems.map((item, index) => (
-            <div key={item} className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-[#ead8bb] bg-white/82 px-3 py-3">
-              <span className="min-w-0 truncate text-sm font-black">{item}</span>
-              <span className="rounded-full bg-[#fff4df] px-2.5 py-1 text-[0.68rem] font-black text-[#80613c]">
+            <div key={item} className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-brand-amber/25 bg-white/82 px-3 py-3">
+              <span className="min-w-0 truncate text-sm font-bold">{item}</span>
+              <span className="rounded-full bg-soft-wait px-2.5 py-1 text-[0.68rem] font-bold text-muted-foreground">
                 {index === 0 ? "Drop found" : index === 1 ? "Warranty" : "Matched"}
               </span>
             </div>
@@ -175,15 +175,15 @@ export default function ReceiptUploadPanel() {
           { label: "Warranties", value: "3" },
           { label: "Return alerts", value: "4" },
         ].map((stat) => (
-          <div key={stat.label} className="rounded-2xl border border-[#ead8bb] bg-white/82 p-3">
-            <p className="font-numeric text-xl font-black">{stat.value}</p>
-            <p className="mt-1 text-[0.65rem] font-black text-[#80613c]">{stat.label}</p>
+          <div key={stat.label} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3">
+            <p className="font-numeric text-xl font-bold">{stat.value}</p>
+            <p className="mt-1 text-[0.65rem] font-bold text-muted-foreground">{stat.label}</p>
           </div>
         ))}
       </div>
 
       {processed ? (
-        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-700">
+        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
           <CheckCircle2 className="size-4" aria-hidden="true" />
           Receipt saved to this demo dashboard.
         </div>

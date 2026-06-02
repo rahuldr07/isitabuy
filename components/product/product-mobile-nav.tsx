@@ -34,7 +34,7 @@ function ProductMobileNav({
           <Link
             aria-current={active ? "page" : undefined}
             className={cn(
-              "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-xs font-extrabold transition-colors",
+              "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-4 text-xs font-bold transition-colors",
               active
                 ? "border-[#d8c3ea] bg-[#f3eafa] text-[#581f86]"
                 : "border-border bg-white text-foreground hover:border-[#d8c3ea] hover:bg-[#fbf7ff] hover:text-[#581f86]",

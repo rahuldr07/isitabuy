@@ -196,15 +196,15 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-6 lg:flex lg:flex-col">
       <Link className="mb-9 flex items-center gap-4" href="/deals">
-        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
+        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-value to-brand-navy text-sm font-bold text-white shadow-sm">
           BW
         </span>
-        <span className="text-3xl font-extrabold leading-none tracking-tight">
+        <span className="text-3xl font-bold leading-none tracking-tight">
           BuyWise<br />
-          <span className="text-[#4f46e5]">AI</span>
+          <span className="text-value">AI</span>
         </span>
       </Link>
-      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-bold text-value hover:bg-soft-value" href="/deals">
         <ArrowLeft className="size-4" />
         Back to Deals
       </Link>
@@ -217,7 +217,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           return (
             <Link
               className={`flex h-13 items-center gap-4 rounded-xl px-4 text-sm font-semibold ${
-                active ? "bg-[#f0ecff] text-[#4f46e5]" : "text-foreground hover:bg-muted"
+                active ? "bg-soft-value text-value" : "text-foreground hover:bg-muted"
               }`}
               href={href}
               key={label}
@@ -236,8 +236,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
               <User className="size-5" />
             </span>
             <div>
-              <p className="text-sm font-extrabold">Alex Thompson</p>
-              <Badge className="mt-1 bg-[#f0ecff] text-[#4f46e5]">Pro</Badge>
+              <p className="text-sm font-bold">Alex Thompson</p>
+              <Badge className="mt-1 bg-soft-value text-value">Pro</Badge>
             </div>
           </div>
           <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
@@ -254,14 +254,14 @@ function TopControls({ product }: { product: ProductData }) {
         <span className="grid size-16 place-items-center rounded-lg bg-muted">
           <img alt={product.name} className="max-h-14 w-full object-contain mix-blend-multiply" src={product.image} />
         </span>
-        <span className="min-w-0 text-left text-lg font-extrabold">{product.name}</span>
+        <span className="min-w-0 text-left text-lg font-bold">{product.name}</span>
         <ChevronDown className="size-4 text-muted-foreground" />
       </button>
       <div className="flex flex-wrap gap-3">
-        <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+        <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
           <Globe className="size-4" /> All Sources <ChevronDown className="size-4" />
         </Button>
-        <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+        <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
           <CalendarDays className="size-4" /> Last 90 days <ChevronDown className="size-4" />
         </Button>
       </div>
@@ -294,8 +294,8 @@ function ScoreCard({
           <Icon className="size-8" />
         </span>
         <div>
-          <p className="text-3xl font-extrabold">{score}</p>
-          <p className="mt-1 text-sm font-extrabold text-buy">{subtext}</p>
+          <p className="text-3xl font-bold">{score}</p>
+          <p className="mt-1 text-sm font-bold text-buy">{subtext}</p>
           <p className="mt-2 text-xs font-semibold text-muted-foreground">{meta}</p>
         </div>
       </div>
@@ -306,14 +306,14 @@ function ScoreCard({
 function SentimentDistribution({ product }: { product: ProductData }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Review Sentiment Distribution <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid items-center gap-4 md:grid-cols-[250px_1fr]">
         <div className="relative mx-auto grid size-44 place-items-center rounded-full border-[28px] border-buy border-l-[#91d9aa] border-t-[#fbbf24]">
-          <div className="absolute -right-1 bottom-10 rounded-full bg-buy px-2 py-1 text-xs font-extrabold text-white">65%</div>
+          <div className="absolute -right-1 bottom-10 rounded-full bg-buy px-2 py-1 text-xs font-bold text-white">65%</div>
           <div className="text-center">
-            <p className="text-4xl font-extrabold">{product.rating}</p>
+            <p className="text-4xl font-bold">{product.rating}</p>
             <p className="text-xs font-semibold text-muted-foreground">Average</p>
             <div className="mt-2 flex text-buy">
               {Array.from({ length: 5 }).map((_, index) => (
@@ -358,7 +358,7 @@ function ListPanel({
 }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         {title} <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid gap-4">
@@ -372,7 +372,7 @@ function ListPanel({
           </div>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
         View more {tone === "good" ? "pros" : "cons"} <ExternalLink className="size-4" />
       </a>
     </BentoCard>
@@ -382,8 +382,8 @@ function ListPanel({
 function AiSummary({ product }: { product: ProductData }) {
   return (
     <BentoCard className="p-4">
-      <h2 className="flex items-center gap-2 text-base font-extrabold">
-        <Sparkles className="size-5 text-[#6d28d9]" /> AI Summary
+      <h2 className="flex items-center gap-2 text-base font-bold">
+        <Sparkles className="size-5 text-value" /> AI Summary
       </h2>
       <p className="mt-4 text-sm font-medium leading-6 text-foreground">
         The {product.name} receives overwhelmingly positive feedback for its exceptional sound quality,
@@ -393,7 +393,7 @@ function AiSummary({ product }: { product: ProductData }) {
         Common criticisms include the high price point and warm ear cups during extended use. A small number of users
         also mention case size and controls as minor drawbacks.
       </p>
-      <Button variant="outline" className="mt-4 h-10 rounded-lg border-[#d8d5ff] bg-[#f8f5ff] px-6 font-extrabold text-[#4f46e5]">
+      <Button variant="outline" className="mt-4 h-10 rounded-lg border-value/30 bg-soft-value px-6 font-bold text-value">
         <Sparkles className="size-4" /> Generate Full Summary
       </Button>
     </BentoCard>
@@ -403,17 +403,17 @@ function AiSummary({ product }: { product: ProductData }) {
 function KeywordsPanel() {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Keyword / Topics <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 flex flex-wrap gap-3">
         {topics.map(([topic, count]) => (
-          <Badge className="rounded-full bg-[#f0ecff] px-4 py-2 text-sm font-semibold text-[#4f46e5]" key={topic}>
+          <Badge className="rounded-full bg-soft-value px-4 py-2 text-sm font-semibold text-value" key={topic}>
             {topic} <span className="ml-2 text-[#756bb6]">{count}</span>
           </Badge>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
         View all topics <ExternalLink className="size-4" />
       </a>
     </BentoCard>
@@ -423,18 +423,18 @@ function KeywordsPanel() {
 function AuthenticityPanel() {
   return (
     <BentoCard className="p-4">
-      <h2 className="text-base font-extrabold">
+      <h2 className="text-base font-bold">
         Review Authenticity <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="mt-4 grid items-center gap-4 sm:grid-cols-[150px_1fr]">
-        <div className="relative grid size-36 place-items-center rounded-full border-[16px] border-[#4f46e5] border-l-[#c4b5fd]">
+        <div className="relative grid size-36 place-items-center rounded-full border-[16px] border-value border-l-[#c4b5fd]">
           <div className="text-center">
-            <p className="text-lg font-extrabold">Low Risk</p>
+            <p className="text-lg font-bold">Low Risk</p>
             <p className="text-xs font-semibold text-muted-foreground">Authenticity Risk</p>
           </div>
         </div>
         <div className="grid gap-4 text-sm font-semibold">
-          <span className="flex justify-between"><span className="text-[#4f46e5]">Low Risk</span> 88%</span>
+          <span className="flex justify-between"><span className="text-value">Low Risk</span> 88%</span>
           <span className="flex justify-between"><span className="text-wait">Moderate Risk</span> 9%</span>
           <span className="flex justify-between"><span className="text-avoid">High Risk</span> 3%</span>
         </div>
@@ -442,7 +442,7 @@ function AuthenticityPanel() {
       <div className="mt-4 rounded-xl bg-[#f4f1ff] p-4 text-sm font-medium leading-6 text-foreground">
         We didn&apos;t find significant signs of fake or incentivized reviews for this product.
         <br />
-        <a className="font-extrabold text-[#4f46e5]" href="#">Learn more about our methodology</a>
+        <a className="font-bold text-value" href="#">Learn more about our methodology</a>
       </div>
     </BentoCard>
   );
@@ -451,7 +451,7 @@ function AuthenticityPanel() {
 function ReviewSnippets() {
   return (
     <BentoCard className="p-4">
-      <h2 className="mb-5 text-base font-extrabold">
+      <h2 className="mb-5 text-base font-bold">
         Recent Review Snippets <Info className="inline size-4 text-muted-foreground" />
       </h2>
       <div className="grid gap-4 xl:grid-cols-4">
@@ -467,7 +467,7 @@ function ReviewSnippets() {
               <span className="text-buy">Verified Purchase</span>
             </div>
             <p className="text-sm font-medium leading-6 text-foreground">{snippet.text}</p>
-            <p className="mt-4 text-sm font-extrabold">{snippet.source}</p>
+            <p className="mt-4 text-sm font-bold">{snippet.source}</p>
           </BentoCard>
         ))}
       </div>
@@ -501,16 +501,16 @@ export default async function ReviewsAiPage({
         <main className="p-4 lg:p-5">
           <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
-            <h1 className="text-4xl font-extrabold tracking-tight">Reviews AI</h1>
+            <h1 className="text-4xl font-bold tracking-tight">Reviews AI</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
               AI-powered review trust, complaints, and sentiment analysis
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Share2 className="size-4" /> Share
             </Button>
-            <Button variant="outline" className="h-11 rounded-lg px-5 font-extrabold">
+            <Button variant="outline" className="h-11 rounded-lg px-5 font-bold">
               <Download className="size-4" /> Export <ChevronDown className="size-4" />
             </Button>
           </div>
@@ -526,7 +526,7 @@ export default async function ReviewsAiPage({
           <TopControls product={product} />
 
           <section className="mt-4 grid gap-4 xl:grid-cols-4">
-          <ScoreCard icon={ShieldCheck} iconClass="bg-[#eee9ff] text-[#4f46e5]" label="Review Trust Score" meta="5 pts vs last 90 days" score={`${trustScore}/100`} subtext="High trust" />
+          <ScoreCard icon={ShieldCheck} iconClass="bg-soft-value text-value" label="Review Trust Score" meta="5 pts vs last 90 days" score={`${trustScore}/100`} subtext="High trust" />
           <ScoreCard icon={Smile} iconClass="bg-soft-buy text-buy" label="Sentiment Score" meta="0.4 vs last 90 days" score={`${product.rating}/5`} subtext="Very Positive" />
           <ScoreCard icon={BadgeCheck} iconClass="bg-blue-100 text-blue-600" label="Verified Review Ratio" meta="8% vs last 90 days" score={`${verifiedRatio}%`} subtext="Verified" />
           <ScoreCard icon={AlertTriangle} iconClass="bg-red-50 text-avoid" label="Common Complaints" meta="Similar vs last 90 days" score="4" subtext="High impact" />

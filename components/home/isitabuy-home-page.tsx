@@ -260,7 +260,7 @@ function Logo() {
       <span className="grid size-7 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-extrabold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+      <span className="text-xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -425,26 +425,27 @@ function HeroSection() {
 
         <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-bold leading-[1.02] tracking-normal text-[var(--isitabuy-ink)]">
           <span className="whitespace-nowrap"><span className="text-[var(--isitabuy-orange)]">Know</span> what to buy before</span>
+          {" "}
           <span className="block">
             you <span className="text-[var(--isitabuy-orange)]">buy.</span>
           </span>
         </h1>
 
-        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur sm:text-base">
-          <span className="grid size-7 place-items-center rounded-lg bg-[var(--isitabuy-orange)] text-white">
-            <ShieldCheck className="size-3.5" aria-hidden="true" />
+        <div className="group mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-orange-200/80 hover:bg-white hover:shadow-[0_16px_36px_rgb(255_122_0/0.14),0_10px_26px_rgb(15_23_42/0.08)] sm:text-base">
+          <span className="grid size-7 place-items-center rounded-lg bg-[var(--isitabuy-orange)] text-white transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:-rotate-6 group-hover:scale-105">
+            <ShieldCheck className="size-3.5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
           </span>
           100% Independent & Commission-Free Scores
         </div>
 
-        <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--isitabuy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
+        <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--isitabuy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-orange-200/80 hover:shadow-[0_26px_64px_rgb(255_122_0/0.16),0_14px_34px_rgb(15_23_42/0.09)] focus-within:-translate-y-0.5 focus-within:border-orange-300/90 focus-within:shadow-[0_28px_70px_rgb(255_122_0/0.2),0_16px_38px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
           <div className="flex flex-col gap-2 lg:h-12 lg:flex-row lg:items-center">
             <div className="relative min-w-0 flex-1">
               <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-800" aria-hidden="true" />
               <Input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Paste a product link, search by name, take a photo or upload an image."
+                placeholder="Paste a link or search product"
                 className="h-10 rounded-full border-transparent bg-white pl-10 pr-4 text-xs font-semibold shadow-none placeholder:text-[var(--isitabuy-muted)] focus-visible:ring-[var(--isitabuy-orange)] lg:h-11 lg:text-sm"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runCheck();
@@ -552,7 +553,7 @@ function HeroToolDialog({
           <div className="mb-1 grid size-12 place-items-center rounded-2xl bg-purple-100 text-[var(--isitabuy-purple)]">
             {activeTool === "scan" ? <ScanBarcode className="size-6" aria-hidden="true" /> : <ImageIcon className="size-6" aria-hidden="true" />}
           </div>
-          <DialogTitle className="text-xl font-extrabold text-[var(--isitabuy-ink)]">Scan or upload product</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-[var(--isitabuy-ink)]">Scan or upload product</DialogTitle>
           <DialogDescription className="text-sm font-medium leading-6 text-[var(--isitabuy-muted)]">
             Use a barcode for exact product matching, or upload a clear product image when you do not have a link.
           </DialogDescription>
@@ -577,13 +578,13 @@ function HeroToolDialog({
           {activeTool === "scan" ? (
             <div>
               <ScanBarcode className="mx-auto size-9 text-[var(--isitabuy-purple)]" aria-hidden="true" />
-              <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">Camera scanner preview</p>
+              <p className="mt-3 text-sm font-bold text-[var(--isitabuy-ink)]">Camera scanner preview</p>
               <p className="mt-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">Camera permissions and live barcode detection will appear here.</p>
             </div>
           ) : (
             <div>
               <ImageIcon className="mx-auto size-9 text-[var(--isitabuy-purple)]" aria-hidden="true" />
-              <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">Drop image here or choose a file</p>
+              <p className="mt-3 text-sm font-bold text-[var(--isitabuy-ink)]">Drop image here or choose a file</p>
               <p className="mt-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">PNG, JPG, and WEBP product photos will be supported.</p>
             </div>
           )}
@@ -624,7 +625,7 @@ function ToolOptionCard({
       onClick={onClick}
     >
       <Icon className="size-5 text-[var(--isitabuy-purple)]" aria-hidden="true" />
-      <p className="mt-3 text-sm font-extrabold text-[var(--isitabuy-ink)]">{title}</p>
+      <p className="mt-3 text-sm font-bold text-[var(--isitabuy-ink)]">{title}</p>
       <p className="mt-1 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{description}</p>
     </button>
   );
@@ -635,11 +636,18 @@ function RetailerStrip() {
     <section id="retailers" className="scroll-reveal mx-auto max-w-6xl px-4 sm:px-6 lg:px-10">
       <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-0">
-          <h2 className="px-4 pt-5 text-center text-lg font-extrabold text-[var(--isitabuy-ink)]">We check millions of products from trusted retailers</h2>
+          <h2 className="px-4 pt-5 text-center text-lg font-bold text-[var(--isitabuy-ink)]">We check millions of products from trusted retailers</h2>
           <div className="mt-4 grid divide-y divide-[var(--isitabuy-line)] border-t border-[var(--isitabuy-line)] sm:grid-cols-5 sm:divide-x sm:divide-y-0">
-            {retailers.map((retailer) => (
+            {retailers.map((retailer, index) => (
               <motion.div key={retailer.name} className="grid h-24 place-items-center px-6" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-                <Image src={retailer.src} alt={`${retailer.name} logo`} width={190} height={72} className="max-h-16 w-full object-contain" />
+                <Image
+                  src={retailer.src}
+                  alt={`${retailer.name} logo`}
+                  width={190}
+                  height={72}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="max-h-16 w-full object-contain"
+                />
               </motion.div>
             ))}
           </div>
@@ -801,10 +809,10 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
       <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--isitabuy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
         <div className="flex flex-col gap-4 p-6">
           <div className="flex h-[120px] items-center justify-center overflow-hidden rounded-xl bg-gray-50">
-            <Image src={product.imageSrc} alt={product.imageAlt} width={150} height={115} className="object-contain" />
+            <Image src={product.imageSrc} alt={product.imageAlt} width={115} height={115} className="object-contain" />
           </div>
           <div>
-            <h2 className="truncate text-[15px] font-black text-gray-900">{product.name}</h2>
+            <h2 className="truncate text-[15px] font-bold text-gray-900">{product.name}</h2>
             <p className="text-sm font-semibold text-gray-400">{product.category}</p>
           </div>
           <div className="flex items-center gap-3">
@@ -817,7 +825,7 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
           <p className="line-clamp-4 text-[13px] font-medium leading-6 text-gray-500">{product.description}</p>
         </div>
         <div className="flex flex-col gap-3 p-6">
-          <h3 className="text-sm font-black text-gray-900">Scores breakdown</h3>
+          <h3 className="text-sm font-bold text-gray-900">Scores breakdown</h3>
           <div className="flex flex-col gap-3">
             {product.scores.map((score) => (
               <ScoreBar key={score.label} item={score} />
@@ -825,7 +833,7 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
           </div>
         </div>
         <div className="flex flex-col gap-4 p-6">
-          <h3 className="text-sm font-black text-gray-900">Price history</h3>
+          <h3 className="text-sm font-bold text-gray-900">Price history</h3>
           <div>
             <p className="font-numeric text-2xl font-bold text-gray-900">${product.currentPrice.toLocaleString()}</p>
             <p className="text-xs font-semibold text-gray-400">Current price</p>
@@ -840,13 +848,13 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
           </div>
         </div>
         <div className="flex flex-col gap-4 p-6">
-          <h3 className="text-sm font-black text-gray-900">Best alternative</h3>
+          <h3 className="text-sm font-bold text-gray-900">Best alternative</h3>
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
             <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
               <Image src={product.alternative.imageSrc} alt={product.alternative.imageAlt} width={52} height={52} className="object-contain" />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-[13px] font-black text-gray-900">{product.alternative.name}</p>
+              <p className="truncate text-[13px] font-bold text-gray-900">{product.alternative.name}</p>
               <p className="font-numeric mt-0.5 text-base font-bold text-gray-900">${product.alternative.price.toFixed(2)}</p>
               <span className="font-numeric mt-1 inline-block rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700">Save ${product.alternative.saving}</span>
             </div>
@@ -878,7 +886,7 @@ function HowItWorks() {
     <section id="how-it-works" className="scroll-reveal mx-auto mt-2 max-w-6xl px-4 sm:px-6 lg:px-10">
       <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-5 py-5">
-          <h2 className="mb-6 text-center text-lg font-extrabold text-[var(--isitabuy-ink)]">How it works</h2>
+          <h2 className="mb-6 text-center text-lg font-bold text-[var(--isitabuy-ink)]">How it works</h2>
           <div className="grid gap-6 md:grid-cols-5">
             {steps.map((step, index) => <StepItem key={step.title} step={step} showArrow={index < steps.length - 1} />)}
           </div>
@@ -897,7 +905,7 @@ function StepItem({ step, showArrow }: { step: IconText; showArrow: boolean }) {
         <Icon className="size-6" aria-hidden="true" />
       </span>
       {showArrow ? <span className="absolute right-[-15%] top-7 hidden w-[30%] border-t border-dashed border-slate-300 md:block" /> : null}
-      <h3 className="mt-4 text-sm font-extrabold text-[var(--isitabuy-ink)]">{step.title}</h3>
+      <h3 className="mt-4 text-sm font-bold text-[var(--isitabuy-ink)]">{step.title}</h3>
       <p className="mx-auto mt-2 max-w-36 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{step.text}</p>
     </article>
   );
@@ -910,7 +918,7 @@ function CategoriesSection() {
     <section id="categories" className="scroll-reveal mx-auto mt-4 max-w-6xl px-4 sm:px-6 lg:px-10">
       <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
         <CardContent className="px-4 py-5">
-          <h2 className="mb-3 text-lg font-extrabold text-[var(--isitabuy-ink)]">Popular categories</h2>
+          <h2 className="mb-3 text-lg font-bold text-[var(--isitabuy-ink)]">Popular categories</h2>
           {visibleCategories.length === 0 ? (
             <div className="grid min-h-40 place-items-center rounded-xl bg-slate-50 text-sm font-bold text-[var(--isitabuy-muted)]">No categories available.</div>
           ) : (
@@ -928,7 +936,7 @@ function CategoriesSection() {
                     <span className={cn("mx-auto grid size-12 place-items-center rounded-2xl", category.tint)}>
                       <Icon className="size-6" aria-hidden="true" />
                     </span>
-                    <span className="mt-3 block truncate text-xs font-extrabold text-[var(--isitabuy-ink)]">{category.label}</span>
+                    <span className="mt-3 block truncate text-xs font-bold text-[var(--isitabuy-ink)]">{category.label}</span>
                   </motion.button>
                 );
               })}
@@ -948,7 +956,7 @@ function TrustSection() {
       <InfoCard title="Our data sources" items={sources} columns />
       <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] py-0 shadow-none">
         <CardContent className="p-8">
-          <h2 className="text-xl font-extrabold text-[var(--isitabuy-ink)]">Our commitment</h2>
+          <h2 className="text-xl font-bold text-[var(--isitabuy-ink)]">Our commitment</h2>
           <p className="mt-4 text-sm font-medium leading-7 text-[var(--isitabuy-muted)]">Our AI scores and recommendations are not influenced by commission. We are here to help you make the best decision.</p>
           <LinkText className="mt-8" label="Learn more about how we score" />
         </CardContent>
@@ -961,7 +969,7 @@ function InfoCard({ title, items, columns = false }: { title: string; items: Ico
   return (
     <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-white py-0 shadow-none">
       <CardContent className="p-6">
-        <h2 className="mb-5 text-xl font-extrabold text-[var(--isitabuy-ink)]">{title}</h2>
+        <h2 className="mb-5 text-xl font-bold text-[var(--isitabuy-ink)]">{title}</h2>
         <div className={cn("grid gap-4", columns && "sm:grid-cols-2")}>
           {items.map((item) => {
             const Icon = item.icon;
@@ -971,7 +979,7 @@ function InfoCard({ title, items, columns = false }: { title: string; items: Ico
                   <Icon className="size-4" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="truncate text-sm font-extrabold text-[var(--isitabuy-ink)]">{item.title}</h3>
+                  <h3 className="truncate text-sm font-bold text-[var(--isitabuy-ink)]">{item.title}</h3>
                   <p className="mt-1 line-clamp-2 text-xs font-medium leading-5 text-[var(--isitabuy-muted)]">{item.text}</p>
                 </div>
               </div>
@@ -1021,7 +1029,7 @@ function Footer() {
         </div>
         {footerColumns.map((column) => (
           <div key={column.title}>
-            <h3 className="text-sm font-extrabold text-[var(--isitabuy-ink)]">{column.title}</h3>
+            <h3 className="text-sm font-bold text-[var(--isitabuy-ink)]">{column.title}</h3>
             <ul className="mt-4 grid gap-3">
               {column.links.map((link) => (
                 <li key={link}><a href={homeHref(link)} className="text-sm font-medium text-[var(--isitabuy-muted)] hover:text-[var(--isitabuy-orange)]">{link}</a></li>
@@ -1030,7 +1038,7 @@ function Footer() {
           </div>
         ))}
         <div>
-          <h3 className="text-sm font-extrabold text-[var(--isitabuy-ink)]">Download</h3>
+          <h3 className="text-sm font-bold text-[var(--isitabuy-ink)]">Download</h3>
           <p className="mt-4 text-sm font-medium text-[var(--isitabuy-muted)]">Get our mobile app</p>
           <div className="mt-4 grid gap-2">
             <StoreButton src="/home/badges/app-store.svg" label="App Store" />
@@ -1053,7 +1061,7 @@ function StoreButton({ src, label }: { src: string; label: string }) {
 
 function LinkText({ label, className }: { label: string; className?: string }) {
   return (
-    <motion.a href="#" className={cn("inline-flex items-center gap-2 text-sm font-extrabold text-[var(--isitabuy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
+    <motion.a href="#" className={cn("inline-flex items-center gap-2 text-sm font-bold text-[var(--isitabuy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
       {label}
       <ArrowRight className="size-4" aria-hidden="true" />
     </motion.a>

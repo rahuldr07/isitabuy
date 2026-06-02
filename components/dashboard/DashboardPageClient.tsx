@@ -164,7 +164,7 @@ function Logo() {
       <span className="grid size-9 place-items-center rounded-2xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
         <ShoppingBag className="size-4" aria-hidden="true" />
       </span>
-      <span className="text-xl font-black tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+      <span className="text-xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
     </Link>
   );
 }
@@ -571,7 +571,7 @@ function DashboardSidebar({ items, onItemClick }: { items: DashboardNavItem[]; o
               key={item.href}
               href={item.href}
               className={cn(
-                "flex h-11 items-center gap-3 rounded-xl px-3 text-left text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]",
+                "flex h-11 items-center gap-3 rounded-xl px-3 text-left text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]",
                 active ? "bg-[var(--isitabuy-green-soft)] text-emerald-700" : "text-[var(--isitabuy-muted)] hover:bg-slate-50 hover:text-[var(--isitabuy-ink)]",
               )}
               onClick={onItemClick}
@@ -589,14 +589,14 @@ function DashboardSidebar({ items, onItemClick }: { items: DashboardNavItem[]; o
             <BadgeDollarSign className="size-4" aria-hidden="true" />
           </span>
           <div className="min-w-0">
-            <p className="text-xs font-black text-emerald-700">Total Saved</p>
-            <p className="font-numeric mt-0.5 text-2xl font-black text-[var(--isitabuy-ink)]">$312.45</p>
+            <p className="text-xs font-bold text-emerald-700">Total Saved</p>
+            <p className="font-numeric mt-0.5 text-2xl font-bold text-[var(--isitabuy-ink)]">$312.45</p>
             <p className="mt-0.5 text-[0.68rem] font-bold leading-4 text-emerald-800/80">Across tracked purchases</p>
           </div>
         </div>
       </div>
       <div className="mt-auto shrink-0 rounded-2xl border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] p-4">
-        <p className="text-sm font-black">Premium protection</p>
+        <p className="text-sm font-bold">Premium protection</p>
         <p className="mt-2 text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">Track warranties, alerts, and better alternatives in one place.</p>
       </div>
     </div>
@@ -646,12 +646,12 @@ function DashboardTopbar({
                 aria-label="Search IsItABuy"
               />
             </div>
-            <Button className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5" onClick={onSearch}>
+            <Button className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5" onClick={onSearch}>
               Search
             </Button>
           </div>
           <div className="flex items-center justify-between gap-2 lg:justify-end">
-            <Button variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-black" onClick={onSaved}>
+            <Button variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-bold" onClick={onSaved}>
               <Heart className="size-4" aria-hidden="true" />
               Saved
             </Button>
@@ -664,16 +664,16 @@ function DashboardTopbar({
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[min(22rem,calc(100vw-2rem))] p-2">
                 <div className="flex items-center justify-between gap-3 px-2 py-2">
-                  <p className="text-sm font-black">Notifications</p>
-                  <Button variant="ghost" size="sm" className="h-7 rounded-full text-xs font-black" onClick={onMarkAllRead}>
+                  <p className="text-sm font-bold">Notifications</p>
+                  <Button variant="ghost" size="sm" className="h-7 rounded-full text-xs font-bold" onClick={onMarkAllRead}>
                     Mark all read
                   </Button>
                 </div>
                 {notifications.map((item) => (
                   <div key={item.id} className="rounded-xl p-2 hover:bg-slate-50">
-                    <p className="text-sm font-black">{item.title}</p>
+                    <p className="text-sm font-bold">{item.title}</p>
                     <p className="mt-1 text-xs font-semibold leading-5 text-[var(--isitabuy-muted)]">{item.description}</p>
-                    <Button variant="outline" size="sm" className="mt-2 h-8 rounded-full text-xs font-black" onClick={() => item.route ? onNavigate(item.route, item.title) : notify(item.title, item.description)}>
+                    <Button variant="outline" size="sm" className="mt-2 h-8 rounded-full text-xs font-bold" onClick={() => item.route ? onNavigate(item.route, item.title) : notify(item.title, item.description)}>
                       View
                     </Button>
                   </div>
@@ -684,14 +684,14 @@ function DashboardTopbar({
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-10 gap-2 rounded-full px-2" aria-label="Open account menu">
                   <Avatar size="lg" className="size-9">
-                    <AvatarFallback className="bg-[var(--isitabuy-green-soft)] text-sm font-black text-emerald-700">{dashboardUser.initials}</AvatarFallback>
+                    <AvatarFallback className="bg-[var(--isitabuy-green-soft)] text-sm font-bold text-emerald-700">{dashboardUser.initials}</AvatarFallback>
                   </Avatar>
                   <ChevronDown className="size-4" aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-2">
-                  <p className="text-sm font-black">{dashboardUser.name}</p>
+                  <p className="text-sm font-bold">{dashboardUser.name}</p>
                   <p className="text-xs font-semibold text-[var(--isitabuy-muted)]">{dashboardUser.email}</p>
                 </div>
                 <DropdownMenuSeparator />
@@ -713,7 +713,7 @@ function SectionHeader({ title, subtitle, action }: { title: string; subtitle?: 
   return (
     <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
       <div>
-        <h2 className="text-2xl font-black tracking-tight">{title}</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
         {subtitle ? <p className="mt-1 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{subtitle}</p> : null}
       </div>
       {action}
@@ -751,24 +751,24 @@ function SmartActionsSection({
   return (
     <Card
       ref={refEl}
-      className="scroll-mt-24 overflow-hidden rounded-[1.45rem] border border-[#e8d8c0] bg-[linear-gradient(135deg,#fffdf8_0%,#f7efe3_48%,#fffaf1_100%)] shadow-[0_22px_60px_rgb(110_76_37/0.11)]"
+      className="scroll-mt-24 overflow-hidden rounded-[1.45rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--card)_0%,var(--soft-wait)_52%,var(--card)_100%)] shadow-[0_22px_60px_rgb(110_76_37/0.11)]"
     >
       <CardContent className="p-4 sm:p-5 lg:p-6">
-        <div className="mb-5 flex flex-col justify-between gap-4 border-b border-[#ead8bb] pb-5 lg:flex-row lg:items-end">
+        <div className="mb-5 flex flex-col justify-between gap-4 border-b border-brand-amber/25 pb-5 lg:flex-row lg:items-end">
           <div>
-            <h1 className="text-2xl font-black tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Welcome back, Ahmed</h1>
-            <p className="mt-1 text-sm font-semibold text-[#75614a]">IsItABuy found {actions.length + hiddenCount} smart shopping updates for you today.</p>
+            <h1 className="text-2xl font-bold tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Welcome back, Ahmed</h1>
+            <p className="mt-1 text-sm font-semibold text-muted-foreground">IsItABuy found {actions.length + hiddenCount} smart shopping updates for you today.</p>
           </div>
           <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-end">
-            <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onSearch}>
+            <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={onSearch}>
               <Search className="size-4" aria-hidden="true" />
               Check New Product
             </Button>
-            <Button variant="outline" className="h-10 rounded-full border-[#dec9aa] bg-white/88 px-4 text-xs font-black hover:bg-[#fff4df]" onClick={onUpload}>
+            <Button variant="outline" className="h-10 rounded-full border-brand-amber/35 bg-white/88 px-4 text-xs font-bold hover:bg-soft-wait" onClick={onUpload}>
               <Upload className="size-4" aria-hidden="true" />
               Upload Receipt
             </Button>
-            <Button variant="ghost" className="h-10 rounded-full px-4 text-xs font-black text-[var(--isitabuy-purple)] hover:bg-[#f2e3cc]" onClick={onToggleDetails}>
+            <Button variant="ghost" className="h-10 rounded-full px-4 text-xs font-bold text-[var(--isitabuy-purple)] hover:bg-soft-wait" onClick={onToggleDetails}>
               {moreDetailsOpen ? "Hide Details" : "More Details"}
             </Button>
           </div>
@@ -776,14 +776,14 @@ function SmartActionsSection({
 
         <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-[#9a6829]">Private shopping brief</p>
-            <h2 className="mt-1 text-2xl font-black tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Today&rsquo;s Smart Actions</h2>
-            <p className="mt-2 text-sm font-semibold leading-6 text-[#75614a]">A cleaner short list of what is worth checking, buying, waiting on, or reviewing today.</p>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">Private shopping brief</p>
+            <h2 className="mt-1 text-2xl font-bold tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Today&rsquo;s Smart Actions</h2>
+            <p className="mt-2 text-sm font-semibold leading-6 text-muted-foreground">A cleaner short list of what is worth checking, buying, waiting on, or reviewing today.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs font-black text-[#8a6a44]">{actions.length ? `${actions.length} active moves` : "All clear"}</span>
+            <span className="text-xs font-bold text-[#8a6a44]">{actions.length ? `${actions.length} active moves` : "All clear"}</span>
             {hiddenCount > 0 || expanded ? (
-              <Button variant="outline" className="h-9 rounded-full border-[#dec9aa] bg-white/85 px-4 text-xs font-black hover:bg-[#f2e3cc]" onClick={onToggleExpanded}>
+              <Button variant="outline" className="h-9 rounded-full border-brand-amber/35 bg-white/85 px-4 text-xs font-bold hover:bg-soft-wait" onClick={onToggleExpanded}>
                 {expanded ? "Show fewer" : `Show ${hiddenCount} more`}
               </Button>
             ) : null}
@@ -823,11 +823,11 @@ function EmptyState({ icon: Icon, title, body, actions }: { icon: LucideIcon; ti
       <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-white text-[var(--isitabuy-purple)] shadow-sm">
         <Icon className="size-5" aria-hidden="true" />
       </span>
-      <h3 className="mt-4 text-base font-black">{title}</h3>
+      <h3 className="mt-4 text-base font-bold">{title}</h3>
       <p className="mx-auto mt-2 max-w-md text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{body}</p>
       <div className="mt-4 flex flex-col justify-center gap-2 sm:flex-row">
         {actions.map((action) => (
-          <Button key={action.label} variant="outline" className="h-9 rounded-full text-xs font-black" onClick={action.onClick}>
+          <Button key={action.label} variant="outline" className="h-9 rounded-full text-xs font-bold" onClick={action.onClick}>
             {action.label}
           </Button>
         ))}
@@ -841,7 +841,7 @@ function SmartActionFeatured({ action, onAction }: { action: SmartAction; onActi
   const Icon = meta.icon;
 
   return (
-    <article className="group relative min-h-[236px] overflow-hidden rounded-[1.25rem] border border-[#dfc9a8] bg-[#fffaf2] shadow-[0_16px_42px_rgb(105_72_34/0.12)] transition duration-200 hover:-translate-y-0.5 hover:border-[#caa777] hover:bg-[#f2e3cc] hover:shadow-[0_22px_55px_rgb(105_72_34/0.17)]">
+    <article className="group relative min-h-[236px] overflow-hidden rounded-[1.25rem] border border-[#dfc9a8] bg-soft-wait shadow-[0_16px_42px_rgb(105_72_34/0.12)] transition duration-200 hover:-translate-y-0.5 hover:border-[#caa777] hover:bg-soft-wait hover:shadow-[0_22px_55px_rgb(105_72_34/0.17)]">
       <div className="flex h-full flex-col justify-between gap-8 p-5 sm:p-6">
         <div>
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -850,21 +850,21 @@ function SmartActionFeatured({ action, onAction }: { action: SmartAction; onActi
                 <Icon className="size-6" aria-hidden="true" />
               </span>
               <div>
-                <p className="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#9a6829]">Top move</p>
-                <p className="mt-1 text-xs font-bold text-[#80613c]">Worth checking first</p>
+                <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-accent">Top move</p>
+                <p className="mt-1 text-xs font-bold text-muted-foreground">Worth checking first</p>
               </div>
             </div>
           </div>
-          <p className="mt-6 text-[0.68rem] font-black uppercase tracking-[0.16em] text-[#8a5a20]">{meta.label}</p>
-          <h3 className="mt-2 max-w-2xl text-2xl font-black leading-[1.05] tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">{action.title}</h3>
+          <p className="mt-6 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[#8a5a20]">{meta.label}</p>
+          <h3 className="mt-2 max-w-2xl text-2xl font-bold leading-[1.05] tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">{action.title}</h3>
           <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[#69563f]">{action.description}</p>
         </div>
         <div className="grid gap-2 min-[440px]:grid-cols-2">
-          <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] text-sm font-black text-white shadow-[0_12px_24px_rgb(249_115_22/0.22)] hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onAction(action, action.primaryAction)}>
+          <Button className="h-11 rounded-full bg-[var(--isitabuy-orange)] text-sm font-bold text-white shadow-[0_12px_24px_rgb(249_115_22/0.22)] hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onAction(action, action.primaryAction)}>
             {action.primaryAction}
           </Button>
           {action.secondaryAction ? (
-            <Button variant="outline" className="h-11 rounded-full border-[#d7ba8e] bg-white/88 text-sm font-black hover:bg-[#fff4df]" onClick={() => onAction(action, action.secondaryAction ?? "")}>
+            <Button variant="outline" className="h-11 rounded-full border-[#d7ba8e] bg-white/88 text-sm font-bold hover:bg-soft-wait" onClick={() => onAction(action, action.secondaryAction ?? "")}>
               {action.secondaryAction}
             </Button>
           ) : null}
@@ -887,24 +887,24 @@ function SmartActionCompact({
   const Icon = meta.icon;
 
   return (
-    <article className="group flex min-h-[172px] flex-col justify-between rounded-[1.15rem] border border-[#ead8bb] bg-white/82 p-4 shadow-[0_10px_28px_rgb(105_72_34/0.06)] transition duration-200 hover:-translate-y-0.5 hover:border-[#cfad7b] hover:bg-[#f2e3cc] hover:shadow-[0_16px_38px_rgb(105_72_34/0.13)]">
+    <article className="group flex min-h-[172px] flex-col justify-between rounded-[1.15rem] border border-brand-amber/25 bg-white/82 p-4 shadow-[0_10px_28px_rgb(105_72_34/0.06)] transition duration-200 hover:-translate-y-0.5 hover:border-[#cfad7b] hover:bg-soft-wait hover:shadow-[0_16px_38px_rgb(105_72_34/0.13)]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <span className={cn("grid size-10 place-items-center rounded-xl border bg-white shadow-sm", getActionStyles(action.type))}>
             <Icon className="size-4" aria-hidden="true" />
           </span>
-          <p className="mt-3 text-[0.63rem] font-black uppercase tracking-[0.14em] text-[#9a6829]">{meta.label}</p>
-          <h3 className="mt-2 line-clamp-2 text-base font-black leading-5 text-[var(--isitabuy-ink)]">{action.title}</h3>
+          <p className="mt-3 text-[0.63rem] font-bold uppercase tracking-[0.14em] text-accent">{meta.label}</p>
+          <h3 className="mt-2 line-clamp-2 text-base font-bold leading-5 text-[var(--isitabuy-ink)]">{action.title}</h3>
           <p className="mt-2 line-clamp-2 text-xs font-semibold leading-5 text-[#74624b]">{action.description}</p>
         </div>
-        <span className="shrink-0 text-[0.7rem] font-black tracking-[0.16em] text-[#b18a55]">0{actionNumber}</span>
+        <span className="shrink-0 text-[0.7rem] font-bold tracking-[0.16em] text-[#b18a55]">0{actionNumber}</span>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
-        <Button className="h-8 rounded-full bg-[var(--isitabuy-orange)] px-3 text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onAction(action, action.primaryAction)}>
+        <Button className="h-8 rounded-full bg-[var(--isitabuy-orange)] px-3 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onAction(action, action.primaryAction)}>
           {action.primaryAction}
         </Button>
         {action.secondaryAction ? (
-          <Button variant="outline" className="h-8 rounded-full border-[#dec9aa] bg-white/88 px-3 text-xs font-black hover:bg-[#fff4df]" onClick={() => onAction(action, action.secondaryAction ?? "")}>
+          <Button variant="outline" className="h-8 rounded-full border-brand-amber/35 bg-white/88 px-3 text-xs font-bold hover:bg-soft-wait" onClick={() => onAction(action, action.secondaryAction ?? "")}>
             {action.secondaryAction}
           </Button>
         ) : null}
@@ -917,24 +917,24 @@ function WatchlistSnapshot({ products, onRemove, onAlert, onNavigate }: { produc
   return (
     <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
       <CardContent className="p-5">
-        <SectionHeader title="Watchlist" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/watchlist", "Watchlist")}>View full watchlist</Button>} />
+        <SectionHeader title="Watchlist" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/watchlist", "Watchlist")}>View full watchlist</Button>} />
         {products.length ? (
           <div className="grid gap-3">
             {products.map((product) => (
               <div key={product.id} className="rounded-2xl border border-[var(--isitabuy-line)] p-3">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <h3 className="truncate text-sm font-black">{product.name}</h3>
-                    <p className="font-numeric mt-1 text-lg font-black">{formatPrice(product.currentPrice)}</p>
+                    <h3 className="truncate text-sm font-bold">{product.name}</h3>
+                    <p className="font-numeric mt-1 text-lg font-bold">{formatPrice(product.currentPrice)}</p>
                     <p className="font-numeric text-xs font-semibold text-[var(--isitabuy-muted)]">Target {formatPrice(product.targetPrice)}</p>
                   </div>
-                  <Badge className={cn("shrink-0 rounded-full border text-[0.68rem] font-black", getStatusStyles(product.status))}>{product.status}</Badge>
+                  <Badge className={cn("shrink-0 rounded-full border text-[0.68rem] font-bold", getStatusStyles(product.status))}>{product.status}</Badge>
                 </div>
                 <div className="mt-3 flex items-center justify-between gap-3">
-                  <span className="text-xs font-black text-emerald-700">AI Buy Score {product.aiBuyScore}</span>
+                  <span className="text-xs font-bold text-emerald-700">AI Buy Score {product.aiBuyScore}</span>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-black" onClick={() => onNavigate(buildProductUrl(product.slug), product.name)}>View</Button>
-                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-black" onClick={() => onAlert(product.id)}>Track</Button>
+                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-bold" onClick={() => onNavigate(buildProductUrl(product.slug), product.name)}>View</Button>
+                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-bold" onClick={() => onAlert(product.id)}>Track</Button>
                     <Button variant="ghost" size="icon-sm" className="text-red-600 hover:bg-red-50 hover:text-red-700" onClick={() => onRemove(product.id)} aria-label={`Remove ${product.name} from watchlist`}>
                       <Trash2 className="size-4" aria-hidden="true" />
                     </Button>
@@ -955,7 +955,7 @@ function SavedProductsSnapshot({ products, onRemove, onNavigate }: { products: S
   return (
     <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
       <CardContent className="p-5">
-        <SectionHeader title="Saved Products" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/saved", "Saved products")}>View all saved</Button>} />
+        <SectionHeader title="Saved Products" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/saved", "Saved products")}>View all saved</Button>} />
         {products.length ? (
           <div className="grid gap-3 sm:grid-cols-2">
             {products.map((product) => (
@@ -965,13 +965,13 @@ function SavedProductsSnapshot({ products, onRemove, onNavigate }: { products: S
                     {product.imageSrc ? <Image src={product.imageSrc} alt="" fill sizes="64px" className="object-contain p-1.5" /> : <PackageCheck className="size-6" aria-hidden="true" />}
                   </span>
                   <span className="min-w-0">
-                    <Badge className={cn("rounded-full border px-2 py-0.5 text-[0.65rem] font-black", getVerdictStyles(product.verdict))}>{product.verdict}</Badge>
-                    <span className="mt-2 block truncate text-sm font-black">{product.name}</span>
+                    <Badge className={cn("rounded-full border px-2 py-0.5 text-[0.65rem] font-bold", getVerdictStyles(product.verdict))}>{product.verdict}</Badge>
+                    <span className="mt-2 block truncate text-sm font-bold">{product.name}</span>
                     <span className="font-numeric mt-1 block text-xs font-bold text-[var(--isitabuy-muted)]">{formatPrice(product.currentPrice)} • Score {product.aiBuyScore}</span>
                   </span>
                   <ArrowRight className="size-4 text-[var(--isitabuy-muted)]" aria-hidden="true" />
                 </button>
-                <Button variant="ghost" size="sm" className="mt-2 h-8 rounded-full text-xs font-black text-red-600 hover:bg-red-50 hover:text-red-700" onClick={() => onRemove(product.id)}>
+                <Button variant="ghost" size="sm" className="mt-2 h-8 rounded-full text-xs font-bold text-red-600 hover:bg-red-50 hover:text-red-700" onClick={() => onRemove(product.id)}>
                   <MinusCircle className="size-3.5" aria-hidden="true" />
                   Unsave
                 </Button>
@@ -990,24 +990,24 @@ function RecentPurchases({ purchases, onDetails, onNavigate }: { purchases: Purc
   return (
     <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
       <CardContent className="p-5 sm:p-6">
-        <SectionHeader title="Recent Purchases" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/receipts", "Purchases")}>View all purchases</Button>} />
+        <SectionHeader title="Recent Purchases" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/receipts", "Purchases")}>View all purchases</Button>} />
         {purchases.length ? (
           <div className="grid gap-2">
             {purchases.map((purchase) => (
               <div key={purchase.id} className="grid gap-3 rounded-2xl border border-[var(--isitabuy-line)] p-3 md:grid-cols-[1fr_auto] md:items-center">
                 <div className="min-w-0">
-                  <h3 className="truncate text-sm font-black">{purchase.productName}</h3>
+                  <h3 className="truncate text-sm font-bold">{purchase.productName}</h3>
                   <p className="mt-1 text-xs font-semibold text-[var(--isitabuy-muted)]">
                     {purchase.store} • Paid {formatPrice(purchase.paidPrice)} • Saved {formatPrice(purchase.savedAmount)}
                   </p>
-                  <Badge className={cn("mt-2 rounded-full border text-[0.68rem] font-black", getStatusStyles(purchase.warrantyStatus === "expiring" ? "Expiring" : purchase.warrantyStatus === "active" ? "Active" : "No warranty"))}>
+                  <Badge className={cn("mt-2 rounded-full border text-[0.68rem] font-bold", getStatusStyles(purchase.warrantyStatus === "expiring" ? "Expiring" : purchase.warrantyStatus === "active" ? "Active" : "No warranty"))}>
                     {purchase.warrantyStatus === "none" ? "No warranty" : `Warranty ${purchase.warrantyStatus}`}
                   </Badge>
                 </div>
                 <div className="flex flex-wrap gap-2 md:justify-end">
-                  <Button variant="outline" size="sm" className="h-8 rounded-full text-xs font-black" onClick={() => onDetails(purchase.id)}>Details</Button>
-                  <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-black" onClick={() => onNavigate("/dashboard/receipts", "Receipt")}>Receipt</Button>
-                  <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={() => onNavigate(`/search?q=${encodeURIComponent(`better alternative ${purchase.productName}`)}`, "Find Alternative")}>Alternative</Button>
+                  <Button variant="outline" size="sm" className="h-8 rounded-full text-xs font-bold" onClick={() => onDetails(purchase.id)}>Details</Button>
+                  <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-bold" onClick={() => onNavigate("/dashboard/receipts", "Receipt")}>Receipt</Button>
+                  <Button variant="ghost" size="sm" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={() => onNavigate(`/search?q=${encodeURIComponent(`better alternative ${purchase.productName}`)}`, "Find Alternative")}>Alternative</Button>
                 </div>
               </div>
             ))}
@@ -1024,18 +1024,18 @@ function SavingsInsights({ onCategory, onDetails }: { onCategory: (label: string
   return (
     <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
       <CardContent className="p-5">
-        <SectionHeader title="Savings Insights" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={onDetails}>View full savings</Button>} />
+        <SectionHeader title="Savings Insights" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={onDetails}>View full savings</Button>} />
         <div className="grid gap-3">
           <div className="rounded-2xl bg-emerald-50 p-4">
-            <p className="text-xs font-black text-emerald-700">Total saved with IsItABuy</p>
-            <p className="font-numeric mt-2 text-3xl font-black text-emerald-700">$312.45</p>
+            <p className="text-xs font-bold text-emerald-700">Total saved with IsItABuy</p>
+            <p className="font-numeric mt-2 text-3xl font-bold text-emerald-700">$312.45</p>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <InfoTile label="Average savings" value="25%" />
             <InfoTile label="Best saving this month" value="$150" helper="MacBook Air M3" />
           </div>
           <div className="rounded-2xl border border-[var(--isitabuy-line)] p-4">
-            <p className="mb-3 text-sm font-black">Spending by category</p>
+            <p className="mb-3 text-sm font-bold">Spending by category</p>
             <div className="flex h-3 overflow-hidden rounded-full bg-slate-100">
               {savingsCategories.map((category) => (
                 <button key={category.label} type="button" className="h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]" style={{ width: `${category.value}%`, backgroundColor: category.color }} onClick={() => onCategory(category.label)} aria-label={`Filter insights by ${category.label}`} />
@@ -1063,7 +1063,7 @@ function InfoTile({ label, value, helper }: { label: string; value: string; help
   return (
     <div className="rounded-2xl border border-[var(--isitabuy-line)] p-3">
       <p className="text-xs font-bold text-[var(--isitabuy-muted)]">{label}</p>
-      <p className="font-numeric mt-1 text-xl font-black">{value}</p>
+      <p className="font-numeric mt-1 text-xl font-bold">{value}</p>
       {helper ? <p className="mt-1 truncate text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">{helper}</p> : null}
     </div>
   );
@@ -1073,15 +1073,15 @@ function UpcomingWarrantyCard({ onNavigate, onDetails }: { onNavigate: (href: st
   return (
     <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
       <CardContent className="p-5">
-        <SectionHeader title="Upcoming Warranties" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-black text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/receipts?filter=warranties", "Warranties")}>View all</Button>} />
+        <SectionHeader title="Upcoming Warranties" action={<Button variant="ghost" className="h-8 rounded-full text-xs font-bold text-[var(--isitabuy-purple)]" onClick={() => onNavigate("/dashboard/receipts?filter=warranties", "Warranties")}>View all</Button>} />
         <div className="grid gap-2">
           {warrantySummaries.map((warranty) => (
             <button key={warranty.id} type="button" onClick={() => onDetails(warranty.id)} className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--isitabuy-line)] p-3 text-left transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
               <span className="min-w-0">
-                <span className="block truncate text-sm font-black">{warranty.productName}</span>
+                <span className="block truncate text-sm font-bold">{warranty.productName}</span>
                 <span className="mt-1 block text-xs font-semibold text-[var(--isitabuy-muted)]">Expires in {warranty.expiresInDays} days</span>
               </span>
-              <Badge className={cn("rounded-full border text-[0.68rem] font-black", getStatusStyles(warranty.status === "expiring" ? "Expiring" : "Active"))}>{warranty.status}</Badge>
+              <Badge className={cn("rounded-full border text-[0.68rem] font-bold", getStatusStyles(warranty.status === "expiring" ? "Expiring" : "Active"))}>{warranty.status}</Badge>
             </button>
           ))}
         </div>
@@ -1103,15 +1103,15 @@ function RecommendationsPanel({ recommendations, savedIds, onSave, onDismiss, on
                   <span className="grid size-10 place-items-center rounded-2xl bg-purple-50 text-[var(--isitabuy-purple)]">
                     <Sparkles className="size-4" aria-hidden="true" />
                   </span>
-                  <Badge className="rounded-full border border-emerald-100 bg-emerald-50 text-[0.68rem] font-black text-emerald-700">{item.confidence}</Badge>
+                  <Badge className="rounded-full border border-emerald-100 bg-emerald-50 text-[0.68rem] font-bold text-emerald-700">{item.confidence}</Badge>
                 </div>
-                <h3 className="mt-4 text-base font-black leading-tight">{item.title}</h3>
+                <h3 className="mt-4 text-base font-bold leading-tight">{item.title}</h3>
                 <p className="mt-2 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{item.aiReason}</p>
-                <p className="font-numeric mt-auto pt-4 text-sm font-black text-emerald-700">Estimated savings {formatPrice(item.estimatedSavings)}</p>
+                <p className="font-numeric mt-auto pt-4 text-sm font-bold text-emerald-700">Estimated savings {formatPrice(item.estimatedSavings)}</p>
                 <div className="mt-3 grid grid-cols-3 gap-2">
-                  <Button className="h-8 rounded-full bg-[var(--isitabuy-orange)] text-xs font-black text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onView(item)}>View</Button>
-                  <Button variant="outline" className="h-8 rounded-full text-xs font-black" onClick={() => onSave(item.id)}>{savedIds.includes(item.id) ? "Saved" : "Save"}</Button>
-                  <Button variant="ghost" className="h-8 rounded-full text-xs font-black" onClick={() => onDismiss(item.id)}>Hide</Button>
+                  <Button className="h-8 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => onView(item)}>View</Button>
+                  <Button variant="outline" className="h-8 rounded-full text-xs font-bold" onClick={() => onSave(item.id)}>{savedIds.includes(item.id) ? "Saved" : "Save"}</Button>
+                  <Button variant="ghost" className="h-8 rounded-full text-xs font-bold" onClick={() => onDismiss(item.id)}>Hide</Button>
                 </div>
               </article>
             ))}
@@ -1298,7 +1298,7 @@ function WarrantyDetailDialog({ warranty, onClose, onNavigate }: { warranty?: { 
         </DialogHeader>
         {warranty ? (
           <div className="rounded-2xl border border-[var(--isitabuy-line)] p-4">
-            <p className="font-numeric text-3xl font-black text-[var(--isitabuy-orange)]">{warranty.expiresInDays} days</p>
+            <p className="font-numeric text-3xl font-bold text-[var(--isitabuy-orange)]">{warranty.expiresInDays} days</p>
             <p className="mt-2 text-sm font-semibold text-[var(--isitabuy-muted)]">Status: {warranty.status}. IsItABuy can remind you before support coverage ends.</p>
           </div>
         ) : null}
@@ -1321,8 +1321,8 @@ function SavingsDetailDialog({ open, onClose }: { open: boolean; onClose: () => 
         </DialogHeader>
         <div className="grid gap-3">
           <div className="rounded-2xl bg-emerald-50 p-4">
-            <p className="text-xs font-black text-emerald-700">Total saved</p>
-            <p className="font-numeric mt-2 text-4xl font-black text-emerald-700">$312.45</p>
+            <p className="text-xs font-bold text-emerald-700">Total saved</p>
+            <p className="font-numeric mt-2 text-4xl font-bold text-emerald-700">$312.45</p>
           </div>
           <div className="grid gap-2">
             {savingsCategories.map((category) => (
@@ -1330,7 +1330,7 @@ function SavingsDetailDialog({ open, onClose }: { open: boolean; onClose: () => 
             ))}
           </div>
           <div className="rounded-2xl border border-[var(--isitabuy-line)] p-4">
-            <p className="text-sm font-black">Top saving events</p>
+            <p className="text-sm font-bold">Top saving events</p>
             <p className="mt-2 text-sm font-semibold text-[var(--isitabuy-muted)]">$150 on MacBook Air M3, $69.99 on Sony WH-1000XM5, and $40 on Bose QuietComfort Ultra.</p>
           </div>
         </div>
@@ -1346,7 +1346,7 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between gap-3 border-b border-[var(--isitabuy-line)] py-2 last:border-b-0">
       <span className="text-sm font-semibold text-[var(--isitabuy-muted)]">{label}</span>
-      <span className="text-right text-sm font-black">{value}</span>
+      <span className="text-right text-sm font-bold">{value}</span>
     </div>
   );
 }

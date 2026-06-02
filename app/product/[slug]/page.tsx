@@ -182,14 +182,14 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[250px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-5 lg:flex lg:flex-col">
       <Link className="mb-6 flex items-center gap-3" href="/deals">
-        <span className="grid size-11 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
+        <span className="grid size-11 place-items-center rounded-full bg-gradient-to-br from-value to-brand-navy text-sm font-bold text-white shadow-sm">
           BW
         </span>
-        <span className="text-3xl font-extrabold tracking-tight text-[#0f172a]">
-          BuyWise <span className="text-[#4f46e5]">AI</span>
+        <span className="text-3xl font-bold tracking-tight text-[#0f172a]">
+          BuyWise <span className="text-value">AI</span>
         </span>
       </Link>
-      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-bold text-value hover:bg-soft-value" href="/deals">
         <ArrowLeft className="size-4" />
         Back to Deals
       </Link>
@@ -202,7 +202,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           return (
           <Link
             className={`flex h-12 items-center gap-4 rounded-lg px-4 text-sm font-semibold ${
-              active ? "bg-[#f0ecff] text-[#4f46e5]" : "text-foreground hover:bg-muted"
+              active ? "bg-soft-value text-value" : "text-foreground hover:bg-muted"
             }`}
             href={href}
             key={label}
@@ -219,13 +219,13 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           <div className="flex items-start justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Total Saved</p>
-              <p className="mt-2 text-2xl font-extrabold">$347.85</p>
+              <p className="mt-2 text-2xl font-bold">$347.85</p>
             </div>
             <span className="grid size-11 place-items-center rounded-full bg-soft-buy text-buy">
               <DollarSign className="size-6" />
             </span>
           </div>
-          <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+          <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
             View all savings <ExternalLink className="size-4" />
           </a>
         </BentoCard>
@@ -247,7 +247,7 @@ function Topbar() {
           How it works
         </button>
         <Bell className="size-5" />
-        <span className="grid size-10 place-items-center rounded-full bg-[#4f46e5] text-sm font-extrabold text-white">
+        <span className="grid size-10 place-items-center rounded-full bg-value text-sm font-bold text-white">
           JS
         </span>
       </div>
@@ -257,7 +257,7 @@ function Topbar() {
 
 function RetailerBadge({ label }: { label: string }) {
   return (
-    <span className="inline-flex h-10 items-center justify-center rounded-lg border border-border bg-white px-4 text-sm font-extrabold shadow-sm">
+    <span className="inline-flex h-10 items-center justify-center rounded-lg border border-border bg-white px-4 text-sm font-bold shadow-sm">
       {label}
     </span>
   );
@@ -279,9 +279,9 @@ function VerdictCard({
   return (
     <div className={`grid min-h-[178px] grid-rows-[2rem_3.5rem_2.5rem_2rem] items-center rounded-xl border p-4 text-center ${color}`}>
       <Icon className="mx-auto size-8 self-start" />
-      <p className="mx-auto flex max-w-28 items-center justify-center text-base font-extrabold leading-6 text-foreground">{label}</p>
+      <p className="mx-auto flex max-w-28 items-center justify-center text-base font-bold leading-6 text-foreground">{label}</p>
       <p className="mx-auto flex max-w-28 items-start justify-center text-sm font-medium leading-5 text-muted-foreground">{subtitle}</p>
-      <p className="text-2xl font-extrabold leading-none">{score}</p>
+      <p className="text-2xl font-bold leading-none">{score}</p>
     </div>
   );
 }
@@ -300,7 +300,7 @@ function ProductHeader({ product }: { product: ProductData }) {
         <div className="flex-1 py-2">
           <div className="flex flex-col justify-between gap-4 lg:flex-row">
             <div>
-              <h1 className="max-w-xl text-3xl font-extrabold leading-tight">{product.name}</h1>
+              <h1 className="max-w-xl text-3xl font-bold leading-tight">{product.name}</h1>
               <p className="mt-1 text-base font-semibold text-muted-foreground">{product.subtitle}</p>
               <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
                 <span>{product.rating}</span>
@@ -313,10 +313,10 @@ function ProductHeader({ product }: { product: ProductData }) {
               </div>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" className="h-11 rounded-xl px-4 font-extrabold">
+              <Button variant="outline" className="h-11 rounded-xl px-4 font-bold">
                 <Heart className="size-4" /> Save
               </Button>
-              <Button variant="outline" className="h-11 rounded-xl px-4 font-extrabold">
+              <Button variant="outline" className="h-11 rounded-xl px-4 font-bold">
                 <Share2 className="size-4" /> Share
               </Button>
             </div>
@@ -334,13 +334,13 @@ function ProductHeader({ product }: { product: ProductData }) {
       <BentoCard className="p-4" variant="success">
         <p className="text-base font-semibold text-muted-foreground">Current Price</p>
         <div className="mt-2 flex items-center gap-3">
-          <p className="text-3xl font-extrabold">{product.price}</p>
-          <Badge className="h-7 rounded-full bg-soft-buy px-3 font-extrabold text-buy">{product.discount}</Badge>
+          <p className="text-3xl font-bold">{product.price}</p>
+          <Badge className="h-7 rounded-full bg-soft-buy px-3 font-bold text-buy">{product.discount}</Badge>
         </div>
         <p className="mt-2 text-sm font-medium text-muted-foreground">
           List Price: <span className="line-through">{product.oldPrice}</span>
         </p>
-        <Button className="mt-4 h-12 w-full rounded-lg bg-[#4f46e5] text-base font-extrabold text-white hover:bg-[#4338ca]">
+        <Button className="mt-4 h-12 w-full rounded-lg bg-value text-base font-bold text-white hover:bg-value/90">
           View Best Price <ExternalLink className="size-4" />
         </Button>
       </BentoCard>
@@ -353,10 +353,10 @@ function AiScoreCard({ product }: { product: ProductData }) {
     <BentoCard className="p-4" variant="success">
       <div className="grid items-center gap-4 md:grid-cols-[150px_170px_minmax(0,1fr)]">
         <div>
-          <h2 className="text-lg font-extrabold">AI Score</h2>
-          <p className="mt-4 text-7xl font-extrabold text-buy">{product.score}</p>
-          <p className="text-base font-extrabold">Out of 100</p>
-          <Badge className="mt-4 rounded-full bg-soft-buy px-4 py-2 text-sm font-extrabold text-buy">
+          <h2 className="text-lg font-bold">AI Score</h2>
+          <p className="mt-4 text-7xl font-bold text-buy">{product.score}</p>
+          <p className="text-base font-bold">Out of 100</p>
+          <Badge className="mt-4 rounded-full bg-soft-buy px-4 py-2 text-sm font-bold text-buy">
             Excellent Choice
           </Badge>
         </div>
@@ -366,12 +366,12 @@ function AiScoreCard({ product }: { product: ProductData }) {
           </span>
         </div>
         <div>
-          <p className="text-lg font-extrabold text-buy">This is a great time to buy!</p>
+          <p className="text-lg font-bold text-buy">This is a great time to buy!</p>
           <p className="mt-3 max-w-sm text-sm font-medium leading-6 text-foreground">
             The current deal is {product.discount.toLowerCase()}, reviews are strong, and this product is highly reliable.
           </p>
           <div className="mt-7">
-            <div className="mb-2 flex items-center gap-2 text-sm font-extrabold">
+            <div className="mb-2 flex items-center gap-2 text-sm font-bold">
               High Confidence <Info className="size-4 text-muted-foreground" />
               <span className="ml-auto">{Math.min(95, product.score + 1)}%</span>
             </div>
@@ -387,12 +387,12 @@ function PriceHistoryCard({ product }: { product: ProductData }) {
   return (
     <BentoCard className="p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-extrabold">
+        <h2 className="text-lg font-bold">
           Price History <Info className="inline size-4 text-muted-foreground" />
         </h2>
         <div className="flex gap-2">
           {["30D", "90D", "180D", "1Y"].map((item, index) => (
-            <Badge className={index === 0 ? "bg-[#f0ecff] text-[#4f46e5]" : "bg-muted text-foreground"} key={item}>
+            <Badge className={index === 0 ? "bg-soft-value text-value" : "bg-muted text-foreground"} key={item}>
               {item}
             </Badge>
           ))}
@@ -405,14 +405,14 @@ function PriceHistoryCard({ product }: { product: ProductData }) {
         <polyline
           fill="none"
           points="35,92 70,80 105,72 140,82 175,86 210,98 245,110 280,112 315,126 350,124 385,132"
-          stroke="#4f46e5"
+          stroke="#622395"
           strokeWidth="3"
         />
         <polyline fill="none" points="350,124 385,132 405,142" stroke="#94a3b8" strokeDasharray="5 5" strokeWidth="2" />
-        <circle cx="350" cy="124" fill="#4f46e5" r="5" />
+        <circle cx="350" cy="124" fill="#622395" r="5" />
         <g>
-          <rect fill="#ffffff" height="48" rx="9" stroke="#d8d5ff" width="78" x="312" y="38" />
-          <text fill="#4f46e5" fontSize="16" fontWeight="800" x="324" y="62">{product.price}</text>
+          <rect fill="#ffffff" height="48" rx="9" stroke="#dcc7f5" width="78" x="312" y="38" />
+          <text fill="#622395" fontSize="16" fontWeight="800" x="324" y="62">{product.price}</text>
           <text fill="#64748b" fontSize="12" x="335" y="78">May 17</text>
         </g>
         {["Apr 19", "Apr 26", "May 3", "May 10", "May 17"].map((label, index) => (
@@ -421,7 +421,7 @@ function PriceHistoryCard({ product }: { product: ProductData }) {
           </text>
         ))}
       </svg>
-      <a className="mt-3 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+      <a className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
         View full price history <ExternalLink className="size-4" />
       </a>
     </BentoCard>
@@ -522,21 +522,21 @@ export default async function ProductAnalysisPage({
           <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(440px,0.9fr)]">
             <AiScoreCard product={product} />
             <BentoCard className="p-4">
-              <h2 className="text-lg font-extrabold">
+              <h2 className="text-lg font-bold">
                 Buy / Wait / Avoid <Info className="inline size-4 text-muted-foreground" />
               </h2>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 2xl:grid-cols-4">
                 <VerdictCard color="border-buy bg-soft-buy/40 text-buy" icon={ShoppingCart} label="Buy Now" score={String(product.score)} subtitle="Strong buy" />
                 <VerdictCard color="border-wait bg-soft-wait/50 text-wait" icon={Hourglass} label="Wait" score={String(waitScore)} subtitle="Price may drop" />
                 <VerdictCard color="border-avoid bg-red-50 text-avoid" icon={XCircle} label="Avoid" score={String(avoidScore)} subtitle="Not recommended" />
-                <VerdictCard color="border-[#7b8bb9] bg-[#f8faff] text-[#4f46e5]" icon={Repeat2} label="Better Alternative" score={String(alternativeScore)} subtitle="See options" />
+                <VerdictCard color="border-[#7b8bb9] bg-[#f8faff] text-value" icon={Repeat2} label="Better Alternative" score={String(alternativeScore)} subtitle="See options" />
               </div>
             </BentoCard>
           </section>
 
           <section className="grid gap-4 xl:grid-cols-[1fr_1fr_0.95fr]">
             <BentoCard className="p-4">
-              <h2 className="mb-5 text-lg font-extrabold">
+              <h2 className="mb-5 text-lg font-bold">
                 Score Breakdown <Info className="inline size-4 text-muted-foreground" />
               </h2>
               <div className="grid gap-4">
@@ -548,7 +548,7 @@ export default async function ProductAnalysisPage({
                   </div>
                 ))}
               </div>
-              <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+              <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
                 How we calculate scores <ExternalLink className="size-4" />
               </a>
             </BentoCard>
@@ -556,19 +556,19 @@ export default async function ProductAnalysisPage({
             <PriceHistoryCard product={product} />
 
             <BentoCard className="p-4">
-              <h2 className="mb-4 text-lg font-extrabold">
+              <h2 className="mb-4 text-lg font-bold">
                 Price Comparison <Info className="inline size-4 text-muted-foreground" />
               </h2>
               <div className="divide-y divide-border">
                 {sellers.map((seller) => (
                   <div className="grid grid-cols-[1fr_auto_auto] items-center gap-3 py-3" key={seller.name}>
-                    <span className={`text-lg font-extrabold ${seller.brandClass}`}>{seller.name}</span>
-                    <span className="font-extrabold">{seller.price}</span>
+                    <span className={`text-lg font-bold ${seller.brandClass}`}>{seller.name}</span>
+                    <span className="font-bold">{seller.price}</span>
                     <Badge className={`${seller.noteClass} whitespace-nowrap`}>{seller.note}</Badge>
                   </div>
                 ))}
               </div>
-              <a className="mt-4 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+              <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
                 View all sellers (7) <ExternalLink className="size-4" />
               </a>
             </BentoCard>
@@ -576,7 +576,7 @@ export default async function ProductAnalysisPage({
 
           <section className="grid gap-4 xl:grid-cols-[0.9fr_0.85fr_1.45fr]">
             <BentoCard className="p-4">
-              <h2 className="text-lg font-extrabold">
+              <h2 className="text-lg font-bold">
                 Review Sentiment <Info className="inline size-4 text-muted-foreground" />
               </h2>
               <div className="mt-4 grid items-center gap-4 sm:grid-cols-[130px_1fr]">
@@ -590,36 +590,36 @@ export default async function ProductAnalysisPage({
             </BentoCard>
 
             <BentoCard className="p-4">
-              <h2 className="flex items-center gap-2 text-lg font-extrabold">
+              <h2 className="flex items-center gap-2 text-lg font-bold">
                 <YouTubeLogo /> YouTube Insights <Info className="size-4 text-muted-foreground" />
               </h2>
               <p className="mt-2 text-sm font-medium text-muted-foreground">Analyzed 24 trusted review videos</p>
               <div className="mt-7 grid grid-cols-3 items-start gap-3 text-center">
                 <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
-                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Positive Mentions</p>
-                  <p className="text-2xl font-extrabold leading-none text-buy">92%</p>
+                  <p className="max-w-20 text-center text-sm font-bold leading-5">Positive Mentions</p>
+                  <p className="text-2xl font-bold leading-none text-buy">92%</p>
                 </div>
                 <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
-                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Overall Rating</p>
-                  <p className="text-2xl font-extrabold leading-none text-[#4f46e5]">4.6/5</p>
+                  <p className="max-w-20 text-center text-sm font-bold leading-5">Overall Rating</p>
+                  <p className="text-2xl font-bold leading-none text-value">4.6/5</p>
                 </div>
                 <div className="grid min-h-24 grid-rows-[2.75rem_auto] place-items-center">
-                  <p className="max-w-20 text-center text-sm font-extrabold leading-5">Review Quality</p>
-                  <p className="text-2xl font-extrabold leading-none text-[#7c3aed]">High</p>
+                  <p className="max-w-20 text-center text-sm font-bold leading-5">Review Quality</p>
+                  <p className="text-2xl font-bold leading-none text-value">High</p>
                 </div>
               </div>
-              <a className="mt-7 inline-flex items-center gap-2 text-sm font-extrabold text-[#4f46e5]" href="#">
+              <a className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
                 View key takeaways <ExternalLink className="size-4" />
               </a>
             </BentoCard>
 
             <BentoCard className="p-4">
-              <h2 className="text-lg font-extrabold">
+              <h2 className="text-lg font-bold">
                 Top Pros & Cons <Info className="inline size-4 text-muted-foreground" />
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <p className="mb-3 font-extrabold text-buy">What people love</p>
+                  <p className="mb-3 font-bold text-buy">What people love</p>
                   <div className="grid gap-3">
                     {pros.map((item) => (
                       <span className="flex items-center gap-2 text-sm font-semibold" key={item}>
@@ -630,7 +630,7 @@ export default async function ProductAnalysisPage({
                   <p className="mt-4 text-sm font-semibold text-muted-foreground">+ 12 more</p>
                 </div>
                 <div>
-                  <p className="mb-3 font-extrabold text-avoid">What people don&apos;t like</p>
+                  <p className="mb-3 font-bold text-avoid">What people don&apos;t like</p>
                   <div className="grid gap-3">
                     {cons.map((item) => (
                       <span className="flex items-center gap-2 text-sm font-semibold" key={item}>

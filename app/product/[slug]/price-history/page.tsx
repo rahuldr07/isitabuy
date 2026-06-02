@@ -157,15 +157,15 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 overflow-y-auto border-r border-border bg-white px-4 py-6 lg:flex lg:flex-col">
       <Link className="mb-9 flex items-center gap-4" href="/deals">
-        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-[#7c74ff] to-[#4f46e5] text-sm font-black text-white shadow-sm">
+        <span className="grid size-12 place-items-center rounded-full bg-gradient-to-br from-value to-brand-navy text-sm font-bold text-white shadow-sm">
           BW
         </span>
-        <span className="text-3xl font-extrabold leading-none tracking-tight">
+        <span className="text-3xl font-bold leading-none tracking-tight">
           BuyWise<br />
-          <span className="text-[#4f46e5]">AI</span>
+          <span className="text-value">AI</span>
         </span>
       </Link>
-      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-extrabold text-[#4f46e5] hover:bg-[#f0ecff]" href="/deals">
+      <Link className="mb-5 flex h-10 items-center gap-3 rounded-lg px-3 text-sm font-bold text-value hover:bg-soft-value" href="/deals">
         <ArrowLeft className="size-4" />
         Back to Deals
       </Link>
@@ -177,7 +177,7 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
           return (
             <Link
               className={`flex h-13 items-center gap-4 rounded-xl px-4 text-sm font-semibold ${
-                active ? "bg-[#f0ecff] text-[#4f46e5]" : "text-foreground hover:bg-muted"
+                active ? "bg-soft-value text-value" : "text-foreground hover:bg-muted"
               }`}
               href={productHref(slug, product, key)}
               key={label}
@@ -195,8 +195,8 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
             <User className="size-5" />
           </span>
           <div>
-            <p className="text-sm font-extrabold">Alex Thompson</p>
-            <Badge className="mt-1 bg-[#f0ecff] text-[#4f46e5]">Pro</Badge>
+            <p className="text-sm font-bold">Alex Thompson</p>
+            <Badge className="mt-1 bg-soft-value text-value">Pro</Badge>
           </div>
         </div>
         <ChevronDown className="-rotate-90 size-4 text-muted-foreground" />
@@ -211,18 +211,18 @@ function ProductPanel({ product }: { product: ProductData }) {
       <div className="grid grid-cols-[64px_1fr] gap-4">
         <div className="grid gap-2">
           {[0, 1, 2, 3].map((item) => (
-            <div className={`grid size-16 place-items-center rounded-lg border ${item === 0 ? "border-[#6d28d9]" : "border-border"}`} key={item}>
+            <div className={`grid size-16 place-items-center rounded-lg border ${item === 0 ? "border-value" : "border-border"}`} key={item}>
               <img alt="" className="max-h-12 w-full object-contain mix-blend-multiply" src={product.image} />
             </div>
           ))}
-          <div className="grid size-16 place-items-center rounded-lg border border-border text-sm font-extrabold">+3</div>
+          <div className="grid size-16 place-items-center rounded-lg border border-border text-sm font-bold">+3</div>
         </div>
         <div>
           <div className="grid min-h-[300px] place-items-center rounded-xl bg-white">
             <img alt={product.name} className="max-h-[280px] w-full object-contain mix-blend-multiply" src={product.image} />
           </div>
-          <Badge className="mt-4 rounded bg-muted text-xs font-extrabold text-foreground">{product.name.split(" ")[0]}</Badge>
-          <h1 className="mt-3 text-2xl font-extrabold leading-tight">{product.name}</h1>
+          <Badge className="mt-4 rounded bg-muted text-xs font-bold text-foreground">{product.name.split(" ")[0]}</Badge>
+          <h1 className="mt-3 text-2xl font-bold leading-tight">{product.name}</h1>
           <p className="mt-1 text-base font-semibold text-muted-foreground">{product.subtitle}</p>
           <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-semibold">
             <span className="flex items-center gap-1 text-accent">
@@ -248,8 +248,8 @@ function MetricCard({ label, value, note }: { label: string; value: string; note
   return (
     <BentoCard className="flex h-[136px] self-start p-3">
       <div className="flex h-full flex-col">
-        <p className="min-h-10 text-sm font-extrabold leading-5 text-muted-foreground">{label}</p>
-        <p className="text-2xl font-extrabold leading-none tracking-normal">{value}</p>
+        <p className="min-h-10 text-sm font-bold leading-5 text-muted-foreground">{label}</p>
+        <p className="text-2xl font-bold leading-none tracking-normal">{value}</p>
         <p className="mt-auto text-xs font-semibold leading-4 text-buy">{note}</p>
       </div>
     </BentoCard>
@@ -260,10 +260,10 @@ function PriceChart({ product }: { product: ProductData }) {
   return (
     <BentoCard className="p-4">
       <div className="mb-4 flex flex-col gap-3 2xl:flex-row 2xl:items-center 2xl:justify-between">
-        <h2 className="text-lg font-extrabold">Price history <span className="font-medium text-muted-foreground">(90 days)</span></h2>
-        <div className="flex w-fit rounded-lg border border-border bg-white p-1 text-xs font-extrabold">
+        <h2 className="text-lg font-bold">Price history <span className="font-medium text-muted-foreground">(90 days)</span></h2>
+        <div className="flex w-fit rounded-lg border border-border bg-white p-1 text-xs font-bold">
           {["30D", "90D", "6M", "1Y", "All"].map((item) => (
-            <span className={`rounded-md px-3 py-1.5 ${item === "90D" ? "bg-[#f0ecff] text-[#6d28d9]" : "text-muted-foreground"}`} key={item}>
+            <span className={`rounded-md px-3 py-1.5 ${item === "90D" ? "bg-soft-value text-value" : "text-muted-foreground"}`} key={item}>
               {item}
             </span>
           ))}
@@ -276,7 +276,7 @@ function PriceChart({ product }: { product: ProductData }) {
         {[90, 190, 290, 390, 490, 590, 690].map((x) => (
           <line key={x} x1={x} x2={x} y1="35" y2="245" stroke="#f3f6fa" />
         ))}
-        <path d="M55 55 L95 61 L140 57 L170 75 L210 72 L250 91 L295 96 L340 105 L382 113 L425 121 L468 150 L512 158 L555 169 L598 165" fill="none" stroke="#6d28d9" strokeWidth="3" />
+        <path d="M55 55 L95 61 L140 57 L170 75 L210 72 L250 91 L295 96 L340 105 L382 113 L425 121 L468 150 L512 158 L555 169 L598 165" fill="none" stroke="#622395" strokeWidth="3" />
         <path d="M55 58 C180 78 330 100 598 150" fill="none" stroke="#3b82f6" strokeDasharray="6 5" strokeWidth="2" />
         <path d="M55 70 C220 91 390 121 710 155" fill="none" stroke="#16a34a" strokeDasharray="6 5" strokeWidth="2" />
         <path d="M598 165 C630 154 665 174 710 164" fill="none" stroke="#a855f7" strokeDasharray="7 6" strokeWidth="3" />
@@ -290,7 +290,7 @@ function PriceChart({ product }: { product: ProductData }) {
       </svg>
       <div className="mt-3 grid grid-cols-2 gap-3 text-xs font-semibold 2xl:grid-cols-4">
         {[
-          ["Actual Price", "bg-[#6d28d9]"],
+          ["Actual Price", "bg-value"],
           ["30-Day Average", "bg-[#3b82f6]"],
           ["90-Day Average", "bg-[#16a34a]"],
           ["Predicted Price Range", "bg-[#a855f7]"],
@@ -308,10 +308,10 @@ function PriceChart({ product }: { product: ProductData }) {
 function VerdictPanel({ product }: { product: ProductData }) {
   return (
     <BentoCard className="p-4" variant="warning">
-      <p className="text-sm font-extrabold uppercase tracking-wide">AI Price Verdict <Info className="inline size-4 text-muted-foreground" /></p>
+      <p className="text-sm font-bold uppercase tracking-wide">AI Price Verdict <Info className="inline size-4 text-muted-foreground" /></p>
       <div className="mt-3 grid grid-cols-[1fr_96px] gap-4">
         <div>
-          <p className="text-xl font-extrabold text-accent">Wait for a better price.</p>
+          <p className="text-xl font-bold text-accent">Wait for a better price.</p>
           <p className="mt-3 text-sm font-semibold leading-5 text-muted-foreground">
             Prices for {product.name} are likely to drop in the next 2-4 weeks based on our prediction model.
           </p>
@@ -325,10 +325,10 @@ function VerdictPanel({ product }: { product: ProductData }) {
         </div>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <Button className="h-10 rounded-lg bg-[#6d28d9] font-extrabold text-white hover:bg-[#5b21b6]">
+        <Button className="h-10 rounded-lg bg-value font-bold text-white hover:bg-value/90">
           <Bell className="size-4" /> Create Price Alert
         </Button>
-        <Button variant="outline" className="h-10 rounded-lg border-[#6d28d9] font-extrabold text-[#6d28d9]">
+        <Button variant="outline" className="h-10 rounded-lg border-value font-bold text-value">
           <TrendingDown className="size-4" /> View Predictions
         </Button>
       </div>
@@ -341,10 +341,10 @@ function RetailerTable({ product }: { product: ProductData }) {
 
   return (
     <BentoCard className="p-4">
-      <h2 className="mb-5 text-lg font-extrabold">Compare prices by retailer</h2>
+      <h2 className="mb-5 text-lg font-bold">Compare prices by retailer</h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[820px] text-left text-sm">
-          <thead className="text-xs font-extrabold text-muted-foreground">
+          <thead className="text-xs font-bold text-muted-foreground">
             <tr className="border-b border-border">
               <th className="pb-3">Retailer</th>
               <th className="pb-3">Current Price</th>
@@ -358,8 +358,8 @@ function RetailerTable({ product }: { product: ProductData }) {
           <tbody className="divide-y divide-border">
             {rows.map((row) => (
               <tr key={row.retailer}>
-                <td className="py-4 text-lg font-black">{row.retailer}</td>
-                <td className="py-4 font-extrabold">
+                <td className="py-4 text-lg font-bold">{row.retailer}</td>
+                <td className="py-4 font-bold">
                   {row.price} {row.offer ? <Badge className="ml-2 bg-soft-buy text-buy">{row.offer}</Badge> : null}
                 </td>
                 <td className="py-4 font-semibold">{row.shipping}</td>
@@ -367,11 +367,11 @@ function RetailerTable({ product }: { product: ProductData }) {
                 <td className="py-4 font-semibold text-muted-foreground">{row.updated}</td>
                 <td className="py-4">
                   <svg className="h-8 w-40" viewBox="0 0 160 32">
-                    <path d="M2 10 L24 13 L42 11 L63 18 L82 17 L102 21 L122 19 L158 24" fill="none" stroke="#6d28d9" strokeWidth="2" />
+                    <path d="M2 10 L24 13 L42 11 L63 18 L82 17 L102 21 L122 19 L158 24" fill="none" stroke="#622395" strokeWidth="2" />
                   </svg>
                 </td>
                 <td className="py-4 text-right">
-                  <Button variant="outline" className="h-8 rounded-md border-accent text-xs font-extrabold text-accent">
+                  <Button variant="outline" className="h-8 rounded-md border-accent text-xs font-bold text-accent">
                     View Deal
                   </Button>
                 </td>
@@ -380,7 +380,7 @@ function RetailerTable({ product }: { product: ProductData }) {
           </tbody>
         </table>
       </div>
-      <button className="mx-auto mt-4 flex items-center gap-2 text-sm font-extrabold text-[#6d28d9]">View all 12 retailers</button>
+      <button className="mx-auto mt-4 flex items-center gap-2 text-sm font-bold text-value">View all 12 retailers</button>
     </BentoCard>
   );
 }
@@ -390,15 +390,15 @@ function PredictionCard({ product }: { product: ProductData }) {
 
   return (
     <BentoCard className="p-4" variant="success">
-      <h2 className="text-lg font-extrabold">Price drop prediction <Info className="inline size-4 text-muted-foreground" /></h2>
-      <p className="mt-3 text-lg font-extrabold text-buy">High chance of price drop</p>
+      <h2 className="text-lg font-bold">Price drop prediction <Info className="inline size-4 text-muted-foreground" /></h2>
+      <p className="mt-3 text-lg font-bold text-buy">High chance of price drop</p>
       <p className="mt-3 text-sm font-semibold leading-5 text-muted-foreground">We predict the price will drop to</p>
-      <p className="mt-1 text-2xl font-extrabold">{formatMoney(base * 0.83)} - {formatMoney(base * 0.9)}</p>
+      <p className="mt-1 text-2xl font-bold">{formatMoney(base * 0.83)} - {formatMoney(base * 0.9)}</p>
       <p className="mt-1 text-sm font-semibold text-muted-foreground">in the next 2-4 weeks</p>
-      <div className="mt-4 rounded-xl bg-soft-buy p-3 text-sm font-extrabold text-buy">
+      <div className="mt-4 rounded-xl bg-soft-buy p-3 text-sm font-bold text-buy">
         Best time to buy:<br /> Jun 5 - Jun 20, 2024
       </div>
-      <button className="mt-4 text-sm font-extrabold text-buy">How we predict</button>
+      <button className="mt-4 text-sm font-bold text-buy">How we predict</button>
     </BentoCard>
   );
 }
@@ -408,16 +408,16 @@ function AlertCard({ product }: { product: ProductData }) {
 
   return (
     <BentoCard className="p-4" variant="accent">
-      <h2 className="text-lg font-extrabold">Create a price alert</h2>
+      <h2 className="text-lg font-bold">Create a price alert</h2>
       <p className="mt-4 text-sm font-semibold text-muted-foreground">Notify me when the price drops to</p>
       <div className="mt-3 flex gap-3">
         <Button variant="outline" className="h-11 rounded-lg bg-white">$</Button>
-        <Input className="h-11 rounded-lg bg-white font-extrabold" defaultValue={Math.round(base * 0.88)} />
+        <Input className="h-11 rounded-lg bg-white font-bold" defaultValue={Math.round(base * 0.88)} />
         <span className="self-center text-sm font-semibold text-muted-foreground">or less</span>
       </div>
       <p className="mt-4 text-sm font-semibold">Email (you@example.com)</p>
       <Input className="mt-2 h-11 rounded-lg bg-white" placeholder="you@example.com" />
-      <Button className="mt-4 h-12 w-full rounded-lg bg-[#6d28d9] font-extrabold text-white hover:bg-[#5b21b6]">
+      <Button className="mt-4 h-12 w-full rounded-lg bg-value font-bold text-white hover:bg-value/90">
         <Bell className="size-4" /> Create Alert
       </Button>
       <p className="mt-4 text-xs font-semibold text-muted-foreground">You can manage your alerts anytime in your account.</p>
@@ -457,11 +457,11 @@ export default async function PriceHistoryPage({
             <span>/</span>
             <Link className="text-foreground" href={{ pathname: `/product/${slug}`, query: productQuery(product) }}>{product.name}</Link>
             <span>/</span>
-            <span className="font-extrabold text-foreground">Price History</span>
+            <span className="font-bold text-foreground">Price History</span>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="h-10 rounded-lg font-extrabold"><Share2 className="size-4" /> Share</Button>
-            <Button variant="outline" className="h-10 rounded-lg font-extrabold"><Heart className="size-4" /> Save</Button>
+            <Button variant="outline" className="h-10 rounded-lg font-bold"><Share2 className="size-4" /> Share</Button>
+            <Button variant="outline" className="h-10 rounded-lg font-bold"><Heart className="size-4" /> Save</Button>
           </div>
           </div>
 

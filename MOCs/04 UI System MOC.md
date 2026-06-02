@@ -18,8 +18,8 @@ Use this map before changing colors, typography, spacing, components, icons, or 
 
 ## Visual Foundation
 
-- Font: Plus Jakarta Sans from `next/font/google`.
-- Icons: Google Material Symbols Outlined loaded in `app/layout.tsx`.
+- Fonts: Sora for headings, navigation, buttons, verdict labels, and score/value UI; Manrope for body copy, forms, cards, tables, and dense dashboard text. Both load through `next/font/google`.
+- Icons: lucide-react through shadcn/ui and route components. Do not add new Google Material Symbols links.
 - Styling engine: Tailwind CSS v4.
 - Theme location: `app/globals.css`.
 - Component primitives: shadcn/ui in `components/ui/`.
@@ -31,18 +31,17 @@ Theme values are defined inside `@theme` blocks in `app/globals.css`. There is n
 
 Important color families:
 
-- Surface: `surface`, `surface-container`, `surface-container-low`, `surface-container-high`, `background`.
-- Text: `on-surface`, `on-surface-variant`, `foreground`, `muted-foreground`.
-- Brand/action: `primary`, `primary-container`, `secondary`, `tertiary`.
-- Verdicts: `verdict-buy`, `verdict-wait`, `verdict-avoid`, `verdict-better`.
-- State: `error`, `error-container`, `outline`, `outline-variant`.
+- Surface/text: `background`, `foreground`, `card`, `muted`, `muted-foreground`, `border`.
+- Brand/action: `brand-navy` (`#00132e`), `brand-ink` (`#111827`), `action-orange` (`#ff7300`), `brand-amber` (`#f59e0b`).
+- Verdict/insight: `buy` (`#16a34a`), `wait` (`#f59e0b`), `avoid` (`#dc2626`), `value`/`insight-purple` (`#622395`) plus `soft-*` companions.
+- shadcn compatibility: `primary`, `accent`, `destructive`, `ring`, `sidebar-*`, and chart tokens remain mapped in `app/globals.css`.
 
 Important utilities:
 
-- Typography: `.text-display-xl`, `.text-headline-lg`, `.text-headline-md`, `.text-body-lg`, `.text-body-md`, `.text-label-sm`.
+- Typography: `font-sans` maps to Manrope, `font-heading` and heading/action elements map to Sora, and `font-numeric` uses Sora with tabular numbers.
 - Spacing: `.px-gutter`, `.px-margin-mobile`, `.py-stack-lg`, `.py-stack-md`, `.mb-stack-lg`, `.gap-gutter`, `.max-w-container-max`.
 - Shadows: `.shadow-soft`, `.shadow-elevated`, `shadow-premium`, `shadow-premium-hover`.
-- Icons: `.material-symbols-outlined`, `.material-symbols-outlined.filled`.
+- Icons: use lucide-react components with shadcn/ui primitives.
 
 ## shadcn/ui Usage
 
@@ -78,7 +77,7 @@ Use shadcn primitives for controls and overlays when they fit the interaction:
 - Some class names are referenced but not defined in `globals.css`.
 - Raw remote `<img>` tags produce lint warnings.
 - Some page layouts duplicate nav and shell patterns.
-- The palette can drift if arbitrary amber/brown/slate values are added without checking the whole page.
+- The palette can drift if arbitrary amber/brown/slate/violet values are added instead of `accent`, `brand-amber`, `value`, and the `soft-*` tokens.
 
 ## Good AI Prompts For UI Work
 

@@ -103,7 +103,7 @@ function Logo() {
       <span className="grid size-8 place-items-center rounded-lg bg-[var(--compare-green)] text-white shadow-[var(--compare-logo-shadow)]">
         <ShoppingBag className="size-5" aria-hidden="true" />
       </span>
-      <span className="text-2xl font-black leading-none tracking-tight text-[var(--compare-green-dark)]">IsItABuy</span>
+      <span className="text-2xl font-bold leading-none tracking-tight text-[var(--compare-green-dark)]">IsItABuy</span>
     </NextLink>
   );
 }
@@ -170,7 +170,7 @@ function CompareHeader({
           </div>
         </div>
         <Button
-          className="order-5 h-10 rounded-md bg-[var(--compare-orange)] px-3 text-xs font-black text-white hover:bg-[var(--compare-orange-dark)] md:order-none md:px-5"
+          className="order-5 h-10 rounded-md bg-[var(--compare-orange)] px-3 text-xs font-bold text-white hover:bg-[var(--compare-orange-dark)] md:order-none md:px-5"
           onClick={onSearch}
         >
           Search deals
@@ -178,7 +178,7 @@ function CompareHeader({
         <div className="contents">
           <Button
             variant="ghost"
-            className="h-9 gap-2 justify-self-end text-xs font-black"
+            className="h-9 gap-2 justify-self-end text-xs font-bold"
             onClick={() => {
               if (hasSavedRoute) {
                 window.location.href = "/saved";
@@ -234,7 +234,7 @@ function CategoryNav({
   onActiveCategoryChange: (category: Category["id"]) => void;
 }) {
   return (
-    <nav className="mx-auto flex h-12 max-w-[92.5rem] items-center gap-6 overflow-x-auto px-4 text-xs font-black text-[var(--compare-ink)] xl:px-8" aria-label="Deal categories">
+    <nav className="mx-auto flex h-12 max-w-[92.5rem] items-center gap-6 overflow-x-auto px-4 text-xs font-bold text-[var(--compare-ink)] xl:px-8" aria-label="Deal categories">
       {compareCategories.map((item) => (
         <button
           key={item.id}
@@ -250,7 +250,7 @@ function CategoryNav({
       ))}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-9 shrink-0 gap-1 px-2 text-xs font-black">
+          <Button variant="ghost" className="h-9 shrink-0 gap-1 px-2 text-xs font-bold">
             <span>More</span>
             <ChevronDown className="size-4" aria-hidden="true" />
           </Button>
@@ -330,7 +330,7 @@ function ActionButton({
   onClick: () => void;
 }) {
   return (
-    <Button variant="outline" className="h-8 rounded-md border-[var(--compare-line)] bg-white px-4 text-xs font-black shadow-none" onClick={onClick}>
+    <Button variant="outline" className="h-8 rounded-md border-[var(--compare-line)] bg-white px-4 text-xs font-bold shadow-none" onClick={onClick}>
       <Icon className="size-4" data-icon="inline-start" aria-hidden="true" />
       {children}
     </Button>
@@ -464,10 +464,10 @@ function ProductCompareCard({
             <div className="mx-auto grid size-14 place-items-center rounded-full bg-[var(--compare-soft)] text-[var(--compare-muted)]">
               <ShoppingBag className="size-6" aria-hidden="true" />
             </div>
-            <Badge className={cn("mt-4 h-5 rounded-md border-0 px-2 text-[0.62rem] font-black uppercase", labelClassName)}>{label}</Badge>
-            <p className="mt-3 text-sm font-black text-[var(--compare-ink)]">Product removed</p>
+            <Badge className={cn("mt-4 h-5 rounded-md border-0 px-2 text-[0.62rem] font-bold uppercase", labelClassName)}>{label}</Badge>
+            <p className="mt-3 text-sm font-bold text-[var(--compare-ink)]">Product removed</p>
             <p className="mt-1 text-xs font-semibold text-[var(--compare-muted)]">Add a product to continue.</p>
-            <Button className="mt-4 h-8 bg-[var(--compare-orange)] px-4 text-xs font-black text-white hover:bg-[var(--compare-orange-dark)]" onClick={onAdd}>
+            <Button className="mt-4 h-8 bg-[var(--compare-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--compare-orange-dark)]" onClick={onAdd}>
               <Plus className="size-4" data-icon="inline-start" aria-hidden="true" />
               Add product
             </Button>
@@ -486,9 +486,9 @@ function ProductCompareCard({
         <ProductImage product={product} />
         <div className="min-w-0 pr-5">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge className={cn("h-5 rounded-md border-0 px-2 text-[0.62rem] font-black uppercase", labelClassName)}>{label}</Badge>
+            <Badge className={cn("h-5 rounded-md border-0 px-2 text-[0.62rem] font-bold uppercase", labelClassName)}>{label}</Badge>
           </div>
-          <h2 className="mt-2 text-[1.05rem] font-black leading-tight tracking-tight text-[var(--compare-ink)]">{product.name}</h2>
+          <h2 className="mt-2 text-[1.05rem] font-bold leading-tight tracking-tight text-[var(--compare-ink)]">{product.name}</h2>
           <p className="mt-1 text-xs font-semibold leading-5 text-[var(--compare-muted)]">{product.subtitle}</p>
           <div className="mt-2 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[0.64rem] font-bold">
             <span className="inline-flex items-center gap-1 text-[var(--compare-orange)]">
@@ -518,7 +518,7 @@ function ProductCompareCard({
               <span
                 key={insight.label}
                 className={cn(
-                  "truncate rounded-md px-2 py-1 text-[0.58rem] font-black",
+                  "truncate rounded-md px-2 py-1 text-[0.58rem] font-bold",
                   insight.tone === "positive" && "bg-[var(--compare-green-soft)] text-[var(--compare-green-dark)]",
                   insight.tone === "caution" && "bg-[var(--compare-wait-soft)] text-[var(--compare-orange-dark)]",
                   insight.tone === "neutral" && "bg-[var(--compare-soft-panel)] text-[var(--compare-purple)]"
@@ -532,8 +532,8 @@ function ProductCompareCard({
           <div className="mt-3 rounded-lg border border-[var(--compare-line)] bg-[var(--compare-soft-panel)] px-3 py-2.5">
             <p className="text-[0.66rem] font-semibold text-[var(--compare-muted)]">Current price (Amazon)</p>
             <div className="mt-0.5 flex flex-wrap items-center gap-3">
-              <strong className="font-numeric text-[1.22rem] font-black leading-none text-[var(--compare-ink)]">{formatPrice(product.currentPrice)}</strong>
-              <Badge className="h-5 border-0 bg-[var(--compare-green-soft)] text-[0.65rem] font-black text-[var(--compare-green-dark)]">
+              <strong className="font-numeric text-[1.22rem] font-bold leading-none text-[var(--compare-ink)]">{formatPrice(product.currentPrice)}</strong>
+              <Badge className="h-5 border-0 bg-[var(--compare-green-soft)] text-[0.65rem] font-bold text-[var(--compare-green-dark)]">
                 {product.discountPercent}% off
               </Badge>
             </div>
@@ -543,7 +543,7 @@ function ProductCompareCard({
           </div>
           <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
             <VerdictBadge className="w-full" productName={product.name} verdict={product.verdict} />
-            <span className="rounded-lg bg-[var(--compare-soft-panel)] px-2.5 py-1 text-[0.6rem] font-black text-[var(--compare-purple)]">
+            <span className="rounded-lg bg-[var(--compare-soft-panel)] px-2.5 py-1 text-[0.6rem] font-bold text-[var(--compare-purple)]">
               Best for {product.bestFor}
             </span>
           </div>
@@ -596,7 +596,7 @@ function ProductResultImage({ product }: { product: Product }) {
 
 function VsBadge() {
   return (
-    <div className="pointer-events-none absolute left-0 top-1/2 z-10 hidden size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--compare-line)] bg-white text-sm font-black text-[var(--compare-ink)] shadow-[var(--compare-hover-shadow)] xl:grid">
+    <div className="pointer-events-none absolute left-0 top-1/2 z-10 hidden size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-[var(--compare-line)] bg-white text-sm font-bold text-[var(--compare-ink)] shadow-[var(--compare-hover-shadow)] xl:grid">
       VS
     </div>
   );
@@ -605,7 +605,7 @@ function VsBadge() {
 function MobileVsDivider() {
   return (
     <div className="grid place-items-center py-1 md:hidden">
-      <span className="grid size-10 place-items-center rounded-full border border-[var(--compare-line)] bg-white text-xs font-black text-[var(--compare-ink)] shadow-sm">VS</span>
+      <span className="grid size-10 place-items-center rounded-full border border-[var(--compare-line)] bg-white text-xs font-bold text-[var(--compare-ink)] shadow-sm">VS</span>
     </div>
   );
 }
@@ -631,7 +631,7 @@ function AiRecommendationCard({
     return (
       <Panel className={cn("h-full min-h-[17rem]", className)}>
         <CardContent className="flex h-full min-h-[17rem] items-center justify-center p-4">
-          <Button variant="outline" className="h-9 text-xs font-black text-[var(--compare-purple)]" onClick={onRestore}>
+          <Button variant="outline" className="h-9 text-xs font-bold text-[var(--compare-purple)]" onClick={onRestore}>
             Show AI recommendation
           </Button>
         </CardContent>
@@ -646,11 +646,11 @@ function AiRecommendationCard({
           <X className="size-4" aria-hidden="true" />
         </button>
         <div>
-          <div className="mb-3 flex items-center gap-2 text-[0.68rem] font-black uppercase text-[var(--compare-ink)]">
+          <div className="mb-3 flex items-center gap-2 text-[0.68rem] font-bold uppercase text-[var(--compare-ink)]">
             <BadgeCheck className="size-4 text-[var(--compare-purple)]" aria-hidden="true" />
             AI Recommendation
           </div>
-          <h2 className="text-base font-black leading-tight text-[var(--compare-purple)]">{recommendation.title}</h2>
+          <h2 className="text-base font-bold leading-tight text-[var(--compare-purple)]">{recommendation.title}</h2>
           <p className="mt-2 text-[0.72rem] font-semibold leading-5 text-[var(--compare-muted)]">{recommendation.body}</p>
         </div>
         <div className="mt-auto flex flex-col gap-3 pt-4">
@@ -665,12 +665,12 @@ function AiRecommendationCard({
                 background: `conic-gradient(var(--compare-purple) 0 ${recommendation.confidence}%, var(--compare-green) ${recommendation.confidence}% 100%)`,
               }}
             >
-              <div className="grid size-full place-items-center rounded-full bg-white font-numeric text-base font-black text-[var(--compare-ink)]">
+              <div className="grid size-full place-items-center rounded-full bg-white font-numeric text-base font-bold text-[var(--compare-ink)]">
                 {recommendation.confidence ? `${recommendation.confidence}%` : "--"}
               </div>
             </div>
             <div className="text-xs font-semibold leading-5 text-[var(--compare-muted)]">
-              <strong className="block text-sm font-black text-[var(--compare-ink)]">{recommendation.confidenceLabel}</strong>
+              <strong className="block text-sm font-bold text-[var(--compare-ink)]">{recommendation.confidenceLabel}</strong>
               Based on data from {recommendation.sourceCount} sources
             </div>
           </div>
@@ -701,7 +701,7 @@ function ScoreComparisonTable({ productA, productB, className }: { productA: Pro
   return (
     <Panel className={className}>
       <CardHeader className="px-4 py-3">
-        <CardTitle className="flex items-center gap-2 text-[0.82rem] font-black uppercase text-[var(--compare-ink)]">
+        <CardTitle className="flex items-center gap-2 text-[0.82rem] font-bold uppercase text-[var(--compare-ink)]">
           Score Comparison
           <InfoTooltip label="Scores compare value, price, review trust, performance, comfort, battery, and features." />
         </CardTitle>
@@ -723,7 +723,7 @@ function ScoreComparisonTable({ productA, productB, className }: { productA: Pro
                 const winner = getWinner(productA, productB, row.id);
                 return (
                   <TableRow key={row.id} className="border-[var(--compare-line)] hover:bg-[var(--compare-soft-panel)]">
-                    <TableCell className="px-4 py-2.5 text-[0.72rem] font-black text-[var(--compare-ink)]">
+                    <TableCell className="px-4 py-2.5 text-[0.72rem] font-bold text-[var(--compare-ink)]">
                       <span className="flex items-center gap-2.5">
                         <Icon className="size-4 text-[var(--compare-green)]" aria-hidden="true" />
                         {row.label}
@@ -731,7 +731,7 @@ function ScoreComparisonTable({ productA, productB, className }: { productA: Pro
                     </TableCell>
                     <ScoreValueCell product={productA} rowId={row.id} type={row.type} />
                     <ScoreValueCell product={productB} rowId={row.id} type={row.type} />
-                    <TableCell className="py-2.5 text-xs font-black text-[var(--compare-purple)]">
+                    <TableCell className="py-2.5 text-xs font-bold text-[var(--compare-purple)]">
                       {winner === "Tie" ? "=" : winner ? <Trophy className="size-4 text-[var(--compare-orange)]" aria-label={winner} /> : "-"}
                     </TableCell>
                   </TableRow>
@@ -761,7 +761,7 @@ function ScoreValueCell({
   const value = getScoreValue(product, rowId);
   if (type === "score") {
     return (
-      <TableCell className="font-numeric py-2.5 text-[0.95rem] font-black text-[var(--compare-purple)]">
+      <TableCell className="font-numeric py-2.5 text-[0.95rem] font-bold text-[var(--compare-purple)]">
         {value} <span className="text-xs font-semibold text-[var(--compare-muted)]">/100</span>
       </TableCell>
     );
@@ -769,7 +769,7 @@ function ScoreValueCell({
 
   if (type === "trust") {
     return (
-      <TableCell className="py-2.5 text-xs font-black text-[var(--compare-green-dark)]">
+      <TableCell className="py-2.5 text-xs font-bold text-[var(--compare-green-dark)]">
         <ShieldCheck className="mr-1 inline size-4" aria-hidden="true" />
         {value}
       </TableCell>
@@ -784,7 +784,7 @@ function ScoreValueCell({
     );
   }
 
-  return <TableCell className="py-2.5 text-sm font-black text-[var(--compare-blue)]">{value}</TableCell>;
+  return <TableCell className="py-2.5 text-sm font-bold text-[var(--compare-blue)]">{value}</TableCell>;
 }
 
 function VerdictBadge({ productName, verdict, className }: { productName: string; verdict: Verdict; className?: string }) {
@@ -801,7 +801,7 @@ function VerdictBadge({ productName, verdict, className }: { productName: string
         showCompareToast(`${verdict} verdict`, description);
       }}
       className={cn(
-        "inline-flex min-w-20 items-center justify-center rounded-lg px-3 py-1 text-xs font-black transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--compare-orange)]",
+        "inline-flex min-w-20 items-center justify-center rounded-lg px-3 py-1 text-xs font-bold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--compare-orange)]",
         verdict === "BUY" && "bg-[var(--compare-green-soft)] text-[var(--compare-green-dark)]",
         verdict === "WAIT" && "bg-[var(--compare-wait-soft)] text-[var(--compare-orange-dark)]",
         verdict === "AVOID" && "bg-red-50 text-[var(--compare-red)]",
@@ -817,7 +817,7 @@ function ProsConsCard({ productA, productB, className }: { productA: Product | n
   return (
     <Panel className={className}>
       <CardHeader className="px-4 py-3">
-        <CardTitle className="text-[0.82rem] font-black uppercase text-[var(--compare-ink)]">Pros &amp; Cons</CardTitle>
+        <CardTitle className="text-[0.82rem] font-bold uppercase text-[var(--compare-ink)]">Pros &amp; Cons</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4 px-4 pb-4 sm:grid-cols-2">
         <ProsConsColumn product={productA} fallback="Product A" />
@@ -830,7 +830,7 @@ function ProsConsCard({ productA, productB, className }: { productA: Product | n
 function ProsConsColumn({ product, fallback }: { product: Product | null; fallback: string }) {
   return (
     <div className="min-w-0">
-      <h3 className="text-xs font-black text-[var(--compare-purple)]">{product?.name ?? fallback}</h3>
+      <h3 className="text-xs font-bold text-[var(--compare-purple)]">{product?.name ?? fallback}</h3>
       {product ? (
         <ul className="mt-3 grid gap-1.5 text-[0.7rem] font-semibold leading-5 text-[var(--compare-ink)]">
           {product.pros.map((item) => (
@@ -857,7 +857,7 @@ function BestForDifferentUsersCard({ productA, productB, className }: { productA
   return (
     <Panel className={className}>
       <CardHeader className="px-4 py-3">
-        <CardTitle className="text-[0.82rem] font-black uppercase text-[var(--compare-ink)]">Best for Different Users</CardTitle>
+        <CardTitle className="text-[0.82rem] font-bold uppercase text-[var(--compare-ink)]">Best for Different Users</CardTitle>
       </CardHeader>
       <CardContent className="px-0 pb-3">
         <Table className="table-fixed">
@@ -877,7 +877,7 @@ function BestForDifferentUsersCard({ productA, productB, className }: { productA
                     }
                   }}
                 >
-                  <TableCell className="w-[32%] px-4 py-2 text-[0.7rem] font-black text-[var(--compare-ink)]">
+                  <TableCell className="w-[32%] px-4 py-2 text-[0.7rem] font-bold text-[var(--compare-ink)]">
                     <span className="flex items-center gap-2">
                       <Icon className="size-4 text-[var(--compare-ink)]" aria-hidden="true" />
                       {row.label}
@@ -913,7 +913,7 @@ function PriceComparisonCard({ productA, productB, className }: { productA: Prod
   return (
     <Panel className={className}>
       <CardHeader className="px-4 py-3">
-        <CardTitle className="flex items-center gap-2 text-[0.82rem] font-black uppercase text-[var(--compare-ink)]">
+        <CardTitle className="flex items-center gap-2 text-[0.82rem] font-bold uppercase text-[var(--compare-ink)]">
           Price Comparison
           <InfoTooltip label="Price comparison uses current price, list price, savings, 90-day low, and recent trend." />
         </CardTitle>
@@ -947,10 +947,10 @@ function PriceComparisonCard({ productA, productB, className }: { productA: Prod
 function PriceCell({ product, row }: { product: Product | null; row: string }) {
   if (!product) return <TableCell className="py-2 text-[0.72rem] font-semibold text-[var(--compare-muted)]">Add product</TableCell>;
 
-  if (row === "Current Price") return <TableCell className="font-numeric py-2 text-[0.72rem] font-black text-[var(--compare-green)]">{formatPrice(product.currentPrice)}</TableCell>;
+  if (row === "Current Price") return <TableCell className="font-numeric py-2 text-[0.72rem] font-bold text-[var(--compare-green)]">{formatPrice(product.currentPrice)}</TableCell>;
   if (row === "List Price") return <TableCell className="font-numeric py-2 text-[0.72rem] font-semibold text-[var(--compare-ink)]">{formatPrice(product.listPrice)}</TableCell>;
   if (row === "You Save") return <TableCell className="font-numeric py-2 text-[0.72rem] font-semibold text-[var(--compare-ink)]">{formatPrice(product.listPrice - product.currentPrice)} ({product.discountPercent}%)</TableCell>;
-  if (row === "90-Day Low") return <TableCell className="font-numeric py-2 text-[0.72rem] font-black text-[var(--compare-green)]">{formatPrice(getLowPrice(product))}</TableCell>;
+  if (row === "90-Day Low") return <TableCell className="font-numeric py-2 text-[0.72rem] font-bold text-[var(--compare-green)]">{formatPrice(getLowPrice(product))}</TableCell>;
 
   const trend = getTrend(product);
   return (
@@ -981,7 +981,7 @@ function RetailerOffersCard({
   return (
     <Panel className={className}>
       <CardHeader className="px-4 py-3">
-        <CardTitle className="text-[0.82rem] font-black uppercase text-[var(--compare-ink)]">Top Retailer Offers</CardTitle>
+        <CardTitle className="text-[0.82rem] font-bold uppercase text-[var(--compare-ink)]">Top Retailer Offers</CardTitle>
       </CardHeader>
       <CardContent className="px-0 pb-4">
         <div className="overflow-x-auto">
@@ -1008,7 +1008,7 @@ function RetailerOffersCard({
         </div>
         <button
           type="button"
-          className="mx-auto mt-3 flex w-fit items-center gap-2 text-[0.82rem] font-black text-[var(--compare-purple)]"
+          className="mx-auto mt-3 flex w-fit items-center gap-2 text-[0.82rem] font-bold text-[var(--compare-purple)]"
           onClick={onToggleExpanded}
         >
           {expanded ? "Show fewer retailers" : "View all 12 retailers"}
@@ -1030,7 +1030,7 @@ function RetailerMark({ offer }: { offer: RetailerOffer }) {
     );
   }
 
-  return <span className="text-xs font-black text-[var(--compare-ink)]">{offer.retailer}</span>;
+  return <span className="text-xs font-bold text-[var(--compare-ink)]">{offer.retailer}</span>;
 }
 
 function OfferCell({
@@ -1049,11 +1049,11 @@ function OfferCell({
   return (
     <TableCell className="py-2">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="font-numeric text-[0.82rem] font-black text-[var(--compare-ink)]">{formatPrice(item.price)}</span>
-        {item.discountPercent ? <Badge className="h-5 border-0 bg-[var(--compare-green-soft)] text-[0.6rem] font-black text-[var(--compare-green-dark)]">{item.discountPercent}% off</Badge> : null}
+        <span className="font-numeric text-[0.82rem] font-bold text-[var(--compare-ink)]">{formatPrice(item.price)}</span>
+        {item.discountPercent ? <Badge className="h-5 border-0 bg-[var(--compare-green-soft)] text-[0.6rem] font-bold text-[var(--compare-green-dark)]">{item.discountPercent}% off</Badge> : null}
         <Button
           variant="outline"
-          className="h-5 rounded-md border-[var(--compare-orange-border)] px-2 text-[0.56rem] font-black text-[var(--compare-orange)]"
+          className="h-5 rounded-md border-[var(--compare-orange-border)] px-2 text-[0.56rem] font-bold text-[var(--compare-orange)]"
           onClick={() => onViewDeal(offer, product)}
         >
           View Deal
@@ -1068,7 +1068,7 @@ function CompareInfoBar({ onLearnMore, className }: { onLearnMore: () => void; c
     <aside className={cn("flex flex-col gap-3 rounded-xl border border-[var(--compare-line)] bg-[var(--compare-soft-panel)] px-5 py-5 text-xs font-semibold text-[var(--compare-ink)] sm:flex-row sm:items-center", className)}>
       <Info className="shrink-0 text-[var(--compare-muted)]" aria-hidden="true" />
       <p className="min-w-0">Our analysis is based on AI processing of specs, pricing, reviews, and expert opinions from 45,000+ trusted sources.</p>
-      <button type="button" className="inline-flex shrink-0 items-center gap-2 font-black text-[var(--compare-purple)]" onClick={onLearnMore}>
+      <button type="button" className="inline-flex shrink-0 items-center gap-2 font-bold text-[var(--compare-purple)]" onClick={onLearnMore}>
         Learn more about how we compare
         <ExternalLink className="size-3.5" aria-hidden="true" />
       </button>
@@ -1193,7 +1193,7 @@ function EditComparisonDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[calc(100vh-4rem)] overflow-hidden rounded-xl border-[var(--compare-line)] p-0 sm:max-w-3xl">
         <DialogHeader className="border-b border-[var(--compare-line)] bg-[var(--compare-soft-panel)] px-5 py-4 text-left">
-          <DialogTitle className="text-lg font-black text-[var(--compare-ink)]">Edit comparison</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-[var(--compare-ink)]">Edit comparison</DialogTitle>
           <DialogDescription className="text-xs font-semibold text-[var(--compare-muted)]">
             Search the mock catalog, pick a slot, then replace one product in the comparison.
           </DialogDescription>
@@ -1205,7 +1205,7 @@ function EditComparisonDialog({
                 V1 supports two-product comparison. Choose a product to replace.
               </div>
             ) : null}
-            <p className="text-[0.68rem] font-black uppercase text-[var(--compare-muted)]">Replace slot</p>
+            <p className="text-[0.68rem] font-bold uppercase text-[var(--compare-muted)]">Replace slot</p>
             <div className="mt-2 grid gap-2">
               {(["A", "B"] as const).map((option) => {
                 const slotProduct = option === "A" ? productA : productB;
@@ -1222,7 +1222,7 @@ function EditComparisonDialog({
                       setSelectedProductId((option === "A" ? productA : productB)?.id ?? mockProducts[0].id);
                     }}
                   >
-                    <span className="block text-xs font-black text-[var(--compare-ink)]">Product {option}</span>
+                    <span className="block text-xs font-bold text-[var(--compare-ink)]">Product {option}</span>
                     <span className="mt-1 block truncate text-[0.72rem] font-semibold text-[var(--compare-muted)]">
                       {slotProduct?.name ?? "Empty slot"}
                     </span>
@@ -1231,8 +1231,8 @@ function EditComparisonDialog({
               })}
             </div>
             <div className="mt-4 rounded-lg border border-[var(--compare-line)] bg-[var(--compare-soft-panel)] p-3">
-              <p className="text-[0.68rem] font-black uppercase text-[var(--compare-muted)]">Selected</p>
-              <p className="mt-1 text-sm font-black text-[var(--compare-ink)]">{selectedProduct.name}</p>
+              <p className="text-[0.68rem] font-bold uppercase text-[var(--compare-muted)]">Selected</p>
+              <p className="mt-1 text-sm font-bold text-[var(--compare-ink)]">{selectedProduct.name}</p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 <Badge className="border-0 bg-[var(--compare-green-soft)] text-[0.62rem] text-[var(--compare-green-dark)]">
                   {formatPrice(selectedProduct.currentPrice)}
@@ -1263,7 +1263,7 @@ function EditComparisonDialog({
                   <button
                     key={term}
                     type="button"
-                    className="rounded-full bg-[var(--compare-soft)] px-2.5 py-1 text-[0.65rem] font-black text-[var(--compare-ink)] hover:bg-[var(--compare-lavender)] hover:text-[var(--compare-purple)]"
+                    className="rounded-full bg-[var(--compare-soft)] px-2.5 py-1 text-[0.65rem] font-bold text-[var(--compare-ink)] hover:bg-[var(--compare-lavender)] hover:text-[var(--compare-purple)]"
                     onClick={() => setProductQuery(term)}
                   >
                     {term}
@@ -1298,8 +1298,8 @@ function EditComparisonDialog({
                         <ProductResultImage product={product} />
                         <span className="min-w-0">
                           <span className="flex flex-wrap items-center gap-2">
-                            <span className="text-sm font-black text-[var(--compare-ink)]">{product.name}</span>
-                            <Badge className="border-0 bg-[var(--compare-soft)] text-[0.6rem] font-black text-[var(--compare-purple)]">
+                            <span className="text-sm font-bold text-[var(--compare-ink)]">{product.name}</span>
+                            <Badge className="border-0 bg-[var(--compare-soft)] text-[0.6rem] font-bold text-[var(--compare-purple)]">
                               {match.label}
                             </Badge>
                           </span>
@@ -1314,7 +1314,7 @@ function EditComparisonDialog({
                         </span>
                         <span className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
                           <span className="text-right">
-                            <span className="block font-numeric text-sm font-black text-[var(--compare-ink)]">{formatPrice(product.currentPrice)}</span>
+                            <span className="block font-numeric text-sm font-bold text-[var(--compare-ink)]">{formatPrice(product.currentPrice)}</span>
                             <span className="text-[0.65rem] font-bold text-[var(--compare-green-dark)]">{product.discountPercent}% off</span>
                           </span>
                           {selected ? <Check className="size-4 text-[var(--compare-purple)]" aria-hidden="true" /> : null}
@@ -1326,7 +1326,7 @@ function EditComparisonDialog({
               ) : (
                 <div className="grid min-h-40 place-items-center rounded-xl border border-dashed border-[var(--compare-line)] text-center">
                   <div>
-                    <p className="text-sm font-black text-[var(--compare-ink)]">No mock products found</p>
+                    <p className="text-sm font-bold text-[var(--compare-ink)]">No mock products found</p>
                     <p className="mt-1 text-xs font-semibold text-[var(--compare-muted)]">Try comfort, battery, ANC, Apple, or value.</p>
                   </div>
                 </div>
@@ -1360,7 +1360,7 @@ function LearnMoreDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-lg border-[var(--compare-line)] sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-xl font-black text-[var(--compare-ink)]">How IsItABuy compares</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-[var(--compare-ink)]">How IsItABuy compares</DialogTitle>
           <DialogDescription className="text-sm font-semibold leading-6 text-[var(--compare-muted)]">
             IsItABuy compares products using price, review trust, value, specs, retailer availability, and AI analysis. Affiliate links do not affect scores. We may earn commission from some links, but that does not change the AI Buy Score or recommendation.
           </DialogDescription>

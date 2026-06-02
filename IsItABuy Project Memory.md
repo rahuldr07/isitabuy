@@ -24,7 +24,7 @@ Use this note as the high-context handoff for future work on this repo.
 - React: 19.2.4.
 - Language: TypeScript strict mode.
 - Styling: Tailwind CSS v4 using `@import "tailwindcss";` and `@theme` in `app/globals.css`.
-- Icons: Google Material Symbols are still loaded by a `<link>` in `app/layout.tsx` for legacy routes. Home-page UI now uses `lucide-react` in `SimpleNav`, `HeroSection`, `VerdictSection`, and `ExtensionCTA`.
+- Icons: `lucide-react` and shadcn/ui icon patterns are the current standard. Do not add new Google Material Symbols font links.
 - Fonts: Sora and Manrope from `next/font/google`.
 - Runtime model: frontend-only prototype. No backend, no auth provider, no API routes, no database, no env vars.
 - Data model: static demo data embedded directly in pages/components.
@@ -41,7 +41,7 @@ Installed on 2026-05-15 for screen-by-screen UI enhancement:
 - shadcn utilities: `lib/utils.ts` with `cn()`.
 - Global providers: `TooltipProvider` and `Toaster` wired in `app/layout.tsx`.
 - shadcn theme variables are mapped back to the IsItABuy palette in `app/globals.css` so existing classes such as `bg-background`, `text-primary`, and `font-sans` stay aligned with the app.
-- Important: preserve `text-secondary` as muted text. A shadcn token collision briefly made it a pale container color; root `--secondary` should remain `#575e70` for light mode.
+- Important: preserve shadcn compatibility tokens while using the IsItABuy palette. `--secondary` is a soft container color, and muted text should use `muted-foreground` or `--isitabuy-muted`.
 
 Installed shadcn components:
 
@@ -69,7 +69,7 @@ Last checked: 2026-05-15 after compact landing verdict card refinement.
 Warnings:
 
 - Many `@next/next/no-img-element` warnings because the prototype uses raw `<img>` instead of `next/image`.
-- `app/layout.tsx:26` warns about the Google Material Symbols font link.
+- No Google Material Symbols link is expected in `app/layout.tsx`; new icon work should use `lucide-react`.
 - `npm.cmd audit --omit=dev`: reports 2 moderate vulnerabilities through `next`'s nested `postcss`. The suggested `npm audit fix --force` would install a breaking/downgraded Next version, so do not run it blindly.
 
 ## Route Map
@@ -182,7 +182,7 @@ On very narrow widths, `Get Started` moves into the dropdown so the logo and men
 
 ## Current Color Direction
 
-Amber remains the primary brand/accent color through `primary-container` (`#F59E0B`). Do not make black/navy the global primary treatment. Dark neutrals can still be used sparingly for contrast where the existing design already used them, such as media panels or neutral CTAs.
+The current palette anchors are deep navy `#00132e`, ink `#111827`, action orange `#ff7300`, amber `#f59e0b`, buy green `#16a34a`, avoid red `#dc2626`, and insight purple `#622395`. Keep orange/amber as the main action family, green only for buy/success signals, red only for avoid/destructive signals, and purple for AI/value/insight accents.
 
 ## Current Typography Direction
 
@@ -248,7 +248,7 @@ Potential routes/APIs later:
 - Read this note, then inspect the target files before editing.
 - Follow Next.js App Router conventions. Do not introduce Pages Router patterns.
 - Use Tailwind v4 theme tokens in `app/globals.css`; do not create `tailwind.config.js` unless there is a specific migration reason.
-- Use `lucide-react` for home-page UI enhancements. Material Symbols remain only for legacy routes until those screens are migrated.
+- Use `lucide-react` for UI enhancements. Do not add new Material Symbols font links.
 - Keep edits scoped. This prototype has many large static files, so avoid unrelated rewrites.
 - If adding backend or data fetching, confirm the product/data model first because existing UI copy implies more capabilities than the code has.
 - Use `npm.cmd` on this Windows machine for verification.

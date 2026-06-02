@@ -201,8 +201,8 @@ export const actionTypeLabels: Record<SmartActionType, { label: string; icon: ty
 
 export const savingsCategories = [
   { label: "Electronics", value: 58, color: "#16a34a" },
-  { label: "Home & Kitchen", value: 17, color: "#ff9500" },
-  { label: "Fashion", value: 13, color: "#4b09a9" },
+  { label: "Home & Kitchen", value: 17, color: "#f59e0b" },
+  { label: "Fashion", value: 13, color: "#622395" },
   { label: "Beauty", value: 7, color: "#1f7ae0" },
   { label: "Other", value: 5, color: "#94a3b8" },
 ];
