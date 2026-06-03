@@ -1812,20 +1812,20 @@ export default async function DealsPage({
           </Button>
 
           <div className="ml-auto flex items-center gap-5 text-sm font-semibold">
-            <button className="hidden items-center gap-2 sm:flex">
+            <Link className="hidden items-center gap-2 sm:flex" href="/dashboard/saved">
               <Heart className="size-5" />
               Saved
-            </button>
-            <button className="relative">
+            </Link>
+            <Link className="relative" href="/dashboard/alerts" aria-label="Price alerts">
               <Bell className="size-5" />
               <span className="absolute -right-0.5 -top-1 size-2.5 rounded-full bg-accent ring-2 ring-white" />
-            </button>
-            <button className="flex items-center gap-2">
+            </Link>
+            <Link className="flex items-center gap-2" href="/dashboard/settings" aria-label="Dashboard settings">
               <span className="grid size-10 place-items-center rounded-full bg-muted">
                 <User className="size-6" />
               </span>
               <ChevronDown className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -1851,9 +1851,9 @@ export default async function DealsPage({
               </Link>
             );
           })}
-          <button className="flex h-14 shrink-0 items-center justify-center gap-1 px-3">
+          <Link className="flex h-14 shrink-0 items-center justify-center gap-1 px-3" href="/#categories">
             More <ChevronDown className="size-4" />
-          </button>
+          </Link>
         </nav>
       </header>
 
@@ -2095,11 +2095,14 @@ export default async function DealsPage({
                 </p>
               </div>
               <Button
+                asChild
                 variant="outline"
                 className="h-10 border-value/50 text-xs font-bold text-value transition-colors hover:bg-soft-value active:bg-value active:text-white focus-visible:bg-value focus-visible:text-white"
               >
-                <Bell className="size-4" />
-                Get deal alerts
+                <Link href="/dashboard/alerts">
+                  <Bell className="size-4" />
+                  Get deal alerts
+                </Link>
               </Button>
             </div>
 

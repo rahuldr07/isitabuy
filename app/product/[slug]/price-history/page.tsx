@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { homeSectionHrefs, retailerDealsHref } from "@/lib/navigation";
 
 export const metadata = {
   title: "Price History - IsItABuy",
@@ -325,11 +326,15 @@ function VerdictPanel({ product }: { product: ProductData }) {
         </div>
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        <Button className="h-10 rounded-lg bg-value font-bold text-white hover:bg-value/90">
-          <Bell className="size-4" /> Create Price Alert
+        <Button asChild className="h-10 rounded-lg bg-value font-bold text-white hover:bg-value/90">
+          <Link href="/dashboard/alerts">
+            <Bell className="size-4" /> Create Price Alert
+          </Link>
         </Button>
-        <Button variant="outline" className="h-10 rounded-lg border-value font-bold text-value">
-          <TrendingDown className="size-4" /> View Predictions
+        <Button asChild variant="outline" className="h-10 rounded-lg border-value font-bold text-value">
+          <a href="#price-prediction">
+            <TrendingDown className="size-4" /> View Predictions
+          </a>
         </Button>
       </div>
     </BentoCard>
@@ -340,7 +345,7 @@ function RetailerTable({ product }: { product: ProductData }) {
   const rows = buildRetailerRows(product);
 
   return (
-    <BentoCard className="p-4">
+    <BentoCard id="retailer-prices" className="scroll-mt-24 p-4">
       <h2 className="mb-5 text-lg font-bold">Compare prices by retailer</h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[820px] text-left text-sm">
@@ -371,8 +376,10 @@ function RetailerTable({ product }: { product: ProductData }) {
                   </svg>
                 </td>
                 <td className="py-4 text-right">
-                  <Button variant="outline" className="h-8 rounded-md border-accent text-xs font-bold text-accent">
-                    View Deal
+                  <Button asChild variant="outline" className="h-8 rounded-md border-accent text-xs font-bold text-accent">
+                    <Link href={`/redirect?retailer=${encodeURIComponent(row.retailer.toLowerCase().replaceAll(/\s+/g, "-"))}&product=${encodeURIComponent(product.name.toLowerCase().replaceAll(/\s+/g, "-"))}`}>
+                      View Deal
+                    </Link>
                   </Button>
                 </td>
               </tr>
@@ -380,7 +387,9 @@ function RetailerTable({ product }: { product: ProductData }) {
           </tbody>
         </table>
       </div>
-      <button className="mx-auto mt-4 flex items-center gap-2 text-sm font-bold text-value">View all 12 retailers</button>
+      <Link className="mx-auto mt-4 flex items-center gap-2 text-sm font-bold text-value" href={retailerDealsHref(product.retailer)}>
+        View all 12 retailers
+      </Link>
     </BentoCard>
   );
 }
@@ -389,7 +398,7 @@ function PredictionCard({ product }: { product: ProductData }) {
   const base = moneyValue(product.price) || 278;
 
   return (
-    <BentoCard className="p-4" variant="success">
+    <BentoCard id="price-prediction" className="scroll-mt-24 p-4" variant="success">
       <h2 className="text-lg font-bold">Price drop prediction <Info className="inline size-4 text-muted-foreground" /></h2>
       <p className="mt-3 text-lg font-bold text-buy">High chance of price drop</p>
       <p className="mt-3 text-sm font-semibold leading-5 text-muted-foreground">We predict the price will drop to</p>
@@ -398,7 +407,7 @@ function PredictionCard({ product }: { product: ProductData }) {
       <div className="mt-4 rounded-xl bg-soft-buy p-3 text-sm font-bold text-buy">
         Best time to buy:<br /> Jun 5 - Jun 20, 2024
       </div>
-      <button className="mt-4 text-sm font-bold text-buy">How we predict</button>
+      <a className="mt-4 inline-flex text-sm font-bold text-buy" href={homeSectionHrefs.howItWorks}>How we predict</a>
     </BentoCard>
   );
 }
@@ -417,8 +426,10 @@ function AlertCard({ product }: { product: ProductData }) {
       </div>
       <p className="mt-4 text-sm font-semibold">Email (you@example.com)</p>
       <Input className="mt-2 h-11 rounded-lg bg-white" placeholder="you@example.com" />
-      <Button className="mt-4 h-12 w-full rounded-lg bg-value font-bold text-white hover:bg-value/90">
-        <Bell className="size-4" /> Create Alert
+      <Button asChild className="mt-4 h-12 w-full rounded-lg bg-value font-bold text-white hover:bg-value/90">
+        <Link href="/dashboard/alerts">
+          <Bell className="size-4" /> Create Alert
+        </Link>
       </Button>
       <p className="mt-4 text-xs font-semibold text-muted-foreground">You can manage your alerts anytime in your account.</p>
     </BentoCard>

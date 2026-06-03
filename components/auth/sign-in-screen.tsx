@@ -51,6 +51,7 @@ import {
   showResetLinkToast,
   showSignupToast,
 } from "@/components/auth/auth-toasts";
+import { homeSectionHrefs } from "@/lib/navigation";
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 18 },
@@ -618,7 +619,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
               <ShieldCheckIcon aria-hidden="true" className="mt-1 size-5 shrink-0 text-buy" />
               <FieldDescription className="text-xs leading-6">
                 We protect your privacy and your data. By continuing, you agree
-                to our <Link href="/">Terms of Service</Link> and <Link href="/">Privacy Policy</Link>.
+                to our <Link href={homeSectionHrefs.disclosure}>Terms of Service</Link> and <Link href={homeSectionHrefs.disclosure}>Privacy Policy</Link>.
               </FieldDescription>
             </CardFooter>
           </Card>

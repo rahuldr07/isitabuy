@@ -5,9 +5,15 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const retailerLabels: Record<string, string> = {
   bestbuy: "Best Buy",
+  "best-buy": "Best Buy",
   amazon: "Amazon",
   walmart: "Walmart",
   target: "Target",
+  ebay: "eBay",
+  "home-depot": "Home Depot",
+  flipkart: "Flipkart",
+  myntra: "Myntra",
+  meesho: "Meesho",
 };
 
 export default async function RedirectPage({

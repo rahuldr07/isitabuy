@@ -49,6 +49,7 @@ import {
   extraCompareHomeCategories,
   trendingComparisons,
 } from "@/lib/mockCompareHomeData";
+import { dealsCategoryHref } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import type { CompareHomeProduct, CompareSlotId } from "@/types/compareHome";
 
@@ -133,11 +134,20 @@ function Header({
   };
 
   const showSaved = () => {
-    showCompareToast("Saved products will appear here.", "Saved comparisons are not connected yet.");
+    router.push("/dashboard/saved");
   };
 
   const profileAction = (label: string) => {
-    showCompareToast(label, `${label} controls will be connected in a later pass.`);
+    const href =
+      label === "Profile"
+        ? "/dashboard/settings"
+        : label === "Watchlist"
+          ? "/dashboard/watchlist"
+          : label === "Alerts"
+            ? "/dashboard/alerts"
+            : "/signin";
+
+    router.push(href);
   };
 
   return (
@@ -707,7 +717,7 @@ export default function CompareHomeClient() {
                 key={category}
                 type="button"
                 className="rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-[var(--isitabuy-card-shadow)]"
-                onClick={() => showCompareToast(`${category} comparisons`, "Category comparison templates will be connected next.")}
+                onClick={() => router.push(dealsCategoryHref(category))}
               >
                 <span className="grid size-10 place-items-center rounded-xl bg-orange-100 text-[var(--isitabuy-orange)]">
                   <ShoppingBag className="size-5" aria-hidden="true" />

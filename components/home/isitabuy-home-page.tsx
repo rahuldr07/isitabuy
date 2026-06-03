@@ -65,6 +65,15 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { showFeatureSoonToast, showProductSearchToast } from "@/components/ui/app-toast";
+import {
+  dealsCategoryHref,
+  footerColumns,
+  homeSectionHrefs,
+  mainNavItems as navItems,
+  retailerDealsHref,
+  routeForLabel,
+  socialLinks,
+} from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 const MotionButton = motion.create(Button);
@@ -97,14 +106,6 @@ const panelVariants: Variants = {
     transition: { duration: 0.2 },
   },
 };
-
-const navItems = [
-  { label: "How It Works", href: "/#how-it-works" },
-  { label: "Compare", href: "/compare" },
-  { label: "Deals", href: "/deals" },
-  { label: "Retailers", href: "/#retailers" },
-  { label: "Receipts", href: "/receipts" },
-];
 
 const retailers = [
   { name: "Amazon", src: "/home/logos/amazon-official.jpg" },
@@ -148,20 +149,6 @@ const sources = [
   { icon: ClipboardCheck, title: "Expert & Editorial", text: "Trusted tech & product review sites", tint: "bg-slate-100 text-slate-700" },
   { icon: CircleHelp, title: "Community Reports", text: "Verified complaints & user reports", tint: "bg-zinc-100 text-zinc-700" },
 ];
-
-const footerColumns = [
-  { title: "Explore", links: ["Categories", "Deals", "How It Works", "Blog"] },
-  { title: "Company", links: ["About Us", "Careers", "Press", "Contact"] },
-  { title: "Support", links: ["Help Center", "Contact Us", "Report an Issue", "Product Requests"] },
-  { title: "Legal", links: ["Affiliate Disclosure", "Privacy Policy", "Terms of Service", "How We Score"] },
-];
-
-const socialLinks = [
-  { label: "X", src: "/home/logos/x.svg" },
-  { label: "Facebook", src: "/home/logos/facebook.svg" },
-  { label: "Instagram", src: "/home/logos/instagram.svg" },
-  { label: "YouTube", src: "/home/logos/youtube.svg" },
-] as const;
 
 interface ScoreItem {
   label: string;
@@ -242,10 +229,6 @@ const DEMO_PRODUCT: Product = {
     imageAlt: "Sony WF-1000XM5 earbuds",
   },
 };
-
-function homeHref(label: string) {
-  return label === "Deals" ? "/deals" : `#${label.toLowerCase().replaceAll(" ", "-")}`;
-}
 
 interface IconText {
   icon: LucideIcon;
@@ -639,7 +622,13 @@ function RetailerStrip() {
           <h2 className="px-4 pt-5 text-center text-lg font-bold text-[var(--isitabuy-ink)]">We check millions of products from trusted retailers</h2>
           <div className="mt-4 grid divide-y divide-[var(--isitabuy-line)] border-t border-[var(--isitabuy-line)] sm:grid-cols-5 sm:divide-x sm:divide-y-0">
             {retailers.map((retailer, index) => (
-              <motion.div key={retailer.name} className="grid h-24 place-items-center px-6" whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+              <motion.a
+                key={retailer.name}
+                className="grid h-24 place-items-center px-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                href={retailerDealsHref(retailer.name)}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <Image
                   src={retailer.src}
                   alt={`${retailer.name} logo`}
@@ -648,11 +637,11 @@ function RetailerStrip() {
                   loading={index === 0 ? "eager" : "lazy"}
                   className="max-h-16 w-full object-contain"
                 />
-              </motion.div>
+              </motion.a>
             ))}
           </div>
           <div className="flex justify-center py-4">
-            <LinkText className="text-[var(--isitabuy-purple)]" label="View all retailers" />
+            <LinkText className="text-[var(--isitabuy-purple)]" href="/deals" label="View all retailers" />
           </div>
         </CardContent>
       </Card>
@@ -926,10 +915,10 @@ function CategoriesSection() {
               {visibleCategories.map((category) => {
                 const Icon = category.icon;
                 return (
-                  <motion.button
+                  <motion.a
                     key={category.label}
-                    type="button"
                     className="min-h-24 rounded-xl border border-[var(--isitabuy-line)] bg-white p-4 text-center shadow-sm"
+                    href={dealsCategoryHref(category.label)}
                     whileHover={{ y: -3, boxShadow: "var(--isitabuy-card-shadow)" }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -937,12 +926,12 @@ function CategoriesSection() {
                       <Icon className="size-6" aria-hidden="true" />
                     </span>
                     <span className="mt-3 block truncate text-xs font-bold text-[var(--isitabuy-ink)]">{category.label}</span>
-                  </motion.button>
+                  </motion.a>
                 );
               })}
             </div>
           )}
-          <LinkText className="mx-auto mt-5 justify-center" label="View all categories" />
+          <LinkText className="mx-auto mt-5 justify-center" href="/deals" label="View all categories" />
         </CardContent>
       </Card>
     </section>
@@ -951,14 +940,14 @@ function CategoriesSection() {
 
 function TrustSection() {
   return (
-    <section className="scroll-reveal mx-auto mt-8 grid max-w-6xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.05fr_1.45fr_0.82fr] lg:px-10">
+    <section id="trust" className="scroll-reveal mx-auto mt-8 grid max-w-6xl gap-5 px-4 sm:px-6 lg:grid-cols-[1.05fr_1.45fr_0.82fr] lg:px-10">
       <InfoCard title="Why trust IsItABuy?" items={trustItems} />
       <InfoCard title="Our data sources" items={sources} columns />
       <Card className="rounded-xl border border-[var(--isitabuy-line)] bg-[image:var(--isitabuy-violet-panel)] py-0 shadow-none">
         <CardContent className="p-8">
           <h2 className="text-xl font-bold text-[var(--isitabuy-ink)]">Our commitment</h2>
           <p className="mt-4 text-sm font-medium leading-7 text-[var(--isitabuy-muted)]">Our AI scores and recommendations are not influenced by commission. We are here to help you make the best decision.</p>
-          <LinkText className="mt-8" label="Learn more about how we score" />
+          <LinkText className="mt-8" href={homeSectionHrefs.howItWorks} label="Learn more about how we score" />
         </CardContent>
       </Card>
     </section>
@@ -993,13 +982,13 @@ function InfoCard({ title, items, columns = false }: { title: string; items: Ico
 
 function DisclosureStrip() {
   return (
-    <section className="scroll-reveal mx-auto mt-6 max-w-6xl px-4 sm:px-6 lg:px-10">
+    <section id="disclosure" className="scroll-reveal mx-auto mt-6 max-w-6xl px-4 sm:px-6 lg:px-10">
       <div className="flex flex-col gap-3 rounded-lg bg-[image:var(--isitabuy-warm-strip)] px-5 py-4 text-sm font-semibold text-[var(--isitabuy-muted)] sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <Info className="size-5 shrink-0 text-[var(--isitabuy-orange)]" aria-hidden="true" />
           <p>We may earn a commission when you buy through some links on our site. Our AI scores and recommendations are not based on commission.</p>
         </div>
-        <LinkText label="Learn more" className="shrink-0" />
+        <LinkText href={homeSectionHrefs.disclosure} label="Learn more" className="shrink-0" />
       </div>
     </section>
   );
@@ -1016,7 +1005,7 @@ function Footer() {
             {socialLinks.map((social) => (
               <motion.a
                 key={social.label}
-                href="#"
+                href={social.href}
                 aria-label={social.label}
                 className="grid size-8 place-items-center rounded-full border border-[var(--isitabuy-line)] bg-white shadow-sm"
                 whileHover={{ y: -2 }}
@@ -1032,7 +1021,7 @@ function Footer() {
             <h3 className="text-sm font-bold text-[var(--isitabuy-ink)]">{column.title}</h3>
             <ul className="mt-4 grid gap-3">
               {column.links.map((link) => (
-                <li key={link}><a href={homeHref(link)} className="text-sm font-medium text-[var(--isitabuy-muted)] hover:text-[var(--isitabuy-orange)]">{link}</a></li>
+                <li key={link}><a href={routeForLabel(link)} className="text-sm font-medium text-[var(--isitabuy-muted)] hover:text-[var(--isitabuy-orange)]">{link}</a></li>
               ))}
             </ul>
           </div>
@@ -1059,9 +1048,9 @@ function StoreButton({ src, label }: { src: string; label: string }) {
   );
 }
 
-function LinkText({ label, className }: { label: string; className?: string }) {
+function LinkText({ label, className, href = routeForLabel(label) }: { label: string; className?: string; href?: string }) {
   return (
-    <motion.a href="#" className={cn("inline-flex items-center gap-2 text-sm font-bold text-[var(--isitabuy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
+    <motion.a href={href} className={cn("inline-flex items-center gap-2 text-sm font-bold text-[var(--isitabuy-purple)]", className)} whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
       {label}
       <ArrowRight className="size-4" aria-hidden="true" />
     </motion.a>

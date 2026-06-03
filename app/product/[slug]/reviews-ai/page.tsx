@@ -33,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { homeSectionHrefs } from "@/lib/navigation";
 
 export const metadata = {
   title: "Reviews AI - BuyWise AI",
@@ -372,7 +373,7 @@ function ListPanel({
           </div>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#review-snippets">
         View more {tone === "good" ? "pros" : "cons"} <ExternalLink className="size-4" />
       </a>
     </BentoCard>
@@ -402,7 +403,7 @@ function AiSummary({ product }: { product: ProductData }) {
 
 function KeywordsPanel() {
   return (
-    <BentoCard className="p-4">
+    <BentoCard id="topics" className="scroll-mt-24 p-4">
       <h2 className="text-base font-bold">
         Keyword / Topics <Info className="inline size-4 text-muted-foreground" />
       </h2>
@@ -413,7 +414,7 @@ function KeywordsPanel() {
           </Badge>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#topics">
         View all topics <ExternalLink className="size-4" />
       </a>
     </BentoCard>
@@ -442,7 +443,7 @@ function AuthenticityPanel() {
       <div className="mt-4 rounded-xl bg-[#f4f1ff] p-4 text-sm font-medium leading-6 text-foreground">
         We didn&apos;t find significant signs of fake or incentivized reviews for this product.
         <br />
-        <a className="font-bold text-value" href="#">Learn more about our methodology</a>
+        <a className="font-bold text-value" href={homeSectionHrefs.howItWorks}>Learn more about our methodology</a>
       </div>
     </BentoCard>
   );
@@ -450,7 +451,7 @@ function AuthenticityPanel() {
 
 function ReviewSnippets() {
   return (
-    <BentoCard className="p-4">
+    <BentoCard id="review-snippets" className="scroll-mt-24 p-4">
       <h2 className="mb-5 text-base font-bold">
         Recent Review Snippets <Info className="inline size-4 text-muted-foreground" />
       </h2>

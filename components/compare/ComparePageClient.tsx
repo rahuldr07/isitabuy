@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
+import { useRouter } from "next/navigation";
 import {
   BadgeCheck,
   Bookmark,
@@ -70,8 +71,6 @@ import { cn } from "@/lib/utils";
 import type { Category, ComparisonState, Product, RetailerOffer, Verdict } from "@/types/compare";
 
 const savedStorageKey = "isitabuy.savedComparison.sony-wh1000xm5-vs-bose-qc-ultra";
-const hasSavedRoute = false;
-const hasProfileRoute = false;
 
 const bentoLayout = {
   grid: "mx-auto grid max-w-[92.5rem] grid-cols-1 items-stretch gap-4 px-4 md:grid-cols-2 xl:grid-cols-12 xl:px-8",
@@ -176,19 +175,11 @@ function CompareHeader({
           Search deals
         </Button>
         <div className="contents">
-          <Button
-            variant="ghost"
-            className="h-9 gap-2 justify-self-end text-xs font-bold"
-            onClick={() => {
-              if (hasSavedRoute) {
-                window.location.href = "/saved";
-                return;
-              }
-              showCompareToast("Saved", "Saved products will appear here.");
-            }}
-          >
-            <Heart className="size-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Saved</span>
+          <Button asChild variant="ghost" className="h-9 gap-2 justify-self-end text-xs font-bold">
+            <NextLink href="/dashboard/saved">
+              <Heart className="size-4" aria-hidden="true" />
+              <span className="hidden sm:inline">Saved</span>
+            </NextLink>
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -202,19 +193,20 @@ function CompareHeader({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
-              {["Profile", "Watchlist", "Alerts", "Sign out"].map((item) => (
+              {[
+                { label: "Profile", href: "/dashboard/settings" },
+                { label: "Watchlist", href: "/dashboard/watchlist" },
+                { label: "Alerts", href: "/dashboard/alerts" },
+                { label: "Sign out", href: "/signin" },
+              ].map((item) => (
                 <DropdownMenuItem
-                  key={item}
+                  key={item.label}
                   onSelect={() => {
-                    if (hasProfileRoute && item === "Profile") {
-                      window.location.href = "/profile";
-                      return;
-                    }
-                    showCompareToast(item, `${item} is coming soon.`);
+                    window.location.href = item.href;
                   }}
                   className="text-xs font-bold"
                 >
-                  {item}
+                  {item.label}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -1376,6 +1368,7 @@ function LearnMoreDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
 }
 
 export default function ComparePageClient() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [state, setState] = useState<ComparisonState>({
     productA: mockProducts[0],
@@ -1428,11 +1421,11 @@ export default function ComparePageClient() {
       return;
     }
 
-    window.location.href = `/deals?q=${encodeURIComponent(trimmed)}`;
+    router.push(`/deals?q=${encodeURIComponent(trimmed)}`);
   };
 
   const handleTagSearch = (tag: string) => {
-    window.location.href = `/deals?q=${encodeURIComponent(tag)}`;
+    router.push(`/deals?q=${encodeURIComponent(tag)}`);
   };
 
   const handleShare = async () => {
@@ -1501,7 +1494,7 @@ export default function ComparePageClient() {
           onSave={handleSave}
           onEdit={() => openEdit(false, "A")}
           onCompareClick={() => {
-            window.location.href = "/compare";
+            router.push("/compare");
           }}
         />
         <section className={cn("relative", bentoLayout.grid)} aria-label="Product comparison dashboard">

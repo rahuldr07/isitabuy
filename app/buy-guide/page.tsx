@@ -29,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { homeSectionHrefs } from "@/lib/navigation";
 
 export const metadata = {
   title: "Best Headphones Buying Guide - IsItABuy",
@@ -48,15 +49,15 @@ const navItems = [
 ];
 
 const pageLinks = [
-  { label: "Best Overall", icon: Trophy },
-  { label: "Best Budget", icon: WalletCards },
-  { label: "Best Premium", icon: Medal },
-  { label: "Best for Noise Cancellation", icon: Volume2 },
-  { label: "Best for Work Calls", icon: MessageCircle },
-  { label: "Comparison Table", icon: ClipboardList },
-  { label: "How We Scored", icon: ShieldCheck },
-  { label: "FAQs", icon: ListChecks },
-  { label: "Sources", icon: Database },
+  { label: "Best Overall", href: "#best-overall", icon: Trophy },
+  { label: "Best Budget", href: "#best-budget", icon: WalletCards },
+  { label: "Best Premium", href: "#best-premium", icon: Medal },
+  { label: "Best for Noise Cancellation", href: "#best-for-noise-cancellation", icon: Volume2 },
+  { label: "Best for Work Calls", href: "#best-for-work-calls", icon: MessageCircle },
+  { label: "Comparison Table", href: "#comparison-table", icon: ClipboardList },
+  { label: "How We Scored", href: "#how-we-scored", icon: ShieldCheck },
+  { label: "FAQs", href: "#faqs", icon: ListChecks },
+  { label: "Sources", href: "#sources", icon: Database },
 ];
 
 const headphones = [
@@ -178,6 +179,10 @@ const sourceStats = [
   { value: "40", label: "Price History (Days)", icon: BatteryCharging },
 ];
 
+function guideAnchor(value: string) {
+  return value.toLowerCase().replaceAll("&", "and").replaceAll(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur">
@@ -197,22 +202,24 @@ function Header() {
           />
         </div>
 
-        <Button className="hidden h-10 rounded-lg bg-accent px-8 font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex">
-          Search
+        <Button asChild className="hidden h-10 rounded-lg bg-accent px-8 font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex">
+          <Link href="/deals">Search</Link>
         </Button>
 
         <div className="ml-auto flex items-center gap-5 text-sm font-semibold">
-          <button className="hidden items-center gap-2 sm:flex">
+          <Link className="hidden items-center gap-2 sm:flex" href="/dashboard/saved">
             <Heart className="size-5" />
             Saved
-          </button>
-          <Bell className="size-5" />
-          <button className="flex items-center gap-2">
+          </Link>
+          <Link href="/dashboard/alerts" aria-label="Price alerts">
+            <Bell className="size-5" />
+          </Link>
+          <Link className="flex items-center gap-2" href="/dashboard/settings" aria-label="Dashboard settings">
             <span className="grid size-9 place-items-center rounded-full bg-muted">
               <User className="size-5" />
             </span>
             <ChevronDown className="size-4" />
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -222,9 +229,9 @@ function Header() {
             {item.label}
           </Link>
         ))}
-        <button className="flex h-12 items-center justify-center gap-1 px-2 font-bold">
+        <Link className="flex h-12 items-center justify-center gap-1 px-2 font-bold" href={homeSectionHrefs.categories}>
           More <ChevronDown className="size-4" />
-        </button>
+        </Link>
       </nav>
     </header>
   );
@@ -232,7 +239,7 @@ function Header() {
 
 function ProductCard({ headphone }: { headphone: (typeof headphones)[number] }) {
   return (
-    <Card className="rounded-xl border border-border bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+    <Card id={guideAnchor(headphone.tag)} className="scroll-mt-32 rounded-xl border border-border bg-white p-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
       <div className="flex items-center justify-between">
         <Badge className={`h-6 rounded-md px-2 text-[10px] font-bold uppercase ${headphone.tagClass}`}>
           {headphone.tag}
@@ -251,8 +258,10 @@ function ProductCard({ headphone }: { headphone: (typeof headphones)[number] }) 
         <span className="text-xs font-semibold text-muted-foreground line-through">{headphone.oldPrice}</span>
         <Badge className="h-5 rounded bg-soft-buy px-2 text-[10px] font-bold text-buy">{headphone.discount}</Badge>
       </div>
-      <Button variant="outline" className="h-9 w-full rounded-md border-value/45 text-xs font-bold text-value">
-        View on Amazon
+      <Button asChild variant="outline" className="h-9 w-full rounded-md border-value/45 text-xs font-bold text-value">
+        <Link href={`/redirect?retailer=amazon&product=${guideAnchor(headphone.name)}`}>
+          View on Amazon
+        </Link>
       </Button>
     </Card>
   );
@@ -276,8 +285,8 @@ export default function BuyGuidePage() {
           <aside className="self-start rounded-xl border border-border bg-white p-4 shadow-soft lg:sticky lg:top-32">
             <h2 className="mb-4 text-xs font-bold uppercase tracking-wide">On This Page</h2>
             <div className="flex flex-col gap-3">
-              {pageLinks.map(({ label, icon: Icon }) => (
-                <a className="flex items-center gap-3 text-sm font-semibold text-foreground hover:text-value" href="#" key={label}>
+              {pageLinks.map(({ label, href, icon: Icon }) => (
+                <a className="flex items-center gap-3 text-sm font-semibold text-foreground hover:text-value" href={href} key={label}>
                   <Icon className="size-4 text-value" />
                   {label}
                 </a>
@@ -290,7 +299,7 @@ export default function BuyGuidePage() {
               <p className="text-sm font-medium leading-6">
                 We analyze thousands of data points to find the best products for you.
               </p>
-              <a className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+              <a className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-value" href="#how-we-scored">
                 How we test <ChevronRight className="size-4" />
               </a>
             </div>
@@ -353,7 +362,7 @@ export default function BuyGuidePage() {
               ))}
             </section>
 
-            <section className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_330px]">
+            <section id="comparison-table" className="mt-5 grid scroll-mt-32 gap-5 xl:grid-cols-[minmax(0,1fr)_330px]">
               <Card className="overflow-hidden rounded-xl border border-border bg-white p-0 shadow-soft">
                 <div className="border-b border-border px-5 py-4">
                   <h2 className="text-base font-bold uppercase">How Top Headphones Compare</h2>
@@ -398,7 +407,7 @@ export default function BuyGuidePage() {
                 </div>
               </Card>
 
-              <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+              <Card id="how-we-scored" className="scroll-mt-32 rounded-xl border border-border bg-white p-5 shadow-soft">
                 <h2 className="text-base font-bold uppercase">How We Scored</h2>
                 <p className="mt-3 text-sm font-medium leading-6 text-muted-foreground">
                   Our AI scoring system evaluates each headphone on 8 key factors using real data and expert insights.
@@ -411,14 +420,14 @@ export default function BuyGuidePage() {
                     </div>
                   ))}
                 </div>
-                <a className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+                <a className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-value" href={homeSectionHrefs.howItWorks}>
                   Learn more about our methodology <ChevronRight className="size-4" />
                 </a>
               </Card>
             </section>
 
             <section className="mt-5 grid gap-5 xl:grid-cols-[0.95fr_1fr]">
-              <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+              <Card id="faqs" className="scroll-mt-32 rounded-xl border border-border bg-white p-5 shadow-soft">
                 <h2 className="mb-3 text-base font-bold uppercase">Frequently Asked Questions</h2>
                 <div className="divide-y divide-border rounded-lg border border-border">
                   {faqs.map((faq) => (
@@ -428,12 +437,12 @@ export default function BuyGuidePage() {
                     </button>
                   ))}
                 </div>
-                <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+                <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#faqs">
                   View all FAQs <ChevronRight className="size-4" />
                 </a>
               </Card>
 
-              <Card className="rounded-xl border border-border bg-white p-5 shadow-soft">
+              <Card id="sources" className="scroll-mt-32 rounded-xl border border-border bg-white p-5 shadow-soft">
                 <h2 className="text-base font-bold uppercase">Sources & Data</h2>
                 <p className="mt-2 text-sm font-medium leading-6 text-muted-foreground">
                   We base our recommendations on 45,000+ trusted sources including retailer data, expert reviews, user reviews, and hands-on testing.
@@ -447,7 +456,7 @@ export default function BuyGuidePage() {
                     </div>
                   ))}
                 </div>
-                <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+                <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#sources">
                   See all sources and data <ChevronRight className="size-4" />
                 </a>
               </Card>
@@ -456,7 +465,7 @@ export default function BuyGuidePage() {
             <div className="mt-5 flex items-center gap-3 rounded-xl bg-soft-value px-5 py-4 text-sm font-semibold text-muted-foreground">
               <ShieldCheck className="size-5 text-value" />
               We may earn a commission from affiliate links. This helps support our free content at no extra cost to you.
-              <a className="font-bold text-value" href="#">Learn more about our affiliate policy.</a>
+              <a className="font-bold text-value" href={homeSectionHrefs.disclosure}>Learn more about our affiliate policy.</a>
             </div>
           </section>
         </div>

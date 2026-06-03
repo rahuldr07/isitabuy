@@ -32,6 +32,7 @@ import { BentoCard } from "@/components/ui/bento";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+import { homeSectionHrefs } from "@/lib/navigation";
 
 export const metadata = {
   title: "Product Analysis - BuyWise AI",
@@ -225,9 +226,9 @@ function Sidebar({ product, slug }: { product: ProductData; slug: string }) {
               <DollarSign className="size-6" />
             </span>
           </div>
-          <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+          <Link className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="/dashboard/saved">
             View all savings <ExternalLink className="size-4" />
-          </a>
+          </Link>
         </BentoCard>
       </div>
     </aside>
@@ -242,10 +243,10 @@ function Topbar() {
         <Input className="h-11 rounded-xl bg-white pl-12 shadow-sm" placeholder="Search any product..." />
       </div>
       <div className="ml-auto flex items-center gap-4 sm:gap-4">
-        <button className="hidden items-center gap-2 text-sm font-semibold md:flex">
+        <Link className="hidden items-center gap-2 text-sm font-semibold md:flex" href={homeSectionHrefs.howItWorks}>
           <HelpCircle className="size-5" />
           How it works
-        </button>
+        </Link>
         <Bell className="size-5" />
         <span className="grid size-10 place-items-center rounded-full bg-value text-sm font-bold text-white">
           JS
@@ -383,7 +384,7 @@ function AiScoreCard({ product }: { product: ProductData }) {
   );
 }
 
-function PriceHistoryCard({ product }: { product: ProductData }) {
+function PriceHistoryCard({ product, slug }: { product: ProductData; slug: string }) {
   return (
     <BentoCard className="p-4">
       <div className="mb-4 flex items-center justify-between">
@@ -421,9 +422,9 @@ function PriceHistoryCard({ product }: { product: ProductData }) {
           </text>
         ))}
       </svg>
-      <a className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+      <Link className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-value" href={productHref(slug, product, "price-history")}>
         View full price history <ExternalLink className="size-4" />
-      </a>
+      </Link>
     </BentoCard>
   );
 }
@@ -548,12 +549,12 @@ export default async function ProductAnalysisPage({
                   </div>
                 ))}
               </div>
-              <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+              <Link className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href={homeSectionHrefs.howItWorks}>
                 How we calculate scores <ExternalLink className="size-4" />
-              </a>
+              </Link>
             </BentoCard>
 
-            <PriceHistoryCard product={product} />
+            <PriceHistoryCard product={product} slug={slug} />
 
             <BentoCard className="p-4">
               <h2 className="mb-4 text-lg font-bold">
@@ -568,9 +569,9 @@ export default async function ProductAnalysisPage({
                   </div>
                 ))}
               </div>
-              <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+              <Link className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href={productHref(slug, product, "price-history")}>
                 View all sellers (7) <ExternalLink className="size-4" />
-              </a>
+              </Link>
             </BentoCard>
           </section>
 
@@ -608,9 +609,9 @@ export default async function ProductAnalysisPage({
                   <p className="text-2xl font-bold leading-none text-value">High</p>
                 </div>
               </div>
-              <a className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+              <Link className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-value" href={productHref(slug, product, "youtube-insights")}>
                 View key takeaways <ExternalLink className="size-4" />
-              </a>
+              </Link>
             </BentoCard>
 
             <BentoCard className="p-4">

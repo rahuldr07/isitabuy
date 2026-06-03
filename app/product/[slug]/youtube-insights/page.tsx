@@ -421,7 +421,7 @@ function SentimentTrend() {
 
 function MentionList({ title, items, positive }: { title: string; items: InsightProfile["pros"]; positive: boolean }) {
   return (
-    <BentoCard className="p-4">
+    <BentoCard id={positive ? "creator-pros" : "creator-cons"} className="scroll-mt-24 p-4">
       <h2 className="text-base font-bold">
         {title} <Info className="inline size-4 text-muted-foreground" />
       </h2>
@@ -436,7 +436,7 @@ function MentionList({ title, items, positive }: { title: string; items: Insight
           </div>
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href={positive ? "#creator-pros" : "#creator-cons"}>
         View all {positive ? "pros" : "cons"} <ChevronDown className="-rotate-90 size-4" />
       </a>
     </BentoCard>
@@ -472,7 +472,7 @@ function VideoCard({ video }: { video: ReturnType<typeof videoSet>[number] }) {
 
 function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
   return (
-    <BentoCard className="p-4">
+    <BentoCard id="videos-analyzed" className="scroll-mt-24 p-4">
       <h2 className="text-base font-bold">
         Top videos analyzed <Info className="inline size-4 text-muted-foreground" />
       </h2>
@@ -481,7 +481,7 @@ function VideosAnalyzed({ videos }: { videos: InsightProfile["videos"] }) {
           <VideoCard key={video.title} video={video} />
         ))}
       </div>
-      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#">
+      <a className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-value" href="#videos-analyzed">
         View all videos analyzed <ChevronDown className="-rotate-90 size-4" />
       </a>
     </BentoCard>
