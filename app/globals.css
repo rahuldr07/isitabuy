@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SF Mono", Consolas, "Liberation Mono", monospace;
-  --font-heading: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-numeric: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
+  --font-numeric: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -271,7 +271,7 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   input[type="password"]::-ms-reveal,
@@ -294,20 +294,20 @@
   button,
   [role="button"],
   [data-slot="badge"] {
-    font-family: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
 .font-sans {
-  font-family: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .font-heading {
-  font-family: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
 }
 
 .font-numeric {
-  font-family: var(--font-sora), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-plus-jakarta-sans, "Plus Jakarta Sans"), ui-sans-serif, system-ui, sans-serif;
   font-variant-numeric: tabular-nums;
 }
 

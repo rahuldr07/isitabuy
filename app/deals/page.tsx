@@ -1788,48 +1788,56 @@ export default async function DealsPage({
 
   return (
     <div className="min-h-screen bg-[#f7f8fb] text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur">
-        <div className="flex min-h-20 w-full items-center gap-5 px-5 sm:px-8">
-          <Link className="flex shrink-0 items-center gap-3" href="/" aria-label="IsItABuy home">
-            <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#ffb21a] via-[#ff6b00] to-[#d84fd7] text-white shadow-sm">
-              <ShoppingBag className="size-7" aria-hidden="true" />
+      <header className="sticky top-0 z-50 border-b border-[var(--isitabuy-line)] bg-white/92 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 px-4 py-3 sm:px-5 lg:flex-row lg:items-center lg:px-8">
+          <Link className="flex shrink-0 items-center gap-2.5" href="/" aria-label="IsItABuy home">
+            <span className="grid size-8 place-items-center rounded-xl bg-[image:var(--brand-gradient)] text-white shadow-sm">
+              <ShoppingBag className="size-4" aria-hidden="true" />
             </span>
-            <span className="text-3xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
+            <span className="text-xl font-bold tracking-tight text-[var(--isitabuy-ink)]">IsItABuy</span>
           </Link>
 
-          <DealsSearchForm
-            actionPath={dealsHref(activeCategory, activeDealTypes, activeRetailers, activeBrands, "", activeColors)}
-            defaultValue={activeQuery}
-          />
+          <div className="flex min-w-0 flex-1 flex-col gap-3 lg:flex-row lg:items-center">
+            <div className="flex min-w-0 flex-1 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-1 shadow-[var(--compare-input-shadow)]">
+              <DealsSearchForm
+                actionPath={dealsHref(activeCategory, activeDealTypes, activeRetailers, activeBrands, "", activeColors)}
+                defaultValue={activeQuery}
+              />
+              <Button
+                className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5"
+                form="deals-search-form"
+                type="submit"
+              >
+                Search
+              </Button>
+            </div>
 
-          <Button
-            className="hidden h-12 rounded-lg bg-accent px-7 font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] md:inline-flex"
-            form="deals-search-form"
-            type="submit"
-          >
-            <Sparkles className="size-4" />
-            Search deals
-          </Button>
-
-          <div className="ml-auto flex items-center gap-5 text-sm font-semibold">
-            <Link className="hidden items-center gap-2 sm:flex" href="/dashboard/saved">
-              <Heart className="size-5" />
-              Saved
-            </Link>
-            <Link className="relative" href="/dashboard/alerts" aria-label="Price alerts">
-              <Bell className="size-5" />
-              <span className="absolute -right-0.5 -top-1 size-2.5 rounded-full bg-accent ring-2 ring-white" />
-            </Link>
-            <Link className="flex items-center gap-2" href="/dashboard/settings" aria-label="Dashboard settings">
-              <span className="grid size-10 place-items-center rounded-full bg-muted">
-                <User className="size-6" />
-              </span>
-              <ChevronDown className="size-4" />
-            </Link>
+            <div className="flex items-center justify-between gap-2 lg:justify-end">
+              <Button asChild variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-bold text-[var(--isitabuy-ink)]">
+                <Link href="/dashboard/saved">
+                  <Heart className="size-4" aria-hidden="true" />
+                  Saved
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" size="icon-lg" className="relative rounded-full" aria-label="Price alerts">
+                <Link href="/dashboard/alerts">
+                  <Bell className="size-4" aria-hidden="true" />
+                  <span className="absolute right-1 top-1 size-2.5 rounded-full bg-[var(--isitabuy-orange)] ring-2 ring-white" />
+                </Link>
+              </Button>
+              <Button asChild variant="ghost" className="h-10 gap-2 rounded-full px-2" aria-label="Dashboard settings">
+                <Link href="/dashboard/settings">
+                  <span className="grid size-9 place-items-center rounded-full bg-[var(--isitabuy-green-soft)] text-sm font-bold text-emerald-700">
+                    A
+                  </span>
+                  <ChevronDown className="size-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 
-        <nav className="flex h-14 w-full items-center gap-1 overflow-x-auto border-t border-border px-5 text-sm font-bold sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="mx-auto flex max-w-[1440px] items-center gap-7 overflow-x-auto px-4 text-xs font-bold text-[var(--isitabuy-ink)] sm:px-5 lg:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => {
             const active = item.slug === activeCategory;
             const Icon = item.icon;
@@ -1837,21 +1845,21 @@ export default async function DealsPage({
             return (
               <Link
                 aria-current={active ? "page" : undefined}
-                className={`relative flex h-14 shrink-0 items-center justify-center gap-2 px-3 ${
-                  active ? "text-accent" : "text-foreground"
+                className={`relative flex h-11 shrink-0 items-center justify-center gap-1.5 transition hover:text-[var(--isitabuy-orange)] ${
+                  active ? "text-[var(--isitabuy-green)]" : "text-[var(--isitabuy-ink)]"
                 }`}
                 href={dealsHref(item.slug, activeDealTypes, activeRetailers, [], activeQuery)}
                 key={item.label}
               >
-                <Icon className="size-4" aria-hidden="true" />
+                <Icon className="size-3.5" aria-hidden="true" />
                 {item.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-accent" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-[var(--isitabuy-green)]" />
                 )}
               </Link>
             );
           })}
-          <Link className="flex h-14 shrink-0 items-center justify-center gap-1 px-3" href="/#categories">
+          <Link className="flex h-11 shrink-0 items-center justify-center gap-1 transition hover:text-[var(--isitabuy-orange)]" href="/#categories">
             More <ChevronDown className="size-4" />
           </Link>
         </nav>
@@ -2087,7 +2095,7 @@ export default async function DealsPage({
           <section className="min-w-0">
             <div className="mb-4 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
               <div>
-                <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight">
+                <h1 className="flex items-center gap-2 text-3xl font-semibold tracking-tight">
                   Today&apos;s Best Deals <Sparkles className="size-5 text-accent" />
                 </h1>
                 <p className="mt-1 text-sm font-medium text-muted-foreground">

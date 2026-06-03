@@ -651,8 +651,10 @@ export default function CompareLanding() {
                   <Sparkles className="size-4 text-[var(--isitabuy-orange)]" aria-hidden="true" />
                   AI-Powered Compare Advisor
                 </div>
-                <h1 className="mt-4 max-w-[760px] font-heading text-[clamp(2rem,4vw,3.6rem)] font-bold leading-[1.03] tracking-normal text-[var(--isitabuy-ink)]">
-                  Compare products before <span className="text-[var(--isitabuy-orange)]">you buy.</span>
+                <h1 className="mt-4 max-w-[760px] font-heading text-[clamp(2rem,4vw,3.6rem)] font-semibold leading-[1.03] tracking-normal text-[var(--isitabuy-ink)]">
+                  <span className="font-medium">Compare products</span>{" "}
+                  <span className="mx-1 inline-block font-semibold text-[var(--brand-amber)]">before</span>{" "}
+                  <span className="inline-block font-semibold text-[var(--brand-amber)]">you buy.</span>
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-[var(--isitabuy-muted)] sm:text-base">
                   Pick two products, rank smart matches by intent, and preview the stronger buy before opening the full comparison.

@@ -315,7 +315,7 @@ export default function DashboardSectionPageClient({ section }: { section: Dashb
                     <span className="grid size-12 place-items-center rounded-2xl bg-white text-emerald-700 shadow-sm">
                       <Icon className="size-5" aria-hidden="true" />
                     </span>
-                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{copy.title}</h1>
+                    <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{copy.title}</h1>
                   </div>
                   <p className="mt-3 max-w-3xl text-sm font-semibold leading-6 text-muted-foreground">{copy.subtitle}</p>
                 </div>

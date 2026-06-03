@@ -74,33 +74,33 @@ export default function ReceiptUploadPanel() {
           <span className="grid size-12 place-items-center rounded-2xl bg-soft-wait text-accent">
             {processed ? <FileCheck2 className="size-6" aria-hidden="true" /> : <ReceiptText className="size-6" aria-hidden="true" />}
           </span>
-          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-            {processed ? "Processed" : "Demo upload"}
+          <span className="rounded-full border border-brand-amber/35 bg-white px-3 py-1 text-xs font-semibold text-accent shadow-sm">
+            {processed ? "Processed" : "Demo Upload"}
           </span>
         </div>
 
-        <h2 className="mt-5 text-2xl font-bold">{processed ? `${store} receipt` : "Upload a receipt"}</h2>
-        <p className="mt-2 text-sm font-semibold leading-6 text-muted-foreground">
+        <h2 className="mt-5 text-2xl font-semibold">{processed ? `${store} Receipt` : "Upload a Receipt"}</h2>
+        <p className="mt-2 text-sm font-medium leading-6 text-muted-foreground">
           {processed ? "5 items extracted. 3 warranties tracked. 1 item needs review." : "Add an image or PDF and IsItABuy will turn it into purchase memory."}
         </p>
 
         <div className="mt-5 grid gap-3">
           <div>
-            <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-file">Receipt file</label>
+            <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-file">Receipt File</label>
             <Input
               ref={fileInputRef}
               id="public-receipt-file"
               type="file"
               accept="image/*,application/pdf"
-              className="mt-1 h-11 rounded-xl border-brand-amber/25 bg-soft-wait text-xs font-bold"
+              className="mt-1 h-11 rounded-xl border-brand-amber/35 bg-white text-xs font-semibold shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-soft-wait file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-accent focus-visible:ring-[var(--isitabuy-orange)]"
               onChange={handleFileChange}
             />
-            <p className="mt-1 text-xs font-semibold text-muted-foreground">{fileName || "Image or PDF receipt"}</p>
+            <p className="mt-1 text-xs font-semibold text-muted-foreground">{fileName || "Image or PDF Receipt"}</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-store">Store</label>
+              <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-store">Store</label>
               <select
                 id="public-receipt-store"
                 value={store}
@@ -108,7 +108,7 @@ export default function ReceiptUploadPanel() {
                   setStore(event.target.value);
                   setProcessed(false);
                 }}
-                className="mt-1 h-11 w-full rounded-xl border border-brand-amber/25 bg-soft-wait px-3 text-sm font-bold outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                className="mt-1 h-11 w-full rounded-xl border border-brand-amber/35 bg-white px-3 text-sm font-semibold shadow-sm outline-none transition focus:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
               >
                 {["Target", "Amazon", "Best Buy", "Walmart", "Nike"].map((option) => (
                   <option key={option} value={option}>{option}</option>
@@ -116,7 +116,7 @@ export default function ReceiptUploadPanel() {
               </select>
             </div>
             <div>
-              <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-date">Purchase date</label>
+              <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-date">Purchase Date</label>
               <Input
                 id="public-receipt-date"
                 type="date"
@@ -125,13 +125,13 @@ export default function ReceiptUploadPanel() {
                   setPurchaseDate(event.target.value);
                   setProcessed(false);
                 }}
-                className="mt-1 h-11 rounded-xl border-brand-amber/25 bg-soft-wait text-sm font-bold"
+                className="mt-1 h-11 rounded-xl border-brand-amber/35 bg-white text-sm font-semibold shadow-sm focus-visible:ring-[var(--isitabuy-orange)]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-bold text-muted-foreground" htmlFor="public-receipt-notes">Notes</label>
+            <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-notes">Notes</label>
             <Textarea
               id="public-receipt-notes"
               value={notes}
@@ -140,7 +140,7 @@ export default function ReceiptUploadPanel() {
                 setProcessed(false);
               }}
               placeholder="Optional notes for this purchase..."
-              className="mt-1 min-h-20 rounded-xl border-brand-amber/25 bg-soft-wait text-sm font-semibold"
+              className="mt-1 min-h-24 rounded-xl border-brand-amber/35 bg-white text-sm font-medium shadow-sm placeholder:text-muted-foreground/70 focus-visible:ring-[var(--isitabuy-orange)]"
             />
           </div>
         </div>
@@ -148,10 +148,10 @@ export default function ReceiptUploadPanel() {
         <div className="mt-5 grid gap-2 sm:grid-cols-2">
           <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => processReceipt(false)}>
             <Upload className="size-4" aria-hidden="true" />
-            Upload receipt
+            Upload Receipt
           </Button>
           <Button variant="outline" className="h-10 rounded-full border-brand-amber/35 bg-white text-xs font-bold hover:bg-soft-wait" onClick={() => processReceipt(true)}>
-            Use demo receipt
+            Use Demo Receipt
           </Button>
         </div>
       </div>
@@ -168,19 +168,6 @@ export default function ReceiptUploadPanel() {
           ))}
         </div>
       ) : null}
-
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        {[
-          { label: "Savings found", value: "$69" },
-          { label: "Warranties", value: "3" },
-          { label: "Return alerts", value: "4" },
-        ].map((stat) => (
-          <div key={stat.label} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3">
-            <p className="font-numeric text-xl font-bold">{stat.value}</p>
-            <p className="mt-1 text-[0.65rem] font-bold text-muted-foreground">{stat.label}</p>
-          </div>
-        ))}
-      </div>
 
       {processed ? (
         <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">

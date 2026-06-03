@@ -312,7 +312,7 @@ export default function BuyGuidePage() {
                   <Badge className="mb-4 h-6 rounded bg-soft-value px-3 text-[10px] font-bold uppercase text-value">
                     Buying Guide
                   </Badge>
-                  <h1 className="max-w-xl text-4xl font-bold tracking-tight text-foreground">
+                  <h1 className="max-w-xl text-4xl font-semibold tracking-tight text-foreground">
                     Best Headphones of 2024
                   </h1>
                   <p className="mt-4 max-w-xl text-base font-medium leading-7 text-muted-foreground">

@@ -550,7 +550,7 @@ export default async function YoutubeInsightsPage({
         <main className="p-4 lg:p-5">
           <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">YouTube Insights</h1>
+            <h1 className="text-4xl font-semibold tracking-tight">YouTube Insights</h1>
             <p className="mt-2 text-base font-medium text-muted-foreground">
               Creator opinions, video summaries, and recurring product mentions
             </p>

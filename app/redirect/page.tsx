@@ -34,7 +34,7 @@ export default async function RedirectPage({
           <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-[var(--isitabuy-green-soft)] text-emerald-700">
             <ExternalLink className="size-6" aria-hidden="true" />
           </span>
-          <h1 className="mt-5 text-2xl font-bold">Retailer redirect preview</h1>
+          <h1 className="mt-5 text-2xl font-semibold">Retailer redirect preview</h1>
           <p className="mt-3 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">
             IsItABuy would open {retailer} for {product}. This prototype keeps you on a safe preview page.
           </p>

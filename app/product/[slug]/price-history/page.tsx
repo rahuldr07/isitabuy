@@ -223,7 +223,7 @@ function ProductPanel({ product }: { product: ProductData }) {
             <img alt={product.name} className="max-h-[280px] w-full object-contain mix-blend-multiply" src={product.image} />
           </div>
           <Badge className="mt-4 rounded bg-muted text-xs font-bold text-foreground">{product.name.split(" ")[0]}</Badge>
-          <h1 className="mt-3 text-2xl font-bold leading-tight">{product.name}</h1>
+          <h1 className="mt-3 text-2xl font-semibold leading-tight">{product.name}</h1>
           <p className="mt-1 text-base font-semibold text-muted-foreground">{product.subtitle}</p>
           <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-semibold">
             <span className="flex items-center gap-1 text-accent">

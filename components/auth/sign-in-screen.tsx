@@ -353,7 +353,7 @@ export default function SignInScreen({ initialMode = "login" }: SignInScreenProp
           </Badge>
 
           <div className="flex flex-col gap-4">
-            <h1 className="max-w-[560px] text-[38px] font-bold leading-[1.16] tracking-normal text-foreground sm:text-[42px] lg:text-[44px] xl:text-[48px]">
+            <h1 className="max-w-[560px] text-[38px] font-semibold leading-[1.16] tracking-normal text-foreground sm:text-[42px] lg:text-[44px] xl:text-[48px]">
               Shop smarter with your{" "}
               <span className="text-buy">AI shopping assistant</span>
             </h1>

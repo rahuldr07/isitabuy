@@ -152,7 +152,7 @@ function Header({
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--isitabuy-line)] bg-white/92 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-16 max-w-[92.5rem] flex-col gap-3 px-4 py-3 lg:flex-row lg:items-center lg:px-8">
+      <div className="mx-auto flex max-w-[1440px] flex-col gap-3 px-4 py-3 sm:px-5 lg:flex-row lg:items-center lg:px-8">
         <div className="flex items-center justify-between gap-3">
           <Logo />
           <Button variant="outline" size="icon" className="lg:hidden" aria-label="Toggle menu" onClick={() => setMobileOpen((value) => !value)}>
@@ -160,7 +160,7 @@ function Header({
           </Button>
         </div>
         <div className={cn("min-w-0 flex-1 gap-3 lg:flex lg:items-center", mobileOpen ? "grid" : "hidden lg:flex")}>
-          <div className="mx-auto flex w-full max-w-[43rem] rounded-xl border border-[var(--isitabuy-line)] bg-white p-1 shadow-[var(--compare-input-shadow)]">
+          <div className="flex min-w-0 flex-1 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-1 shadow-[var(--compare-input-shadow)]">
             <div className="relative min-w-0 flex-1">
               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--isitabuy-muted)]" aria-hidden="true" />
               <Input
@@ -169,15 +169,15 @@ function Header({
                 onKeyDown={(event) => {
                   if (event.key === "Enter") runSearch();
                 }}
-                placeholder="Search deals by product, category, or store..."
-                className="h-10 rounded-lg border-transparent bg-white pl-9 text-xs font-semibold shadow-none focus-visible:ring-[var(--isitabuy-orange)]"
+                placeholder="Search products, categories, stores, or paste a link..."
+                className="h-10 rounded-xl border-transparent bg-white pl-9 text-xs font-semibold shadow-none focus-visible:ring-[var(--isitabuy-orange)] sm:text-sm"
               />
             </div>
-            <Button className="h-10 rounded-lg bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={runSearch}>
-              Search deals
+            <Button className="h-10 rounded-xl bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)] sm:px-5" onClick={runSearch}>
+              Search
             </Button>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2 lg:justify-end">
             <Button asChild variant="ghost" className="h-10 gap-2 rounded-full px-3 text-xs font-bold text-[var(--isitabuy-ink)]">
               <NextLink href="/receipts">
                 <ReceiptText className="size-4" aria-hidden="true" />
@@ -191,7 +191,7 @@ function Header({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-10 gap-2 rounded-full px-2" aria-label="Open profile menu">
-                  <span className="grid size-8 place-items-center rounded-full bg-purple-100 text-sm font-bold text-[var(--isitabuy-purple)]">A</span>
+                  <span className="grid size-9 place-items-center rounded-full bg-[var(--isitabuy-green-soft)] text-sm font-bold text-emerald-700">A</span>
                   <ChevronDown className="size-4" aria-hidden="true" />
                 </Button>
               </DropdownMenuTrigger>
@@ -206,7 +206,7 @@ function Header({
           </div>
         </div>
       </div>
-      <nav className="mx-auto flex max-w-[92.5rem] items-center gap-7 overflow-x-auto px-4 text-xs font-bold text-[var(--isitabuy-ink)] lg:px-8" aria-label="Categories">
+      <nav className="mx-auto flex max-w-[1440px] items-center gap-7 overflow-x-auto px-4 text-xs font-bold text-[var(--isitabuy-ink)] sm:px-5 lg:px-8" aria-label="Categories">
         {compareHomeCategories.map((category) => (
           <button
             key={category.id}
@@ -609,9 +609,9 @@ export default function CompareHomeClient() {
           <div className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[image:var(--isitabuy-hero-glow)]" aria-hidden="true" />
           <div className="relative mx-auto max-w-[92.5rem] px-4 pb-8 pt-7 lg:px-8 lg:pb-10 lg:pt-9">
             <div className="mb-6 max-w-5xl">
-              <h1 className="font-heading text-[2rem] font-bold leading-[1.05] tracking-normal text-[var(--isitabuy-ink)] sm:text-[clamp(2.15rem,4.1vw,3.65rem)]">
-                <span className="block sm:inline">Compare products </span>
-                <span className="block sm:inline">before you <span className="text-[var(--isitabuy-orange)]">buy</span></span>
+              <h1 className="font-heading text-[2rem] font-semibold leading-[1.05] tracking-normal text-[var(--isitabuy-ink)] sm:text-[clamp(2.15rem,4.1vw,3.65rem)]">
+                <span className="block font-medium sm:inline">Compare products</span>{" "}
+                <span className="block sm:inline"><span className="mr-1 inline-block font-semibold text-[var(--brand-amber)]">before</span>{" "}you{" "}<span className="ml-1 inline-block font-semibold text-[var(--brand-amber)]">buy</span></span>
               </h1>
               <p className="mt-4 max-w-[21rem] text-sm font-semibold leading-6 text-[var(--isitabuy-muted)] sm:max-w-3xl sm:text-base sm:leading-7 lg:text-lg">
                 Search, paste a link, or let IsItABuy find the better option. Compare price, reviews, specs, trust, and AI Buy Score side by side.

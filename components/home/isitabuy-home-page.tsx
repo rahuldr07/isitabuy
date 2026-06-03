@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, useInView, useReducedMotion, type Transition, type Variants } from "framer-motion";
 import { Line } from "react-chartjs-2";
 import {
   CategoryScale,
@@ -79,6 +79,14 @@ import { cn } from "@/lib/utils";
 const MotionButton = motion.create(Button);
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
+const heroGlowTextSweepTransition = (delay = 0): Transition => ({
+  delay,
+  duration: 5.8,
+  ease: "easeInOut",
+  repeat: Infinity,
+  repeatDelay: 1.2,
+});
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip);
 
 const pageVariants: Variants = {
@@ -104,6 +112,32 @@ const panelVariants: Variants = {
     y: 10,
     scale: 0.98,
     transition: { duration: 0.2 },
+  },
+};
+
+const analysisCardVariants: Variants = {
+  hidden: { opacity: 1 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.16,
+      delayChildren: 0.12,
+    },
+  },
+};
+
+const analysisPanelVariants: Variants = {
+  hidden: (index: number = 0) => {
+    const x = index === 0 ? -24 : index === 3 ? 24 : 0;
+
+    return { opacity: 0, x, y: x ? 0 : 22, scale: 0.98 };
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -324,6 +358,9 @@ function Header() {
 }
 
 function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }) {
+  const ringRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const isRingInView = useInView(ringRef, { once: true, amount: 0.7 });
   const radius = 32;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
@@ -333,9 +370,12 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
   const scaledRadius = size === "lg" ? radius : 22;
   const scaledCircumference = 2 * Math.PI * scaledRadius;
   const scaledOffset = scaledCircumference - (score / 100) * scaledCircumference;
+  const dashArray = size === "lg" ? circumference : scaledCircumference;
+  const dashOffset = size === "lg" ? offset : scaledOffset;
+  const shouldReveal = prefersReducedMotion || isRingInView;
 
   return (
-    <div className={cn("relative grid shrink-0 place-items-center rounded-full bg-white", boxClass)} aria-label={`AI buy score ${score}`}>
+    <div ref={ringRef} className={cn("relative grid shrink-0 place-items-center rounded-full bg-white", boxClass)} aria-label={`AI buy score ${score}`}>
       <svg className="absolute inset-0 -rotate-90" viewBox={`0 0 ${viewSize} ${viewSize}`} aria-hidden="true">
         <circle cx={center} cy={center} r={scaledRadius} fill="none" stroke="currentColor" strokeWidth="5" className="text-emerald-100" />
         <motion.circle
@@ -346,16 +386,45 @@ function ScoreRing({ score, size = "lg" }: { score: number; size?: "sm" | "lg" }
           stroke="currentColor"
           strokeWidth="5"
           strokeLinecap="round"
-          strokeDasharray={size === "lg" ? circumference : scaledCircumference}
-          strokeDashoffset={size === "lg" ? offset : scaledOffset}
+          strokeDasharray={dashArray}
+          strokeDashoffset={dashArray}
           className="text-[var(--isitabuy-green)]"
-          initial={{ strokeDashoffset: size === "lg" ? circumference : scaledCircumference }}
-          animate={{ strokeDashoffset: size === "lg" ? offset : scaledOffset }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          initial={false}
+          animate={{ strokeDashoffset: shouldReveal ? dashOffset : dashArray }}
+          transition={{ duration: 1.25, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
         />
       </svg>
-      <span className={cn("font-numeric font-bold leading-none text-[var(--isitabuy-green)]", size === "lg" ? "text-3xl" : "text-lg")}>{score}</span>
+      <motion.span
+        className={cn("font-numeric font-bold leading-none text-[var(--isitabuy-green)]", size === "lg" ? "text-3xl" : "text-lg")}
+        initial={false}
+        animate={shouldReveal ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.86 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.28 }}
+      >
+        {score}
+      </motion.span>
     </div>
+  );
+}
+
+function HeroGlowText({ children, delay = 0 }: { children: string; delay?: number }) {
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <span className="relative inline-block font-medium tracking-normal text-[var(--isitabuy-ink)]">
+      <span className="relative z-10">{children}</span>
+      {prefersReducedMotion ? null : (
+        <motion.span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-20 bg-[linear-gradient(105deg,transparent_0%,rgba(245,158,11,0.16)_30%,rgba(245,158,11,1)_50%,rgba(245,158,11,0.18)_70%,transparent_100%)] bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(245,158,11,0.45)]"
+          initial={{ backgroundPosition: "160% 0%", opacity: 0 }}
+          animate={{ backgroundPosition: ["170% 0%", "-90% 0%"], opacity: [0, 1, 0] }}
+          transition={heroGlowTextSweepTransition(delay)}
+          style={{ backgroundSize: "240% 100%" }}
+        >
+          {children}
+        </motion.span>
+      )}
+    </span>
   );
 }
 
@@ -400,25 +469,30 @@ function HeroSection() {
         className="mx-auto flex flex-col items-center text-center"
       >
         <div
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur lg:text-sm"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-medium text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur lg:text-sm"
         >
           <Sparkles className="size-4 text-[var(--isitabuy-orange)]" aria-hidden="true" />
-          AI-Powered Shopping Advisor
+          <HeroGlowText>AI-Powered Shopping Advisor</HeroGlowText>
         </div>
 
-        <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-bold leading-[1.02] tracking-normal text-[var(--isitabuy-ink)]">
-          <span className="whitespace-nowrap"><span className="text-[var(--isitabuy-orange)]">Know</span> what to buy before</span>
+        <h1 className="mt-4 max-w-[780px] font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-semibold leading-[1.02] tracking-normal text-[var(--isitabuy-ink)]">
+          <span className="block sm:whitespace-nowrap">
+            <span className="mr-2 inline-block font-semibold text-[var(--brand-amber)]">Know</span>{" "}
+            <span className="font-medium">what to buy</span>{" "}
+            <span className="font-normal">before</span>
+          </span>
           {" "}
           <span className="block">
-            you <span className="text-[var(--isitabuy-orange)]">buy.</span>
+            you{" "}
+            <span className="ml-2 inline-block font-semibold text-[var(--brand-amber)]">buy.</span>
           </span>
         </h1>
 
-        <div className="group mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-bold text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-orange-200/80 hover:bg-white hover:shadow-[0_16px_36px_rgb(255_122_0/0.14),0_10px_26px_rgb(15_23_42/0.08)] sm:text-base">
+        <div className="group mt-5 inline-flex items-center gap-2 rounded-full border border-[var(--isitabuy-line)] bg-white/92 px-4 py-2 text-xs font-medium text-[var(--isitabuy-ink)] shadow-[var(--isitabuy-card-shadow)] backdrop-blur transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-orange-200/80 hover:bg-white hover:shadow-[0_16px_36px_rgb(255_122_0/0.14),0_10px_26px_rgb(15_23_42/0.08)] sm:text-base">
           <span className="grid size-7 place-items-center rounded-lg bg-[var(--isitabuy-orange)] text-white transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:-rotate-6 group-hover:scale-105">
             <ShieldCheck className="size-3.5 transition-transform duration-300 group-hover:scale-110" aria-hidden="true" />
           </span>
-          100% Independent & Commission-Free Scores
+          <HeroGlowText delay={0.75}>100% Independent & Commission-Free Scores</HeroGlowText>
         </div>
 
         <div className="mt-5 w-full max-w-[860px] rounded-[1.4rem] border border-[var(--isitabuy-line)] bg-white p-1.5 shadow-[0_14px_40px_rgb(15_23_42/0.1)] transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-orange-200/80 hover:shadow-[0_26px_64px_rgb(255_122_0/0.16),0_14px_34px_rgb(15_23_42/0.09)] focus-within:-translate-y-0.5 focus-within:border-orange-300/90 focus-within:shadow-[0_28px_70px_rgb(255_122_0/0.2),0_16px_38px_rgb(15_23_42/0.1)] sm:rounded-[1.6rem]">
@@ -657,18 +731,30 @@ function ProductVerdict() {
   );
 }
 
-function ScoreBar({ item }: { item: ScoreItem }) {
+function ScoreBar({ item, index = 0 }: { item: ScoreItem; index?: number }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <div className="flex items-center gap-3">
+    <motion.div
+      className="flex items-center gap-3"
+      initial={prefersReducedMotion ? false : { opacity: 0, x: 12 }}
+      whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.8 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: index * 0.06 }}
+    >
       <span className="w-[110px] shrink-0 truncate text-xs font-semibold text-gray-500">{item.label}</span>
       <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-gray-100">
-        <div
-          className="h-full rounded-full transition-all duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
+        <motion.div
+          className="h-full origin-left rounded-full"
           style={{ width: `${item.value}%`, backgroundColor: item.color }}
+          initial={prefersReducedMotion ? false : { scaleX: 0 }}
+          whileInView={prefersReducedMotion ? undefined : { scaleX: 1 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.16 + index * 0.06 }}
         />
       </div>
-      <span className="font-numeric w-[42px] shrink-0 text-right text-xs font-semibold text-gray-400">{item.value}/100</span>
-    </div>
+      <span className="font-numeric w-8 shrink-0 text-right text-xs font-semibold text-gray-500">{item.value}%</span>
+    </motion.div>
   );
 }
 
@@ -676,7 +762,40 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
   const [range, setRange] = useState<RangeKey>("1m");
   const [chartBackground, setChartBackground] = useState<string | CanvasGradient>("rgba(29,158,117,0.08)");
   const chartRef = useRef<ChartJS<"line">>(null);
+  const chartFrameRef = useRef<HTMLDivElement>(null);
+  const revealProgressRef = useRef(0);
+  const revealAnimationRef = useRef<number | null>(null);
+  const lineRevealClippedRef = useRef(false);
+  const prefersReducedMotion = useReducedMotion();
+  const isChartInView = useInView(chartFrameRef, { once: true, amount: 0.6 });
   const current = history[range];
+
+  const lineRevealPlugin = useMemo<Plugin<"line">>(() => {
+    return {
+      id: "lineReveal",
+      beforeDatasetsDraw(chart) {
+        const progress = Math.min(1, Math.max(0, revealProgressRef.current));
+
+        if (progress >= 1 || !chart.chartArea) {
+          lineRevealClippedRef.current = false;
+          return;
+        }
+
+        const { ctx, chartArea } = chart;
+        const width = (chartArea.right - chartArea.left) * progress;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(chartArea.left, chartArea.top - 8, width, chartArea.bottom - chartArea.top + 16);
+        ctx.clip();
+        lineRevealClippedRef.current = true;
+      },
+      afterDatasetsDraw(chart) {
+        if (!lineRevealClippedRef.current) return;
+        chart.ctx.restore();
+        lineRevealClippedRef.current = false;
+      },
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = chartRef.current?.canvas;
@@ -688,6 +807,47 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
     gradient.addColorStop(1, "rgba(29,158,117,0)");
     setChartBackground(gradient);
   }, [range]);
+
+  useEffect(() => {
+    if (revealAnimationRef.current) {
+      window.cancelAnimationFrame(revealAnimationRef.current);
+    }
+
+    if (prefersReducedMotion) {
+      revealProgressRef.current = 1;
+      chartRef.current?.draw();
+      return;
+    }
+
+    if (!isChartInView) {
+      revealProgressRef.current = 0;
+      chartRef.current?.draw();
+      return;
+    }
+
+    revealProgressRef.current = 0;
+    const duration = 1350;
+    const start = window.performance.now();
+
+    const tick = (now: number) => {
+      const elapsed = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - elapsed, 4);
+      revealProgressRef.current = eased;
+      chartRef.current?.draw();
+
+      if (elapsed < 1) {
+        revealAnimationRef.current = window.requestAnimationFrame(tick);
+      }
+    };
+
+    revealAnimationRef.current = window.requestAnimationFrame(tick);
+
+    return () => {
+      if (revealAnimationRef.current) {
+        window.cancelAnimationFrame(revealAnimationRef.current);
+      }
+    };
+  }, [isChartInView, prefersReducedMotion, range]);
 
   const crosshairPlugin: Plugin<"line"> = {
     id: "crosshair",
@@ -733,6 +893,7 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
   const chartOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
+    animation: false,
     plugins: {
       legend: { display: false },
       tooltip: {
@@ -769,34 +930,55 @@ function PriceChart({ history }: { history: Record<RangeKey, PriceRange> }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-1.5">
-        {RANGES.map((item) => (
-          <button
+        {RANGES.map((item, index) => (
+          <motion.button
             key={item}
             type="button"
-            onClick={() => setRange(item)}
+            onClick={() => {
+              revealProgressRef.current = 0;
+              setRange(item);
+            }}
             className={cn(
               "rounded-full px-2.5 py-1 text-xs font-bold transition-colors",
               range === item ? "bg-gray-100 text-gray-900" : "text-gray-400 hover:text-gray-600"
             )}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1], delay: index * 0.05 }}
           >
             {item.toUpperCase()}
-          </button>
+          </motion.button>
         ))}
       </div>
-      <div className="relative h-[96px] w-full">
-        <Line ref={chartRef} data={chartData} options={chartOptions} plugins={[crosshairPlugin]} />
-      </div>
+      <motion.div
+        ref={chartFrameRef}
+        className="relative h-[96px] w-full"
+        key={range}
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 12, scale: 0.98 }}
+        animate={prefersReducedMotion || isChartInView ? { opacity: 1, y: 0, scale: 1 } : undefined}
+        transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <Line ref={chartRef} data={chartData} options={chartOptions} plugins={[lineRevealPlugin, crosshairPlugin]} />
+      </motion.div>
     </div>
   );
 }
 
 function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) {
   const verdict = VERDICT_STYLES[product.verdict];
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--isitabuy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-        <div className="flex flex-col gap-4 p-6">
+      <motion.div
+        className="grid grid-cols-1 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-[var(--isitabuy-line)] bg-white sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0"
+        variants={prefersReducedMotion ? undefined : analysisCardVariants}
+        initial={prefersReducedMotion ? false : "hidden"}
+        whileInView={prefersReducedMotion ? undefined : "show"}
+        viewport={{ once: true, amount: 0.35 }}
+      >
+        <motion.div className="flex flex-col gap-4 p-6" custom={0} variants={prefersReducedMotion ? undefined : analysisPanelVariants}>
           <div className="flex h-[120px] items-center justify-center overflow-hidden rounded-xl bg-gray-50">
             <Image src={product.imageSrc} alt={product.imageAlt} width={115} height={115} className="object-contain" />
           </div>
@@ -812,31 +994,37 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
             </div>
           </div>
           <p className="line-clamp-4 text-[13px] font-medium leading-6 text-gray-500">{product.description}</p>
-        </div>
-        <div className="flex flex-col gap-3 p-6">
+        </motion.div>
+        <motion.div className="flex flex-col gap-3 p-6" custom={1} variants={prefersReducedMotion ? undefined : analysisPanelVariants}>
           <h3 className="text-sm font-bold text-gray-900">Scores breakdown</h3>
           <div className="flex flex-col gap-3">
-            {product.scores.map((score) => (
-              <ScoreBar key={score.label} item={score} />
+            {product.scores.map((score, index) => (
+              <ScoreBar key={score.label} item={score} index={index} />
             ))}
           </div>
-        </div>
-        <div className="flex flex-col gap-4 p-6">
+        </motion.div>
+        <motion.div className="flex flex-col gap-4 p-6" custom={2} variants={prefersReducedMotion ? undefined : analysisPanelVariants}>
           <h3 className="text-sm font-bold text-gray-900">Price history</h3>
           <div>
             <p className="font-numeric text-2xl font-bold text-gray-900">${product.currentPrice.toLocaleString()}</p>
             <p className="text-xs font-semibold text-gray-400">Current price</p>
           </div>
           <PriceChart history={product.priceHistory} />
-          <div className="flex items-start gap-2">
+          <motion.div
+            className="flex items-start gap-2"
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.8 }}
+            transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1], delay: 0.34 }}
+          >
             <TrendingDownIcon className="mt-0.5 size-4 shrink-0 text-emerald-600" />
             <div>
               <p className="font-numeric text-xs font-bold text-emerald-600">Down ${product.priceDropAmount} ({product.priceDropPercent}%)</p>
               <p className="text-[11px] font-semibold text-gray-400">of 30-day avg</p>
             </div>
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 p-6">
+          </motion.div>
+        </motion.div>
+        <motion.div className="flex flex-col gap-4 p-6" custom={3} variants={prefersReducedMotion ? undefined : analysisPanelVariants}>
           <h3 className="text-sm font-bold text-gray-900">Best alternative</h3>
           <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-3">
             <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
@@ -864,8 +1052,8 @@ function ProductAnalysisCard({ product = DEMO_PRODUCT }: { product?: Product }) 
             View comparison
             <ArrowRightIcon className="size-3.5" />
           </NextLink>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

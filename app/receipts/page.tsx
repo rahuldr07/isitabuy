@@ -113,8 +113,12 @@ export default function ReceiptsPage() {
       <section className="mx-auto grid max-w-6xl gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(22rem,0.72fr)] lg:px-8 lg:py-12">
         <div className="flex flex-col justify-center">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Receipt intelligence</p>
-          <h1 className="mt-4 max-w-3xl text-5xl font-bold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl">
-            Upload receipts. Let IsItABuy remember what you bought.
+          <h1 className="mt-4 max-w-3xl font-heading text-[clamp(1.9rem,3.9vw,3.55rem)] font-semibold leading-[1.02] tracking-normal text-[var(--isitabuy-ink)]">
+            <span className="block text-[var(--brand-amber)]">Upload Receipts</span>{" "}
+            <span className="mt-3 block text-[clamp(1.5rem,3vw,2.75rem)] font-medium leading-[1.08] tracking-normal">
+              <span className="block">Let IsItABuy remember</span>{" "}
+              <span className="block">what you bought</span>
+            </span>
           </h1>
           <p className="mt-5 max-w-2xl text-base font-semibold leading-7 text-muted-foreground sm:text-lg">
             IsItABuy turns receipts into a private purchase memory for warranties, return windows, price drops, better alternatives, and long-term savings.
@@ -140,15 +144,15 @@ export default function ReceiptsPage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-4 sm:px-6 lg:px-8">
-        <BentoGrid className="xl:grid-cols-5">
+        <BentoGrid className="lg:grid-cols-5 xl:grid-cols-5">
           {valueCards.map((card, index) => {
             const Icon = card.icon;
             return (
-              <BentoCard key={card.title} featured={index === 0} variant={index === 2 ? "success" : index === 1 ? "warning" : "default"} className="min-h-52 p-5">
+              <BentoCard key={card.title} variant={index === 2 ? "success" : index === 1 ? "warning" : "default"} className="min-h-52 p-5">
                 <span className="grid size-11 place-items-center rounded-2xl bg-soft-wait text-accent">
                   <Icon className="size-5" aria-hidden="true" />
                 </span>
-                <p className="font-numeric mt-5 text-3xl font-bold">{card.metric}</p>
+                <p className="font-numeric mt-5 whitespace-nowrap text-3xl font-bold">{card.metric}</p>
                 <h2 className="mt-3 text-lg font-bold">{card.title}</h2>
                 <p className="mt-2 text-sm font-semibold leading-6 text-[var(--isitabuy-muted)]">{card.body}</p>
               </BentoCard>

@@ -756,7 +756,7 @@ function SmartActionsSection({
       <CardContent className="p-4 sm:p-5 lg:p-6">
         <div className="mb-5 flex flex-col justify-between gap-4 border-b border-brand-amber/25 pb-5 lg:flex-row lg:items-end">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Welcome back, Ahmed</h1>
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--isitabuy-ink)] sm:text-3xl">Welcome back, Ahmed</h1>
             <p className="mt-1 text-sm font-semibold text-muted-foreground">IsItABuy found {actions.length + hiddenCount} smart shopping updates for you today.</p>
           </div>
           <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-end">

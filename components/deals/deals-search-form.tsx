@@ -28,16 +28,16 @@ export default function DealsSearchForm({ actionPath, defaultValue }: DealsSearc
   return (
     <form
       action={actionPath}
-      className="relative mx-auto hidden max-w-[760px] flex-1 md:block"
+      className="relative min-w-0 flex-1"
       id="deals-search-form"
       onSubmit={handleSubmit}
     >
-      <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+      <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--isitabuy-muted)]" aria-hidden="true" />
       <Input
-        className="h-12 rounded-lg border-border bg-white pl-12 text-sm font-medium shadow-sm"
+        className="h-10 rounded-xl border-transparent bg-white pl-9 text-xs font-semibold shadow-none focus-visible:ring-[var(--isitabuy-orange)] sm:text-sm"
         defaultValue={defaultValue}
         name="q"
-        placeholder="Search deals by product, category, or store..."
+        placeholder="Search products, categories, stores, or paste a link..."
       />
     </form>
   );

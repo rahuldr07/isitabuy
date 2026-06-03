@@ -301,7 +301,7 @@ function ProductHeader({ product }: { product: ProductData }) {
         <div className="flex-1 py-2">
           <div className="flex flex-col justify-between gap-4 lg:flex-row">
             <div>
-              <h1 className="max-w-xl text-3xl font-bold leading-tight">{product.name}</h1>
+              <h1 className="max-w-xl text-3xl font-semibold leading-tight">{product.name}</h1>
               <p className="mt-1 text-base font-semibold text-muted-foreground">{product.subtitle}</p>
               <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
                 <span>{product.rating}</span>
