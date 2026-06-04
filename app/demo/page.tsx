@@ -6,8 +6,8 @@ import Link from "next/link";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type ThemeKey = "linen" | "chalk" | "fog" | "mint" | "peach" | "sky" | "sand";
-type FontHeadingKey = "fraunces" | "instrument" | "cinzel" | "bodoni" | "bricolage" | "outfit" | "epilogue";
+type ThemeKey = "linen" | "void" | "aurora" | "obsidian" | "chalk" | "dusk" | "fog" | "mint" | "peach" | "sky" | "sand";
+type FontHeadingKey = "fraunces" | "playfair" | "syne" | "cormorant" | "unbounded" | "bricolage" | "instrument" | "cinzel" | "bodoni" | "outfit" | "epilogue";
 type FontBodyKey = "jakarta" | "dmSans" | "spaceGrotesk" | "outfit" | "raleway";
 
 // ─── Theme Definitions ────────────────────────────────────────────────────────
@@ -56,6 +56,69 @@ const THEMES: Record<ThemeKey, Theme> = {
     btnOutlineBorder: "rgba(26,18,8,0.25)",
     btnOutlineText: "#1a1208",
   },
+  void: {
+    label: "Void",
+    bg: "radial-gradient(ellipse at 20% 30%, #1a0e2e 0%, #0a0613 50%, #000000 100%)",
+    text: "#e8e2f8",
+    textMuted: "#8878b0",
+    accent: "#9b6dff",
+    accentText: "#ffffff",
+    badgeBg: "rgba(155,109,255,0.12)",
+    badgeBorder: "rgba(155,109,255,0.25)",
+    badgeText: "#c4a8ff",
+    pillBg: "rgba(232,226,248,0.06)",
+    pillText: "#c4a8ff",
+    panelBg: "rgba(18,10,32,0.95)",
+    panelBorder: "rgba(155,109,255,0.2)",
+    inputBg: "rgba(255,255,255,0.05)",
+    inputBorder: "rgba(155,109,255,0.2)",
+    labelColor: "#6b5a8a",
+    selectText: "#e8e2f8",
+    btnOutlineBorder: "rgba(232,226,248,0.2)",
+    btnOutlineText: "#e8e2f8",
+  },
+  aurora: {
+    label: "Aurora",
+    bg: "radial-gradient(ellipse at 0% 100%, #003d30 0%, #011a28 45%, #0a0820 100%)",
+    text: "#edfaf4",
+    textMuted: "#6bb89a",
+    accent: "#00e5a0",
+    accentText: "#001a12",
+    badgeBg: "rgba(0,229,160,0.1)",
+    badgeBorder: "rgba(0,229,160,0.22)",
+    badgeText: "#00c98c",
+    pillBg: "rgba(237,250,244,0.06)",
+    pillText: "#7deecc",
+    panelBg: "rgba(5,22,18,0.95)",
+    panelBorder: "rgba(0,229,160,0.15)",
+    inputBg: "rgba(255,255,255,0.05)",
+    inputBorder: "rgba(0,229,160,0.18)",
+    labelColor: "#3a8a6a",
+    selectText: "#edfaf4",
+    btnOutlineBorder: "rgba(237,250,244,0.2)",
+    btnOutlineText: "#edfaf4",
+  },
+  obsidian: {
+    label: "Obsidian",
+    bg: "linear-gradient(145deg, #0e0e10 0%, #18181b 60%, #0e0e10 100%)",
+    text: "#f4f4f5",
+    textMuted: "#71717a",
+    accent: "#f5c842",
+    accentText: "#0e0e10",
+    badgeBg: "rgba(245,200,66,0.1)",
+    badgeBorder: "rgba(245,200,66,0.2)",
+    badgeText: "#d4a81e",
+    pillBg: "rgba(244,244,245,0.05)",
+    pillText: "#f5c842",
+    panelBg: "rgba(10,10,12,0.97)",
+    panelBorder: "rgba(245,200,66,0.15)",
+    inputBg: "rgba(255,255,255,0.04)",
+    inputBorder: "rgba(245,200,66,0.15)",
+    labelColor: "#52525b",
+    selectText: "#f4f4f5",
+    btnOutlineBorder: "rgba(244,244,245,0.18)",
+    btnOutlineText: "#f4f4f5",
+  },
   chalk: {
     label: "Chalk",
     bg: "linear-gradient(170deg, #ffffff 0%, #f8f8ff 50%, #f2f2fa 100%)",
@@ -76,6 +139,27 @@ const THEMES: Record<ThemeKey, Theme> = {
     selectText: "#111118",
     btnOutlineBorder: "rgba(17,17,24,0.2)",
     btnOutlineText: "#111118",
+  },
+  dusk: {
+    label: "Dusk",
+    bg: "linear-gradient(155deg, #1a0a2e 0%, #2d1854 30%, #5c1f3c 70%, #8b2252 100%)",
+    text: "#fdeef8",
+    textMuted: "#b87aae",
+    accent: "#ff6eb4",
+    accentText: "#ffffff",
+    badgeBg: "rgba(255,110,180,0.12)",
+    badgeBorder: "rgba(255,110,180,0.25)",
+    badgeText: "#ff9fd0",
+    pillBg: "rgba(253,238,248,0.06)",
+    pillText: "#ffb8da",
+    panelBg: "rgba(20,8,38,0.95)",
+    panelBorder: "rgba(255,110,180,0.2)",
+    inputBg: "rgba(255,255,255,0.05)",
+    inputBorder: "rgba(255,110,180,0.2)",
+    labelColor: "#7a4a72",
+    selectText: "#fdeef8",
+    btnOutlineBorder: "rgba(253,238,248,0.2)",
+    btnOutlineText: "#fdeef8",
   },
   fog: {
     label: "Fog",
@@ -188,6 +272,10 @@ const THEMES: Record<ThemeKey, Theme> = {
 
 const HEADING_FONTS: Record<FontHeadingKey, { label: string; family: string; style?: string }> = {
   fraunces:  { label: "Fraunces", family: "'Fraunces', serif", style: "italic" },
+  playfair:  { label: "Playfair Display", family: "'Playfair Display', serif" },
+  syne:      { label: "Syne", family: "'Syne', sans-serif" },
+  cormorant: { label: "Cormorant Garamond", family: "'Cormorant Garamond', serif", style: "italic" },
+  unbounded: { label: "Unbounded", family: "'Unbounded', sans-serif" },
   instrument: { label: "Instrument Serif", family: "'Instrument Serif', serif", style: "italic" },
   cinzel:    { label: "Cinzel", family: "'Cinzel', serif" },
   bodoni:    { label: "Bodoni Moda", family: "'Bodoni Moda', serif", style: "italic" },
@@ -212,8 +300,12 @@ const GOOGLE_FONTS_URL =
   "&family=Space+Grotesk:wght@300;400;500;600;700" +
   "&family=Outfit:wght@300;400;500;600;700;800" +
   "&family=Raleway:wght@300;400;500;600;700;800" +
+  "&family=Syne:wght@400;500;600;700;800" +
+  "&family=Unbounded:wght@300;400;500;600;700" +
   "&family=Bricolage+Grotesque:wght@300;400;500;600;700;800" +
   "&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700" +
+  "&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600" +
+  "&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700" +
   "&family=Instrument+Serif:ital@0;1" +
   "&family=Cinzel:wght@400;500;600;700" +
   "&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700" +

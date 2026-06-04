@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import {
   BadgeDollarSign,
   Bell,
   Bot,
+  CalendarDays,
   CheckCircle2,
   ChevronDown,
   Clock3,
@@ -23,6 +24,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sparkles,
+  Store,
   TrendingDown,
   Upload,
   Watch,
@@ -31,6 +33,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DropdownMenu,
@@ -40,6 +43,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -47,6 +52,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { showCompareToast } from "@/components/ui/app-toast";
 import {
   dashboardNavItems,
@@ -59,7 +65,9 @@ import {
   watchlistProducts,
 } from "@/lib/mockDashboardData";
 import { buildCompareUrl, buildProductUrl, formatDate, formatPrice, getStatusStyles, getVerdictStyles } from "@/lib/dashboardUtils";
+import { buildReceiptRecord, formatReceiptDate, getReceiptDateString, hydrateReceiptRecords, isAllowedReceiptFile, receiptStoreOptions, saveReceiptRecord } from "@/lib/receiptRecords";
 import { cn } from "@/lib/utils";
+import type { ReceiptRecord, ReceiptUploadDraft } from "@/types/dashboard";
 
 export const dashboardSectionKeys = ["saved", "watchlist", "alerts", "receipts", "compare-history", "chat", "settings"] as const;
 export type DashboardSectionKey = (typeof dashboardSectionKeys)[number];
@@ -434,6 +442,404 @@ function AlertsSection() {
 }
 
 function ReceiptsSection() {
+  const [receiptRecords, setReceiptRecords] = useState<ReceiptRecord[]>(() => hydrateReceiptRecords().value);
+  const [activeFilter, setActiveFilter] = useState<"all" | "review" | "warranties" | "returns">("all");
+  const [draft, setDraft] = useState<ReceiptUploadDraft>({ store: "Target", purchaseDate: getReceiptDateString(-3), notes: "" });
+  const [fileInputKey, setFileInputKey] = useState(0);
+
+  useEffect(() => {
+    const hydrated = hydrateReceiptRecords();
+    queueMicrotask(() => {
+      setReceiptRecords(hydrated.value);
+      if (hydrated.recovered) {
+        notify("Receipt data recovered", "Older demo receipt data was upgraded for the new dashboard view.");
+      }
+    });
+  }, []);
+
+  const stats = useMemo(() => ({
+    saved: receiptRecords.reduce((total, receipt) => total + receipt.savingsFound, 0),
+    warranties: receiptRecords.reduce((total, receipt) => total + receipt.warrantiesTracked, 0),
+    returns: receiptRecords.reduce((total, receipt) => total + receipt.returnAlerts, 0),
+    review: receiptRecords.filter((receipt) => receipt.status === "ready").length,
+  }), [receiptRecords]);
+
+  const returnWindows = receiptRecords.flatMap((receipt) =>
+    receipt.items
+      .filter((item) => item.returnWindowDays)
+      .map((item) => ({ ...item, store: receipt.store, receiptId: receipt.id })),
+  );
+  const warranties = receiptRecords.flatMap((receipt) =>
+    receipt.items
+      .filter((item) => item.warrantyStatus !== "none")
+      .map((item) => ({ ...item, store: receipt.store, receiptId: receipt.id })),
+  );
+  const reviewQueue = receiptRecords.filter((receipt) => receipt.status === "ready" || receipt.status === "protected");
+  const filteredRecords = useMemo(() => {
+    if (activeFilter === "review") return receiptRecords.filter((receipt) => receipt.status === "ready");
+    if (activeFilter === "warranties") return receiptRecords.filter((receipt) => receipt.warrantiesTracked > 0);
+    if (activeFilter === "returns") return receiptRecords.filter((receipt) => receipt.returnAlerts > 0);
+    return receiptRecords;
+  }, [activeFilter, receiptRecords]);
+
+  const updateDraft = (patch: Partial<ReceiptUploadDraft>) => setDraft((current) => ({ ...current, ...patch }));
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      updateDraft({ fileName: undefined });
+      return;
+    }
+
+    if (!isAllowedReceiptFile(file)) {
+      event.target.value = "";
+      updateDraft({ fileName: undefined });
+      notify("Unsupported receipt file", "Upload an image or PDF receipt.");
+      return;
+    }
+
+    updateDraft({ fileName: file.name });
+  };
+
+  const submitReceipt = (useDemo: boolean) => {
+    if (!useDemo && !draft.fileName) {
+      notify("Choose a receipt file", "Upload an image or PDF receipt, or use the demo receipt.");
+      return;
+    }
+
+    const result = saveReceiptRecord(buildReceiptRecord(draft, useDemo));
+    setReceiptRecords(result.value);
+    setDraft({ store: draft.store, purchaseDate: getReceiptDateString(-3), notes: "" });
+    setFileInputKey((value) => value + 1);
+    setActiveFilter("all");
+    notify(
+      useDemo ? "Demo receipt processed" : "Receipt processed",
+      result.recovered
+        ? "Receipt is visible for this session, but browser storage did not persist it."
+        : `${draft.store} receipt was added to the ledger, review queue, returns, and warranties.`,
+    );
+  };
+
+  const filters = [
+    { label: "All", value: "all" as const, count: receiptRecords.length },
+    { label: "Needs review", value: "review" as const, count: stats.review },
+    { label: "Warranties", value: "warranties" as const, count: warranties.length },
+    { label: "Returns", value: "returns" as const, count: returnWindows.length },
+  ];
+  const quickDateOptions = [
+    { label: "Today", value: getReceiptDateString(0) },
+    { label: "Yesterday", value: getReceiptDateString(-1) },
+    { label: "Last week", value: getReceiptDateString(-7) },
+  ];
+
+  return (
+    <section className="grid gap-5">
+      <section className="grid gap-4 xl:grid-cols-12">
+        <Card className="overflow-hidden rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--card),var(--soft-wait))] shadow-[0_20px_48px_rgb(105_72_34/0.1)] xl:col-span-7">
+          <CardContent className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[minmax(0,1fr)_18rem]">
+            <div className="flex min-w-0 flex-col">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent">Receipt inbox</p>
+              <h2 className="mt-3 max-w-xl text-3xl font-bold tracking-tight">Upload receipts here. The dashboard updates immediately.</h2>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-6 text-muted-foreground">
+                Add an image or PDF, then IsItABuy turns it into ledger rows, review tasks, return windows, warranty tracking, and savings signals.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div>
+                  <label className="text-xs font-bold text-muted-foreground" htmlFor="dashboard-receipt-file">Receipt file</label>
+                  <Input
+                    key={fileInputKey}
+                    id="dashboard-receipt-file"
+                    type="file"
+                    accept="image/*,application/pdf"
+                    className="mt-1 h-11 rounded-xl border-brand-amber/35 bg-white text-xs font-semibold shadow-sm file:mr-3 file:rounded-lg file:border-0 file:bg-soft-wait file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-accent"
+                    onChange={handleFileChange}
+                  />
+                  <p className="mt-1 text-xs font-semibold text-muted-foreground">{draft.fileName ?? "Image or PDF receipt"}</p>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-muted-foreground" htmlFor="dashboard-receipt-store">Store</label>
+                  <Select
+                    value={draft.store}
+                    onValueChange={(value) => updateDraft({ store: value })}
+                  >
+                    <SelectTrigger
+                      id="dashboard-receipt-store"
+                      className="mt-1 h-11 w-full min-w-0 rounded-xl border-brand-amber/35 bg-white px-3 text-sm font-semibold shadow-sm focus-visible:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                      style={{ width: "100%", height: "2.75rem" }}
+                    >
+                      <span className="flex min-w-0 items-center gap-2">
+                        <Store className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                        <SelectValue placeholder="Choose store" />
+                      </span>
+                    </SelectTrigger>
+                    <SelectContent position="popper" align="start" className="rounded-xl border border-brand-amber/25 bg-white p-1 shadow-[0_18px_38px_rgb(105_72_34/0.14)]">
+                      {receiptStoreOptions.map((store) => (
+                        <SelectItem key={store} value={store} className="rounded-lg py-2 text-sm font-semibold focus:bg-soft-wait focus:text-[var(--isitabuy-ink)]">
+                          {store}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-muted-foreground" htmlFor="dashboard-receipt-date">Purchase date</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button
+                        id="dashboard-receipt-date"
+                        type="button"
+                        className="mt-1 flex h-11 w-full min-w-0 items-center justify-between gap-3 rounded-xl border border-brand-amber/35 bg-white px-3 text-left text-sm font-semibold shadow-sm outline-none transition hover:border-[var(--isitabuy-orange)] hover:bg-white focus-visible:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                      >
+                        <span className="flex min-w-0 items-center gap-2">
+                          <CalendarDays className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                          <span className="whitespace-nowrap">{formatReceiptDate(draft.purchaseDate)}</span>
+                        </span>
+                        <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent align="start" className="w-auto rounded-2xl border border-brand-amber/25 bg-white p-3 shadow-[0_18px_44px_rgb(105_72_34/0.16)]">
+                      <div className="flex items-center gap-2 rounded-xl bg-soft-wait px-3 py-2 text-sm font-semibold text-[var(--isitabuy-ink)]">
+                        <CalendarDays className="size-4 text-accent" aria-hidden="true" />
+                        Purchase Date
+                      </div>
+                      <Calendar
+                        className="mt-3"
+                        mode="single"
+                        selected={draft.purchaseDate ? new Date(`${draft.purchaseDate}T12:00:00Z`) : undefined}
+                        onSelect={(date) => {
+                          if (date) {
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, "0");
+                            const day = String(date.getDate()).padStart(2, "0");
+                            updateDraft({ purchaseDate: `${year}-${month}-${day}` });
+                          }
+                        }}
+                      />
+                      <div className="mt-3 grid gap-2">
+                        {quickDateOptions.map((option) => (
+                          <button
+                            key={option.value}
+                            type="button"
+                            className="flex h-9 items-center justify-between rounded-xl border border-transparent px-3 text-left text-xs font-semibold text-muted-foreground transition hover:border-brand-amber/30 hover:bg-soft-wait hover:text-[var(--isitabuy-ink)]"
+                            onClick={() => updateDraft({ purchaseDate: option.value })}
+                          >
+                            <span>{option.label}</span>
+                            <span className="font-medium">{formatReceiptDate(option.value)}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-muted-foreground" htmlFor="dashboard-receipt-notes">Notes</label>
+                  <Textarea id="dashboard-receipt-notes" value={draft.notes} onChange={(event) => updateDraft({ notes: event.target.value })} placeholder="Optional purchase note..." className="mt-1 min-h-11 rounded-xl border-brand-amber/35 bg-white text-sm font-semibold" />
+                </div>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Button className="h-10 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]" onClick={() => submitReceipt(false)}>
+                  <Upload className="size-4" aria-hidden="true" />
+                  Upload receipt
+                </Button>
+                <Button variant="outline" className="h-10 rounded-full border-brand-amber/35 bg-white px-4 text-xs font-bold hover:bg-soft-wait" onClick={() => submitReceipt(true)}>
+                  Use demo receipt
+                </Button>
+              </div>
+            </div>
+            <div className="grid rounded-[1.15rem] border border-dashed border-brand-amber/35 bg-white/78 p-4">
+              <span className="grid size-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <ReceiptText className="size-5" aria-hidden="true" />
+              </span>
+              <div className="mt-5 grid gap-3">
+                <div className="rounded-2xl border border-brand-amber/25 bg-soft-wait p-3">
+                  <p className="text-xs font-bold text-muted-foreground">Latest receipt</p>
+                  <p className="mt-1 font-bold">{receiptRecords[0]?.store ?? "No receipt"} - {receiptRecords[0] ? formatReceiptDate(receiptRecords[0].purchaseDate) : "Upload first"}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="rounded-2xl border border-brand-amber/25 bg-white p-3">
+                    <p className="font-numeric text-xl font-bold">{receiptRecords[0]?.itemCount ?? 0}</p>
+                    <p className="text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">Items extracted</p>
+                  </div>
+                  <div className="rounded-2xl border border-brand-amber/25 bg-white p-3">
+                    <p className="font-numeric text-xl font-bold">{formatPrice(receiptRecords[0]?.savingsFound ?? 0)}</p>
+                    <p className="text-[0.68rem] font-bold text-[var(--isitabuy-muted)]">Savings found</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-white shadow-sm xl:col-span-5">
+          <CardContent className="grid h-full gap-3 p-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-accent">Needs attention</p>
+                <h2 className="mt-2 text-2xl font-bold">{stats.review} receipt{stats.review === 1 ? "" : "s"} ready</h2>
+              </div>
+              <span className="grid size-10 place-items-center rounded-2xl bg-amber-50 text-amber-700">
+                <FileCheck2 className="size-5" aria-hidden="true" />
+              </span>
+            </div>
+            {reviewQueue.slice(0, 2).map((receipt) => (
+              <button key={receipt.id} type="button" onClick={() => notify(`${receipt.store} receipt`, `${receipt.itemCount} items are ready in this dashboard.`)} className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-left transition hover:bg-soft-wait focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="font-bold">{receipt.store} receipt</p>
+                  <ReceiptStatusBadge status={receipt.status} />
+                </div>
+                <p className="mt-2 text-sm font-semibold leading-6 text-muted-foreground">{receipt.itemCount} items extracted. {receipt.warrantiesTracked} warranties and {receipt.returnAlerts} return alerts tracked.</p>
+              </button>
+            ))}
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: "Total saved", value: formatPrice(stats.saved) },
+                { label: "Warranties", value: String(stats.warranties) },
+                { label: "Return alerts", value: String(stats.returns) },
+              ].map((stat) => (
+                <div key={stat.label} className="rounded-2xl border border-[var(--isitabuy-line)] bg-card p-3">
+                  <p className="font-numeric text-xl font-bold">{stat.value}</p>
+                  <p className="mt-1 text-[0.68rem] font-bold leading-4 text-[var(--isitabuy-muted)]">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(22rem,0.46fr)]">
+        <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
+          <CardContent className="grid gap-3 p-5 sm:p-6">
+            <div className="mb-1 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight">Receipt ledger</h2>
+                <p className="mt-1 text-sm font-semibold text-[var(--isitabuy-muted)]">Purchases linked to savings, warranties, returns, and product verdicts.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {filters.map((filter) => (
+                  <button key={filter.value} type="button" onClick={() => setActiveFilter(filter.value)} className={cn("h-9 rounded-full border px-3 text-xs font-bold transition", activeFilter === filter.value ? "border-brand-amber/50 bg-soft-wait text-accent" : "border-[var(--isitabuy-line)] bg-white text-[var(--isitabuy-muted)] hover:bg-soft-wait")}>
+                    {filter.label} - {filter.count}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {filteredRecords.map((receipt) => {
+              const paidTotal = receipt.items.reduce((total, item) => total + item.paidPrice, 0);
+              const primaryItem = receipt.items[0];
+
+              return (
+                <div key={receipt.id} className="grid gap-4 rounded-2xl border border-[var(--isitabuy-line)] bg-white p-4 transition hover:-translate-y-0.5 hover:border-brand-amber/35 hover:bg-soft-wait hover:shadow-[var(--isitabuy-card-shadow)] lg:grid-cols-[minmax(0,1.35fr)_0.7fr_0.7fr_auto] lg:items-center">
+                  <div className="min-w-0">
+                    <h2 className="truncate font-bold">{receipt.store} receipt</h2>
+                    <p className="mt-1 text-sm font-semibold text-[var(--isitabuy-muted)]">{receipt.fileName} - {formatReceiptDate(receipt.purchaseDate)} - {receipt.itemCount} items</p>
+                    {receipt.notes ? <p className="mt-1 line-clamp-1 text-xs font-semibold text-[var(--isitabuy-muted)]">{receipt.notes}</p> : null}
+                  </div>
+                  <div className="rounded-2xl border border-brand-amber/25 bg-card px-3 py-2">
+                    <p className="text-[0.68rem] font-bold uppercase tracking-[0.12em] text-accent">Paid</p>
+                    <p className="font-numeric mt-1 text-sm font-bold">{formatPrice(paidTotal)}</p>
+                  </div>
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2">
+                    <p className="text-[0.68rem] font-bold uppercase tracking-[0.12em] text-emerald-700">Saved</p>
+                    <p className="font-numeric mt-1 text-sm font-bold text-emerald-700">{formatPrice(receipt.savingsFound)}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 md:justify-end">
+                    <ReceiptStatusBadge status={receipt.status} />
+                    {primaryItem ? (
+                      <Button asChild variant="outline" className="h-9 rounded-full text-xs font-bold">
+                        <Link href={buildProductUrl(primaryItem.productSlug)}>Product</Link>
+                      </Button>
+                    ) : null}
+                    <Button variant="outline" className="h-9 rounded-full text-xs font-bold" onClick={() => notify(`${receipt.store} receipt`, `${receipt.itemCount} items, ${receipt.warrantiesTracked} warranties, ${receipt.returnAlerts} return alerts.`)}>
+                      Details
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
+        <div className="grid gap-5">
+          <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--soft-wait),var(--card))] shadow-sm">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-xl font-bold">Review queue</h2>
+                <FileCheck2 className="size-5 text-accent" aria-hidden="true" />
+              </div>
+              <div className="mt-4 grid gap-3">
+                {reviewQueue.map((receipt) => (
+                  <button key={receipt.id} type="button" onClick={() => notify(`${receipt.store} receipt`, `${receipt.itemCount} extracted items are ready in demo mode.`)} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3 text-left transition hover:bg-soft-wait focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
+                    <p className="font-bold">{receipt.store} receipt</p>
+                    <p className="mt-1 text-xs font-bold text-[var(--isitabuy-muted)]">{receipt.itemCount} items - {receipt.warrantiesTracked} warranties linked</p>
+                    <ReceiptStatusBadge status={receipt.status} className="mt-3" />
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[1.35rem] border border-[var(--isitabuy-line)] bg-white shadow-sm">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-xl font-bold">Return windows</h2>
+                <RotateCcw className="size-5 text-amber-600" aria-hidden="true" />
+              </div>
+              <div className="mt-4 grid gap-3">
+                {returnWindows.map((item) => (
+                  <button key={`${item.receiptId}-${item.id}`} type="button" onClick={() => notify("Return reminder", `${item.productName} has ${item.returnWindowDays} days left.`)} className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--isitabuy-line)] p-3 text-left transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]">
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-bold">{item.productName}</span>
+                      <span className="mt-1 block text-xs font-semibold text-[var(--isitabuy-muted)]">{item.store}</span>
+                    </span>
+                    <span className="font-numeric shrink-0 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700">{item.returnWindowDays} days</span>
+                  </button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-[1.35rem] border border-brand-amber/25 bg-[linear-gradient(135deg,var(--soft-wait),var(--card))] shadow-sm">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="text-xl font-bold">Warranty tracker</h2>
+                <Clock3 className="size-5 text-accent" aria-hidden="true" />
+              </div>
+              <div className="mt-4 grid gap-3">
+                {warranties.map((item) => (
+                  <Link key={`${item.receiptId}-${item.id}`} href={buildProductUrl(item.productSlug)} className="rounded-2xl border border-brand-amber/25 bg-white/82 p-3 transition hover:bg-soft-wait">
+                    <p className="font-bold">{item.productName}</p>
+                    <p className="mt-1 text-xs font-bold text-[var(--isitabuy-muted)]">{item.warrantyStatus === "expiring" ? "Expiring soon" : "Warranty active"} - {item.store}</p>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </section>
+  );
+}
+
+function ReceiptStatusBadge({ status, className }: { status: ReceiptRecord["status"]; className?: string }) {
+  const label = status === "ready" ? "Ready for review" : status === "protected" ? "Protected" : "Matched";
+
+  return (
+    <Badge
+      className={cn(
+        "rounded-full border",
+        status === "ready" && "border-amber-200 bg-amber-50 text-amber-700",
+        status === "protected" && "border-emerald-200 bg-emerald-50 text-emerald-700",
+        status === "matched" && "border-blue-200 bg-blue-50 text-blue-700",
+        className,
+      )}
+    >
+      {label}
+    </Badge>
+  );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function LegacyReceiptsSection() {
   const reviewQueue = [
     { title: "Target receipt", detail: "5 items extracted", status: "Ready for review", tone: "border-amber-200 bg-amber-50 text-amber-700" },
     { title: "Amazon order", detail: "2 warranties linked", status: "Protected", tone: "border-emerald-200 bg-emerald-50 text-emerald-700" },

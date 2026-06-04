@@ -81,11 +81,13 @@ import {
   safeReadLocalStorage,
   safeWriteLocalStorage,
 } from "@/lib/dashboardUtils";
+import { buildReceiptRecord, hydrateReceiptRecords, saveReceiptRecord } from "@/lib/receiptRecords";
 import { cn } from "@/lib/utils";
 import type {
   DashboardModalState,
   DashboardNavItem,
   PriceAlert,
+  ReceiptRecord,
   PurchaseSummary,
   ReceiptUploadDraft,
   Recommendation,
@@ -186,7 +188,7 @@ export default function DashboardPageClient() {
   const [recommendations, setRecommendations] = useState<Recommendation[]>(defaultRecommendations);
   const [savedRecommendationIds, setSavedRecommendationIds] = useState<string[]>([]);
   const [, setPriceAlerts] = useState<PriceAlert[]>([]);
-  const [receipts, setReceipts] = useState<string[]>([]);
+  const [receipts, setReceipts] = useState<ReceiptRecord[]>([]);
   const [notificationsRead, setNotificationsRead] = useState(false);
   const [receiptDraft, setReceiptDraft] = useState<ReceiptUploadDraft>(defaultReceiptDraft);
   const [alertProductId, setAlertProductId] = useState(defaultWatchlistProducts[0]?.id ?? defaultSavedProducts[0].id);
@@ -200,7 +202,7 @@ export default function DashboardPageClient() {
     const storedSaved = safeReadLocalStorage(STORAGE_KEYS.savedProducts, currentProductIds(defaultSavedProducts), isStringArray);
     const storedWatchlist = safeReadLocalStorage(STORAGE_KEYS.watchlist, currentProductIds(defaultWatchlistProducts), isStringArray);
     const alerts = safeReadLocalStorage(STORAGE_KEYS.priceAlerts, [] as PriceAlert[], isPriceAlertArray);
-    const storedReceipts = safeReadLocalStorage(STORAGE_KEYS.receipts, [] as string[], isStringArray);
+    const storedReceipts = hydrateReceiptRecords();
     const savedRecs = safeReadLocalStorage(STORAGE_KEYS.savedRecommendations, [] as string[], isStringArray);
     const dismissedRecs = safeReadLocalStorage("isitabuy.dashboard.dismissedRecommendations", [] as string[], isStringArray);
     const notificationState = safeReadLocalStorage(STORAGE_KEYS.notificationReadState, [] as string[], isStringArray);
@@ -380,11 +382,16 @@ export default function DashboardPageClient() {
       return;
     }
 
-    const nextReceipts = Array.from(new Set([...receipts, "receipt-target-2024-05-20"]));
-    setReceipts(nextReceipts);
-    handleStorageWrite(STORAGE_KEYS.receipts, nextReceipts);
+    const previousReceiptCount = receipts.length;
+    const result = saveReceiptRecord(buildReceiptRecord(receiptDraft, useDemo));
+    setReceipts(result.value);
     setModal({ type: "none" });
-    notify("Demo receipt uploaded and processed.", "Receipt review page will open here.");
+    notify(
+      useDemo ? "Demo receipt uploaded and processed." : "Receipt uploaded and processed.",
+      result.recovered
+        ? "Receipt is visible for this session, but browser storage did not persist it."
+        : `Receipt records updated from ${previousReceiptCount} to ${result.value.length}.`,
+    );
   };
 
   const submitPriceAlert = () => {

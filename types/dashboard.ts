@@ -71,6 +71,35 @@ export interface PurchaseSummary {
   warrantyStatus: "active" | "expiring" | "none";
 }
 
+export type ReceiptRecordStatus = "ready" | "protected" | "matched";
+
+export interface ReceiptLineItem {
+  id: string;
+  productName: string;
+  productSlug: string;
+  paidPrice: number;
+  insight: string;
+  status: "Drop found" | "Warranty" | "Matched" | "Needs review";
+  warrantyStatus: "active" | "expiring" | "none";
+  returnWindowDays?: number;
+}
+
+export interface ReceiptRecord {
+  id: string;
+  store: string;
+  purchaseDate: string;
+  fileName: string;
+  notes: string;
+  uploadedAt: string;
+  source: "demo" | "upload";
+  itemCount: number;
+  savingsFound: number;
+  warrantiesTracked: number;
+  returnAlerts: number;
+  status: ReceiptRecordStatus;
+  items: ReceiptLineItem[];
+}
+
 export interface WarrantySummary {
   id: string;
   productName: string;

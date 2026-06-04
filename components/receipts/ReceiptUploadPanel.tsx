@@ -1,41 +1,32 @@
 "use client";
 
 import { useRef, useState, type ChangeEvent } from "react";
-import { CheckCircle2, FileCheck2, ReceiptText, Upload } from "lucide-react";
+import Link from "next/link";
+import { CalendarDays, CheckCircle2, ChevronDown, FileCheck2, ReceiptText, Store, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BentoCard } from "@/components/ui/bento";
 import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { showCompareToast } from "@/components/ui/app-toast";
-
-const receiptsStorageKey = "isitabuy.dashboard.receipts";
-const allowedFileTypes = new Set(["application/pdf"]);
-const extractedItems = ["Sony WH-1000XM5", "Ninja Coffee Maker", "Nike Air Zoom Pegasus"];
-
-function isAllowedReceiptFile(file: File) {
-  return file.type.startsWith("image/") || allowedFileTypes.has(file.type);
-}
-
-function saveReceiptId(receiptId: string) {
-  if (typeof window === "undefined") return;
-
-  try {
-    const raw = window.localStorage.getItem(receiptsStorageKey);
-    const parsed: unknown = raw ? JSON.parse(raw) : [];
-    const existing = Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string") : [];
-    window.localStorage.setItem(receiptsStorageKey, JSON.stringify(Array.from(new Set([...existing, receiptId]))));
-  } catch {
-    showCompareToast("Receipt processed for this session", "Browser storage is unavailable, so this demo receipt may not persist after reload.");
-  }
-}
+import { buildReceiptRecord, formatReceiptDate, getReceiptDateString, isAllowedReceiptFile, receiptStoreOptions, saveReceiptRecord } from "@/lib/receiptRecords";
+import type { ReceiptRecord } from "@/types/dashboard";
 
 export default function ReceiptUploadPanel() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("");
   const [store, setStore] = useState("Target");
-  const [purchaseDate, setPurchaseDate] = useState("2026-05-20");
+  const [purchaseDate, setPurchaseDate] = useState(() => getReceiptDateString(-3));
   const [notes, setNotes] = useState("");
   const [processed, setProcessed] = useState(false);
+  const [processedRecord, setProcessedRecord] = useState<ReceiptRecord | null>(null);
+  const quickDateOptions = [
+    { label: "Today", value: getReceiptDateString(0) },
+    { label: "Yesterday", value: getReceiptDateString(-1) },
+    { label: "Last week", value: getReceiptDateString(-7) },
+  ];
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -61,10 +52,17 @@ export default function ReceiptUploadPanel() {
       return;
     }
 
-    const receiptId = useDemo ? "receipt-public-demo-2026-05-20" : `receipt-public-upload-${Date.now()}`;
-    saveReceiptId(receiptId);
+    const receiptId = useDemo ? "receipt-target-demo" : `receipt-public-upload-${Date.now()}`;
+    const record = buildReceiptRecord({ fileName, store, purchaseDate, notes }, useDemo);
+    const result = saveReceiptRecord({ ...record, id: receiptId });
+    setProcessedRecord(result.value.find((item) => item.id === receiptId) ?? record);
     setProcessed(true);
-    showCompareToast(useDemo ? "Demo receipt processed" : "Receipt processed", `${store} receipt is ready with warranties, return alerts, and savings.`);
+    showCompareToast(
+      useDemo ? "Demo receipt processed" : "Receipt processed",
+      result.recovered
+        ? `${store} receipt is ready for this session. Browser storage could not persist it.`
+        : `${store} receipt is now in the dashboard with warranties, return alerts, and savings.`,
+    );
   };
 
   return (
@@ -101,32 +99,85 @@ export default function ReceiptUploadPanel() {
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-store">Store</label>
-              <select
-                id="public-receipt-store"
+              <Select
                 value={store}
-                onChange={(event) => {
-                  setStore(event.target.value);
+                onValueChange={(value) => {
+                  setStore(value);
                   setProcessed(false);
                 }}
-                className="mt-1 h-11 w-full rounded-xl border border-brand-amber/35 bg-white px-3 text-sm font-semibold shadow-sm outline-none transition focus:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
               >
-                {["Target", "Amazon", "Best Buy", "Walmart", "Nike"].map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
+                <SelectTrigger
+                  id="public-receipt-store"
+                  className="mt-1 h-11 w-full min-w-0 rounded-xl border-brand-amber/35 bg-white px-3 text-sm font-semibold shadow-sm focus-visible:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                  style={{ width: "100%", height: "2.75rem" }}
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <Store className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                    <SelectValue placeholder="Choose store" />
+                  </span>
+                </SelectTrigger>
+                <SelectContent position="popper" align="start" className="rounded-xl border border-brand-amber/25 bg-white p-1 shadow-[0_18px_38px_rgb(105_72_34/0.14)]">
+                  {receiptStoreOptions.map((option) => (
+                    <SelectItem key={option} value={option} className="rounded-lg py-2 text-sm font-semibold focus:bg-soft-wait focus:text-[var(--isitabuy-ink)]">
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-xs font-semibold text-muted-foreground" htmlFor="public-receipt-date">Purchase Date</label>
-              <Input
-                id="public-receipt-date"
-                type="date"
-                value={purchaseDate}
-                onChange={(event) => {
-                  setPurchaseDate(event.target.value);
-                  setProcessed(false);
-                }}
-                className="mt-1 h-11 rounded-xl border-brand-amber/35 bg-white text-sm font-semibold shadow-sm focus-visible:ring-[var(--isitabuy-orange)]"
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    id="public-receipt-date"
+                    type="button"
+                    className="mt-1 flex h-11 w-full min-w-0 items-center justify-between gap-3 rounded-xl border border-brand-amber/35 bg-white px-3 text-left text-sm font-semibold shadow-sm outline-none transition hover:border-[var(--isitabuy-orange)] hover:bg-white focus-visible:border-[var(--isitabuy-orange)] focus-visible:ring-2 focus-visible:ring-[var(--isitabuy-orange)]"
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      <CalendarDays className="size-4 shrink-0 text-accent" aria-hidden="true" />
+                      <span className="whitespace-nowrap">{formatReceiptDate(purchaseDate)}</span>
+                    </span>
+                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-auto rounded-2xl border border-brand-amber/25 bg-white p-3 shadow-[0_18px_44px_rgb(105_72_34/0.16)]">
+                  <div className="flex items-center gap-2 rounded-xl bg-soft-wait px-3 py-2 text-sm font-semibold text-[var(--isitabuy-ink)]">
+                    <CalendarDays className="size-4 text-accent" aria-hidden="true" />
+                    Purchase Date
+                  </div>
+                  <Calendar
+                    className="mt-3"
+                    mode="single"
+                    selected={purchaseDate ? new Date(purchaseDate + "T12:00:00Z") : undefined}
+                    onSelect={(date) => {
+                      if (date) {
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, "0");
+                        const day = String(date.getDate()).padStart(2, "0");
+                        setPurchaseDate(`${year}-${month}-${day}`);
+                        setProcessed(false);
+                      }
+                    }}
+                    />
+                  <div className="mt-3 grid gap-2">
+                    {quickDateOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className="flex h-9 items-center justify-between rounded-xl border border-transparent px-3 text-left text-xs font-semibold text-muted-foreground transition hover:border-brand-amber/30 hover:bg-soft-wait hover:text-[var(--isitabuy-ink)]"
+                        onClick={() => {
+                          setPurchaseDate(option.value);
+                          setProcessed(false);
+                        }}
+                      >
+                        <span>{option.label}</span>
+                        <span className="font-medium">{formatReceiptDate(option.value)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
@@ -158,11 +209,11 @@ export default function ReceiptUploadPanel() {
 
       {processed ? (
         <div className="mt-4 grid gap-2">
-          {extractedItems.map((item, index) => (
-            <div key={item} className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-brand-amber/25 bg-white/82 px-3 py-3">
-              <span className="min-w-0 truncate text-sm font-bold">{item}</span>
+          {(processedRecord?.items ?? []).map((item) => (
+            <div key={item.id} className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-2xl border border-brand-amber/25 bg-white/82 px-3 py-3">
+              <span className="min-w-0 truncate text-sm font-bold">{item.productName}</span>
               <span className="rounded-full bg-soft-wait px-2.5 py-1 text-[0.68rem] font-bold text-muted-foreground">
-                {index === 0 ? "Drop found" : index === 1 ? "Warranty" : "Matched"}
+                {item.status}
               </span>
             </div>
           ))}
@@ -170,9 +221,14 @@ export default function ReceiptUploadPanel() {
       ) : null}
 
       {processed ? (
-        <div className="mt-4 flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
-          <CheckCircle2 className="size-4" aria-hidden="true" />
-          Receipt saved to this demo dashboard.
+        <div className="mt-4 grid gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-xs font-bold text-emerald-700">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="size-4" aria-hidden="true" />
+            Receipt saved to the dashboard.
+          </div>
+          <Button asChild variant="outline" className="h-9 rounded-full border-emerald-200 bg-white text-xs font-bold text-emerald-700 hover:bg-emerald-50">
+            <Link href="/dashboard/receipts">Open receipt dashboard</Link>
+          </Button>
         </div>
       ) : null}
     </BentoCard>

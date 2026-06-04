@@ -104,7 +104,7 @@ export default function ReceiptsPage() {
               <Link href="/signin">Log in</Link>
             </Button>
             <Button asChild className="h-9 rounded-full bg-[var(--isitabuy-orange)] px-4 text-xs font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
-              <Link href="/dashboard/receipts">Upload</Link>
+              <Link href="/dashboard/receipts">Dashboard</Link>
             </Button>
           </div>
         </nav>
@@ -126,7 +126,7 @@ export default function ReceiptsPage() {
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button asChild className="h-12 rounded-full bg-[var(--isitabuy-orange)] px-6 text-sm font-bold text-white shadow-[0_14px_28px_rgb(249_115_22/0.22)] hover:bg-[var(--isitabuy-orange-dark)]">
               <Link href="/dashboard/receipts">
-                Upload in dashboard
+                Open receipt dashboard
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </Button>
@@ -202,7 +202,7 @@ export default function ReceiptsPage() {
             </div>
             <div className="grid gap-2 sm:flex">
               <Button asChild className="h-11 rounded-full bg-[var(--isitabuy-orange)] px-5 text-sm font-bold text-white hover:bg-[var(--isitabuy-orange-dark)]">
-                <Link href="/dashboard/receipts">Upload in dashboard</Link>
+                <Link href="/dashboard/receipts">Open receipt dashboard</Link>
               </Button>
               <Button asChild variant="outline" className="h-11 rounded-full border-brand-amber/35 bg-white px-5 text-sm font-bold hover:bg-soft-wait">
                 <Link href="/deals">Explore deals</Link>
